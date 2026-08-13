@@ -18,10 +18,10 @@ export const metadata: Metadata = {
     siteName: 'ALTA7',
     images: [
       {
-        url: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1786589506/dadad_1_uzh69j.webp',
-        width: 800,
-        height: 800,
-        alt: 'ALTA7 Símbolo Oficial',
+        url: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1786589565/5917ea7e-eff0-4d59-b00c-717fa55f2d89_hvtjia.webp',
+        width: 1200,
+        height: 630,
+        alt: 'ALTA7 — Monte a sua Camiseta',
       },
     ],
     locale: 'pt_BR',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'ALTA7 — Monte a sua Camiseta',
     description: 'Monte a sua camiseta ALTA7. Escolha modelo, cor, tecido, estampa e tamanho.',
-    images: ['https://res.cloudinary.com/dhbrxzt5a/image/upload/v1786589506/dadad_1_uzh69j.webp'],
+    images: ['https://res.cloudinary.com/dhbrxzt5a/image/upload/v1786589565/5917ea7e-eff0-4d59-b00c-717fa55f2d89_hvtjia.webp'],
   },
 };
 

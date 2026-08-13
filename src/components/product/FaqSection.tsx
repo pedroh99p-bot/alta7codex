@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import styles from './FaqSection.module.css';
 
 interface FaqItem {
@@ -37,27 +38,31 @@ export const FaqSection: React.FC = () => {
   return (
     <section id="faq" className={styles.section}>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <span className={styles.eyebrow}>DÚVIDAS FREQUENTES</span>
-          <h2 className={styles.title}>PERGUNTAS & RESPOSTAS</h2>
-        </div>
+        <ScrollReveal>
+          <div className={styles.header}>
+            <span className={styles.eyebrow}>DÚVIDAS FREQUENTES</span>
+            <h2 className={styles.title}>PERGUNTAS & RESPOSTAS</h2>
+          </div>
+        </ScrollReveal>
 
         <div className={styles.faqList}>
           {FAQS.map((item, idx) => {
             const isOpen = openIndex === idx;
             return (
-              <div key={idx} className={styles.faqCard}>
-                <button
-                  type="button"
-                  className={styles.questionBtn}
-                  onClick={() => toggleFaq(idx)}
-                  aria-expanded={isOpen}
-                >
-                  <span className={styles.questionText}>{item.q}</span>
-                  <span className={styles.toggleIcon}>{isOpen ? '−' : '+'}</span>
-                </button>
-                {isOpen && <div className={styles.answerText}>{item.a}</div>}
-              </div>
+              <ScrollReveal key={idx} delayMs={idx * 80}>
+                <div className={styles.faqCard}>
+                  <button
+                    type="button"
+                    className={styles.questionBtn}
+                    onClick={() => toggleFaq(idx)}
+                    aria-expanded={isOpen}
+                  >
+                    <span className={styles.questionText}>{item.q}</span>
+                    <span className={styles.toggleIcon}>{isOpen ? '−' : '+'}</span>
+                  </button>
+                  {isOpen && <div className={styles.answerText}>{item.a}</div>}
+                </div>
+              </ScrollReveal>
             );
           })}
         </div>
