@@ -15,8 +15,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator })
       <div className={styles.mediaContainer}>
         {/* Cloudinary Hero Banner / Lifestyle Image */}
         <Image
-          src="/products/tshirt/bases/cld-base-6-b_xnxdnr.webp"
-          alt="ALTA7 Lifestyle - Futebol de Praia e Rua no Rio de Janeiro"
+          src="/lifestyle/hero-lifestyle.jpg"
+          alt="ALTA7 Lifestyle - Player on Rio Beach with ALTA7 T-Shirt"
           fill
           priority
           className={styles.lifestyleImage}
