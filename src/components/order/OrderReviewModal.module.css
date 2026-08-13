@@ -1,0 +1,228 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  background-color: rgba(8, 8, 8, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.modal {
+  width: 100%;
+  max-width: var(--max-content-width);
+  min-height: 100vh;
+  background-color: var(--bg-main);
+  padding: var(--space-24) var(--mobile-padding);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+}
+
+.backButton {
+  background: transparent;
+  border: none;
+  color: var(--yellow-alta7);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.titleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.headline {
+  font-family: var(--font-editorial);
+  font-size: clamp(32px, 8vw, 42px);
+  color: var(--text-primary);
+  letter-spacing: 0.03em;
+  margin: 0;
+  line-height: 1;
+}
+
+.subtitle {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.itemsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+}
+
+.reviewCard {
+  background-color: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.dualPreviewRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
+}
+
+.previewBox {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-xs);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.previewImg {
+  object-fit: cover;
+}
+
+.viewLabel {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-ui);
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--yellow-alta7);
+  background: rgba(0, 0, 0, 0.75);
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.specsList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-12);
+}
+
+.specRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.specIcon {
+  width: 18px;
+  height: 18px;
+  color: var(--yellow-alta7);
+}
+
+.specText {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--text-primary);
+}
+
+.specRowModel {
+  margin-top: 4px;
+}
+
+.modelTagLabel {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: var(--space-20);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.totalRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-16);
+}
+
+.totalLabel {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--text-secondary);
+}
+
+.totalValue {
+  font-family: var(--font-editorial);
+  font-size: 32px;
+  color: var(--text-primary);
+}
+
+.whatsappPrimaryBtn {
+  width: 100%;
+  padding: var(--space-16);
+  background-color: transparent;
+  border: 1px solid var(--yellow-alta7);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-12);
+  border-radius: var(--radius-xs);
+  transition: background var(--transition-fast);
+}
+
+.whatsappPrimaryBtn:hover {
+  background-color: rgba(230, 198, 25, 0.1);
+}
+
+.arrowIcon {
+  color: var(--yellow-alta7);
+  font-size: 16px;
+}
+
+.editSecondaryBtn {
+  background: transparent;
+  border: none;
+  color: var(--yellow-alta7);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+}
+
+.legalFooter {
+  text-align: center;
+  font-family: var(--font-ui);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: var(--space-8);
+}

@@ -1,0 +1,75 @@
+.footer {
+  width: 100%;
+  padding: var(--space-48) 0 var(--space-32) 0;
+  background-color: var(--bg-surface-1);
+  border-top: 1px solid var(--border-subtle);
+}
+
+.container {
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding: 0 var(--mobile-padding);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-24);
+  text-align: center;
+}
+
+.brandRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.logoImage {
+  object-fit: contain;
+  height: 36px;
+  width: auto;
+}
+
+.tagline {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+
+.linksRow {
+  display: flex;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.link {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.link:hover {
+  color: var(--yellow-alta7);
+}
+
+.copyRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  color: var(--text-muted);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: var(--space-16);
+  width: 100%;
+}
+
+.motto {
+  color: var(--yellow-alta7);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}

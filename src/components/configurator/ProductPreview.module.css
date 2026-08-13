@@ -1,0 +1,141 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tabsContainer {
+  display: flex;
+  gap: var(--space-8);
+  width: 100%;
+  justify-content: center;
+  margin-bottom: var(--space-12);
+}
+
+.tabButton {
+  flex: 1;
+  max-width: 140px;
+  padding: var(--space-8) var(--space-16);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tabActive {
+  border-color: var(--yellow-alta7);
+  color: var(--yellow-alta7);
+  background: rgba(230, 198, 25, 0.05);
+}
+
+/* 4:5 Aspect Ratio Canvas */
+.canvas {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background-color: var(--bg-canvas);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.baseLayer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.baseImage {
+  object-fit: cover;
+  object-position: center;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.frontLogoLayer {
+  position: absolute;
+  top: 36%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.brandLogoText {
+  font-family: var(--font-editorial);
+  font-size: clamp(24px, 6vw, 32px);
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.yellowBall {
+  font-size: 16px;
+}
+
+.collarSymbol {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-size: 12px;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.backPrintLayer {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 55%;
+  height: 48%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.artworkOverlay {
+  width: 100%;
+  height: 100%;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  background: rgba(8, 8, 8, 0.45);
+  backdrop-filter: blur(2px);
+  border-radius: var(--radius-xs);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12);
+  text-align: center;
+}
+
+.artCodeTag {
+  font-family: var(--font-editorial);
+  font-size: 24px;
+  color: var(--yellow-alta7);
+  letter-spacing: 0.05em;
+}
+
+.artTitleTag {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  margin-top: 4px;
+}

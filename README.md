@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ALTA7 — Configurador de Camisetas (Landing Page & Microloja Mobile-First)
 
-## Getting Started
+> Experiência visual interativa de personalização e intenção de compra para a **ALTA7** — marca com identidade no futebol de praia, rua, Rio de Janeiro e cultura streetwear.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ⚽ Conceito do Produto
+A ALTA7 não opera como um e-commerce genérico com catálogo exaustivo. O núcleo do projeto é a **Camiseta ALTA7**, permitindo ao cliente montar sua versão customizada escolhendo:
+- **Cor** (Preto, Off-White, Grafite, Marinho, Oliva)
+- **Tecido** (Cotton, Performance, Premium)
+- **Estampa Editorial** (ART.01 a ART.09)
+- **Tamanho** (P, M, G, GG)
+- **Quantidade**
+
+A conclusão do pedido é realizada através do **WhatsApp** com uma mensagem estruturada dinamicamente.
+
+---
+
+## 🛠️ Tech Stack & Arquitetura
+- **Framework:** Next.js 16 (App Router)
+- **Linguagem:** TypeScript (strict mode)
+- **Estilização:** CSS Variables Design Tokens + CSS Modules
+- **Data Architecture:** Source of Truth centralizado em `src/data/product.ts`
+- **Composição Visual:** Engine de camadas transparentes (Base + Branding + Arte) para evitar matrizes estáticas de 135 imagens.
+
+---
+
+## 📁 Estrutura de Diretórios
+```text
+├── public/                 # Assets estáticos (bases, estampas, tecidos, lifestyle)
+├── referencias/            # Mockups de referência visual mobile (5 telas principais)
+├── src/
+│   ├── app/                # Rotas App Router e layout global
+│   ├── components/         # Componentes modulares (hero, configurator, product, order, ui)
+│   ├── data/               # Fonte central de dados do produto (product.ts)
+│   ├── lib/                # Funções utilitárias (pricing.ts, whatsapp.ts, storage.ts)
+│   ├── styles/             # Design Tokens CSS (tokens.css)
+│   └── types/              # Definições de tipos TypeScript (product.ts)
+├── AGENTS.md               # Guia operacional detalhado para desenvolvimento com agentes
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Como Executar Localmente
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Pré-requisitos
+- Node.js `v20+` ou `v24+`
+- npm `v10+`
 
-## Learn More
+### Instalação e Execução
+```bash
+# Instalar dependências
+npm install
 
-To learn more about Next.js, take a look at the following resources:
+# Executar em modo desenvolvimento
+npm run dev
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Compilar para produção
+npm run build
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Iniciar servidor de produção
+npm run start
+```
 
-## Deploy on Vercel
+Acesse [http://localhost:3000](http://localhost:3000) no seu navegador.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎨 Referências Visuais
+As referências visuais oficiais do projeto estão armazenadas na pasta `/referencias`:
+1. `hero tela principal.png` (Screen 1 - Hero & Desejo)
+2. `seleçao da cor e do tecido.png` (Screen 2 - Configurador Principal)
+3. `seleçao da estampa.png` (Screen 3 - Galeria de Artes)
+4. `tecidos e detalhes.png` (Screen 4 - Tecidos & Acabamentos)
+5. `pedido confirmado.png` (Screen 5/6 - Revisão & WhatsApp)
+
+Consulte o arquivo [`AGENTS.md`](./AGENTS.md) para diretrizes de contribuição e regras de desenvolvimento.
