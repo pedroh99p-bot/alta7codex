@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { ProductConfiguration, SizeCode, ProductModelCode, TShirtViewSide } from '@/types/product';
 import { ALTA7_PRODUCT } from '@/data/product';
 import { calculateItemPrice } from '@/lib/pricing';
@@ -17,6 +18,9 @@ interface ConfiguratorMainProps {
 export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderReview }) => {
   const { addToCart } = useCart();
 
+  // Customization active state (starts false until user initiates)
+  const [isCustomizing, setIsCustomizing] = useState<boolean>(false);
+
   // Local state for active configuration
   const [config, setConfig] = useState<ProductConfiguration>(ALTA7_PRODUCT.defaultConfiguration);
 
@@ -29,37 +33,55 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
   const currentColor = ALTA7_PRODUCT.colors.find((c) => c.id === config.colorId) || ALTA7_PRODUCT.colors[0];
   const currentFabric = ALTA7_PRODUCT.fabrics.find((f) => f.id === config.fabricId) || ALTA7_PRODUCT.fabrics[0];
   const currentPrint = ALTA7_PRODUCT.prints.find((p) => p.id === config.printId) || ALTA7_PRODUCT.prints[0];
-  const currentSize = ALTA7_PRODUCT.sizes.find((s) => s.id === config.sizeId) || null;
 
   const itemPrice = calculateItemPrice(config);
 
+  const startCustomizing = () => {
+    if (!isCustomizing) {
+      setIsCustomizing(true);
+    }
+  };
+
+  // Reset / Cancel current customization & hide sticky bar
+  const handleResetCustomization = () => {
+    setIsCustomizing(false);
+    setSizeWarning(false);
+    setConfig(ALTA7_PRODUCT.defaultConfiguration);
+  };
+
   const handleToggleSide = (side: TShirtViewSide) => {
+    startCustomizing();
     setConfig((prev) => ({ ...prev, viewSide: side }));
   };
 
   const handleSelectColor = (colorId: string) => {
+    startCustomizing();
     setConfig((prev) => ({ ...prev, colorId }));
   };
 
   const handleSelectFabric = (fabricId: string) => {
+    startCustomizing();
     setConfig((prev) => ({ ...prev, fabricId }));
   };
 
   const handleSelectPrint = (printId: string) => {
-    // When selecting print, automatically switch view to 'back' so user sees print immediately
+    startCustomizing();
     setConfig((prev) => ({ ...prev, printId, viewSide: 'back' }));
   };
 
   const handleSelectSize = (sizeId: SizeCode) => {
+    startCustomizing();
     setSizeWarning(false);
     setConfig((prev) => ({ ...prev, sizeId }));
   };
 
   const handleSelectModel = (model: ProductModelCode) => {
+    startCustomizing();
     setConfig((prev) => ({ ...prev, model }));
   };
 
   const handleQuantityChange = (delta: number) => {
+    startCustomizing();
     setConfig((prev) => {
       const next = prev.quantity + delta;
       return { ...prev, quantity: Math.max(1, Math.min(10, next)) };
@@ -67,9 +89,9 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
   };
 
   const handleAddToCart = () => {
+    startCustomizing();
     if (!config.sizeId) {
       setSizeWarning(true);
-      // Scroll smoothly to size section if size missing
       const sizeElem = document.getElementById('size-section');
       if (sizeElem) {
         sizeElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -117,10 +139,21 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
 
         {/* Active Config Status Summary Line */}
         <div className={styles.statusLine}>
-          <span className={styles.ballIcon}>⚽</span>
+          <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={12} height={12} />
           <span>
             {currentColor.name.toUpperCase()} / {currentFabric.name} / {currentPrint.code} {config.sizeId ? `/ ${config.sizeId}` : ''}
           </span>
+          {isCustomizing && (
+            <button
+              type="button"
+              className={styles.resetInlineBtn}
+              onClick={handleResetCustomization}
+              title="Cancelar customização atual"
+              aria-label="Cancelar customização"
+            >
+              ✕
+            </button>
+          )}
         </div>
 
         {/* Controls Container */}
@@ -296,24 +329,37 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
 
         </div>
 
-        {/* Bottom Sticky Action Bar */}
-        <div className={styles.stickyBar}>
-          <div className={styles.stickyContainer}>
-            <div className={styles.stickyPrice}>
-              <span className={styles.currencySymbol}>R$</span>
-              <span className={styles.priceValue}>{itemPrice.totalPrice}</span>
-            </div>
+        {/* Bottom Sticky Action Bar - ONLY Appears when customization process is started */}
+        {isCustomizing && (
+          <div className={styles.stickyBar}>
+            <div className={styles.stickyContainer}>
+              {/* Cancel / Reset Small ✕ Button */}
+              <button
+                type="button"
+                className={styles.cancelCustomizationBtn}
+                onClick={handleResetCustomization}
+                title="Cancelar customização e zerar seleções"
+                aria-label="Cancelar customização e fechar barra"
+              >
+                ✕
+              </button>
 
-            <button
-              type="button"
-              className={`${styles.stickyButton} ${!config.sizeId ? styles.buttonWarn : ''}`}
-              onClick={handleAddToCart}
-            >
-              <span>{config.sizeId ? 'ADICIONAR AO CARRINHO' : 'ESCOLHA O TAMANHO'}</span>
-              <span className={styles.stickyArrow}>➔</span>
-            </button>
+              <div className={styles.stickyPrice}>
+                <span className={styles.currencySymbol}>R$</span>
+                <span className={styles.priceValue}>{itemPrice.totalPrice}</span>
+              </div>
+
+              <button
+                type="button"
+                className={`${styles.stickyButton} ${!config.sizeId ? styles.buttonWarn : ''}`}
+                onClick={handleAddToCart}
+              >
+                <span>{config.sizeId ? 'ADICIONAR AO CARRINHO' : 'ESCOLHA O TAMANHO'}</span>
+                <span className={styles.stickyArrow}>➔</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
       </div>
 

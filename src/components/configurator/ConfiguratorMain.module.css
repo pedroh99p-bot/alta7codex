@@ -425,7 +425,23 @@
   color: var(--yellow-alta7);
 }
 
-/* Sticky Bottom Bar */
+.resetInlineBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  transition: color var(--transition-fast);
+  margin-left: var(--space-8);
+}
+
+.resetInlineBtn:hover {
+  color: var(--yellow-alta7);
+}
+
+/* Bottom Sticky Action Bar */
 .stickyBar {
   position: fixed;
   bottom: 0;
@@ -433,19 +449,50 @@
   width: 100%;
   z-index: 90;
   background-color: rgba(8, 8, 8, 0.95);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid var(--border-subtle);
-  padding: var(--space-12) 0;
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--yellow-alta7);
+  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .stickyContainer {
   max-width: var(--max-content-width);
   margin: 0 auto;
-  padding: 0 var(--mobile-padding);
+  padding: var(--space-12) var(--mobile-padding);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-16);
+  gap: var(--space-12);
+}
+
+.cancelCustomizationBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.cancelCustomizationBtn:hover {
+  border-color: var(--yellow-alta7);
+  color: var(--yellow-alta7);
+  background: rgba(230, 198, 25, 0.1);
 }
 
 .stickyPrice {

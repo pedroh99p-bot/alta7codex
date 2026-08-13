@@ -32,7 +32,7 @@ export default function HomePage() {
       <Preloader />
 
       {/* 02. Minimalist Navbar */}
-      <Navbar onOpenMenu={handleScrollToConfigurator} />
+      <Navbar onStartConfigurator={handleScrollToConfigurator} />
 
       {/* 03. Hero Lifestyle Section */}
       <HeroSection onStartConfigurator={handleScrollToConfigurator} />

@@ -148,7 +148,10 @@ export const OrderReviewModal: React.FC<OrderReviewModalProps> = ({
             Editar configuração ✏
           </button>
 
-          <span className={styles.legalFooter}>⚽ ALTA7. FUTEBOL É LIBERDADE.</span>
+          <div className={styles.modalFooterNote}>
+            <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={12} height={12} />
+            <span>ALTA7. FUTEBOL É LIBERDADE.</span>
+          </div>
         </div>
       </div>
     </div>

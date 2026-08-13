@@ -27,7 +27,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator })
           {/* Top Overlay Location & Brand Tags */}
           <div className={styles.topOverlayLeft}>
             <span className={styles.tagSmall}>RIO DE JANEIRO</span>
-            <span className={styles.tagSmall}>BRASIL ⚽</span>
+            <span className={`${styles.tagSmall} ${styles.symbolRow}`}>
+              BRASIL <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={12} height={12} />
+            </span>
           </div>
 
           <div className={styles.topOverlayRight}>
@@ -61,7 +63,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator })
 
         <ScrollReveal delayMs={150}>
           <p className={styles.subtitle}>
-            <span className={styles.ballIcon}>⚽</span> Monte a sua camiseta ALTA7
+            <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={14} height={14} className={styles.inlineSymbol} /> Monte a sua camiseta ALTA7
           </p>
         </ScrollReveal>
 
@@ -138,7 +140,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator })
 
         {/* Footer Tagline Note */}
         <div className={styles.footerNote}>
-          <span>⚽ ALTA7. FUTEBOL É LIBERDADE.</span>
+          <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={12} height={12} className={styles.inlineSymbol} />
+          <span> ALTA7. FUTEBOL É LIBERDADE.</span>
         </div>
       </div>
     </section>

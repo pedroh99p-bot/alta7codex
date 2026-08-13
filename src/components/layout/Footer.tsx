@@ -28,7 +28,9 @@ export const Footer: React.FC = () => {
 
         <div className={styles.copyRow}>
           <span>© {new Date().getFullYear()} ALTA7. Todos os direitos reservados.</span>
-          <span className={styles.motto}>⚽ ALTA7. FUTEBOL É LIBERDADE.</span>
+          <span className={styles.motto}>
+            <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={12} height={12} className={styles.inlineSymbol} /> ALTA7. FUTEBOL É LIBERDADE.
+          </span>
         </div>
       </div>
     </footer>

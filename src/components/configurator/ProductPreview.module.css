@@ -68,19 +68,19 @@
   pointer-events: none;
 }
 
-.brandLogoText {
-  font-family: var(--font-editorial);
-  font-size: clamp(24px, 6vw, 32px);
-  letter-spacing: 0.05em;
-  color: var(--text-primary);
+.brandLogoWrapper {
+  width: clamp(90px, 25vw, 130px);
+  height: auto;
   display: flex;
   align-items: center;
-  gap: 4px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
 }
 
-.yellowBall {
-  font-size: 16px;
+.brandLogoImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 .collarSymbol {

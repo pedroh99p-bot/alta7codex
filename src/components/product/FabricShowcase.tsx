@@ -35,14 +35,6 @@ export const FabricShowcase: React.FC<FabricShowcaseProps> = ({ onGoToConfigurat
                   <p className={styles.fabricSub}>{fabric.tagline}</p>
                   <p className={styles.fabricDesc}>{fabric.description}</p>
                 </div>
-                <button
-                  type="button"
-                  className={styles.plusIconBtn}
-                  onClick={onGoToConfigurator}
-                  aria-label={`Escolher tecido ${fabric.name}`}
-                >
-                  +
-                </button>
               </div>
             </ScrollReveal>
           ))}

@@ -60,19 +60,28 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
           />
         </div>
 
-        {/* Layer 2: Front Chest Branding Overlay */}
+        {/* Layer 2: Front Chest Branding Overlay (Official Logo Image) */}
         {isFront && (
           <div className={styles.frontLogoLayer}>
-            <span className={styles.brandLogoText}>
-              ALTA7<span className={styles.yellowBall}>⚽</span>
-            </span>
+            <div className={styles.brandLogoWrapper}>
+              <Image
+                src="/brand/logo-alta7.webp"
+                alt="ALTA7 Logo"
+                width={120}
+                height={40}
+                className={styles.brandLogoImage}
+                priority
+              />
+            </div>
           </div>
         )}
 
-        {/* Layer 3: Back Print & Collar Symbol Overlay */}
+        {/* Layer 3: Back Print Overlay */}
         {!isFront && (
           <>
-            <div className={styles.collarSymbol}>⚽</div>
+            <div className={styles.collarSymbol}>
+              <Image src="/brand/symbol-alta7.webp" alt="Symbol" width={14} height={14} />
+            </div>
             <div className={styles.backPrintLayer}>
               <div className={styles.artworkOverlay}>
                 <span className={styles.artCodeTag}>{print.code}</span>
