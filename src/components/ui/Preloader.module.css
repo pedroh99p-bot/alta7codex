@@ -1,17 +1,19 @@
-.overlay {
+.curtainContainer {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background-color: var(--bg-main);
+  background-color: var(--bg-main); /* Full black #080808 */
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transform: translateY(0);
+  transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform;
+  border-bottom: 2px solid var(--yellow-alta7);
 }
 
-.fadeOut {
-  opacity: 0;
-  visibility: hidden;
+.curtainLift {
+  transform: translateY(-100%);
 }
 
 .content {
@@ -19,43 +21,75 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-16);
+  text-align: center;
+  padding: 0 var(--mobile-padding);
 }
 
+/* 01. Central Emblem Spinning Clockwise */
+.spinSymbolWrapper {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spinSymbol {
+  object-fit: contain;
+  animation: spinClockwise 3s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes spinClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 02. Official Logo Below */
 .logoWrapper {
   position: relative;
-  width: 160px;
-  height: 50px;
+  width: 150px;
+  height: 44px;
 }
 
 .logoImage {
   object-fit: contain;
 }
 
+/* 03. Preloader Tagline Phrase */
+.tagline {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+/* 04. Subtle Loading Progress Bar */
 .progressBar {
-  width: 120px;
+  width: 110px;
   height: 2px;
   background: var(--border-subtle);
   border-radius: var(--radius-full);
   overflow: hidden;
+  margin-top: 4px;
 }
 
 .progressFill {
   width: 100%;
   height: 100%;
   background: var(--yellow-alta7);
-  animation: loadingProgress 0.4s ease-out forwards;
+  animation: fillProgress 1.1s ease-out forwards;
   transform-origin: left;
 }
 
-.tagline {
-  font-family: var(--font-ui);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
-
-@keyframes loadingProgress {
+@keyframes fillProgress {
   from {
     transform: scaleX(0);
   }
