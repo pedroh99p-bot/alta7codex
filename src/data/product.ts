@@ -123,7 +123,7 @@ export const ALTA7_PRODUCT: ProductData = {
       thumbnail: '/products/tshirt/prints/white/5_2_ruu1fn.png',
       overlayImageBack: '/products/tshirt/prints/white/5_2_ruu1fn.png',
       overlayImageBackWhite: '/products/tshirt/prints/white/5_2_ruu1fn.png',
-      overlayImageBackBlack: '/products/tshirt/prints/black/8da336b4-250c-43b6-96c2-33de55ecdd22_witddz.webp',
+      overlayImageBackBlack: '/products/tshirt/prints/black/art04-black.png',
     },
   ],
   sizes: [
