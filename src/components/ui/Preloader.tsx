@@ -4,13 +4,23 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styles from './Preloader.module.css';
 
-// All 5 color base image paths to preload in browser memory
+// All 10 color base image paths (Front & Back for 5 colors) to preload in browser memory
 const PRELOAD_BASES = [
-  '/products/tshirt/bases/cld-base-5-1_vqnc4y.webp', // Preta
-  '/products/tshirt/bases/cld-base-2-2_x8oucf.webp', // Azul Marinho
-  '/products/tshirt/bases/cld-base-4-3_x1e0bp.webp', // Vinho Bordô
-  '/products/tshirt/bases/cld-base-3-4_fwq1du.webp', // Verde
-  '/products/tshirt/bases/cld-base-1-5_a9gq5v.webp', // Branca
+  // Preta (Front & Back)
+  '/products/tshirt/bases/niw8pljgeipbfkswviaz_a5ysmn.webp',
+  '/products/tshirt/bases/czvtrkizefiba6icnaf2_qrczqg.webp',
+  // Branca (Front & Back)
+  '/products/tshirt/bases/nedb4dhcvjg442rkfqap_tsslk4.webp',
+  '/products/tshirt/bases/jobypfygnjsamfqibr5y_wteddo.webp',
+  // Azul Marinho (Front & Back)
+  '/products/tshirt/bases/msremr9sm5zktxopotbp_gvrpx5.webp',
+  '/products/tshirt/bases/wygnf5ayrmhur0kzusby_bqppvk.webp',
+  // Vinho Bordô (Front & Back)
+  '/products/tshirt/bases/hw82wxjq2uq55mexdrea_djstiq.webp',
+  '/products/tshirt/bases/l0iiziafhh9lbht6nuxb_ytoz59.webp',
+  // Verde (Front & Back)
+  '/products/tshirt/bases/rkennsuvmen4znhmhgyz_to913v.webp',
+  '/products/tshirt/bases/l1ulb3h8des7eidcrgql_sxeckr.webp',
 ];
 
 export const Preloader: React.FC = () => {
@@ -18,7 +28,7 @@ export const Preloader: React.FC = () => {
   const [unmounted, setUnmounted] = useState(false);
 
   useEffect(() => {
-    // JS Preload of all 5 t-shirt base color images
+    // JS Preload of all 10 t-shirt base color images
     PRELOAD_BASES.forEach((src) => {
       const img = new window.Image();
       img.src = src;

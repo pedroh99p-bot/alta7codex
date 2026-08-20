@@ -33,6 +33,8 @@ export interface PrintOption {
   thumbnail: string;
   overlayImageBack: string; // PNG transparent artwork for back view
   overlayImageFront?: string; // Optional front artwork override
+  overlayImageBackWhite?: string; // White artwork PNG for dark t-shirts
+  overlayImageBackBlack?: string; // Black artwork PNG for white t-shirts
 }
 
 export interface SizeOption {

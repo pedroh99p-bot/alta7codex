@@ -22,6 +22,12 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
 }) => {
   const isFront = viewSide === 'front';
 
+  // Automatically select Black PNG for White t-shirt and White PNG for Dark t-shirts
+  const isWhiteShirt = color.id === 'branca';
+  const artworkSrc = isWhiteShirt
+    ? print.overlayImageBackBlack || print.overlayImageBack
+    : print.overlayImageBackWhite || print.overlayImageBack;
+
   return (
     <div className={styles.container}>
       {/* Top View Toggle Tabs */}
@@ -46,9 +52,9 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
         </div>
       )}
 
-      {/* 4:5 Aspect Ratio Canvas */}
+      {/* 4:5 Aspect Ratio Canvas (1122x1402px) */}
       <div className={styles.canvas}>
-        {/* Layer 1: Base T-Shirt Image (Cloudinary 4:5 Asset) */}
+        {/* Layer 1: Base T-Shirt Image (Cloudinary 4:5 Asset - Front or Back) */}
         <div className={styles.baseLayer}>
           <Image
             src={isFront ? color.baseImages.front : color.baseImages.back}
@@ -76,17 +82,21 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
           </div>
         )}
 
-        {/* Layer 3: Back Print Overlay */}
+        {/* Layer 3: Back Print Overlay (Dynamic White/Black PNG) */}
         {!isFront && (
           <>
             <div className={styles.collarSymbol}>
               <Image src="/brand/symbol-alta7.webp" alt="Symbol" width={14} height={14} />
             </div>
             <div className={styles.backPrintLayer}>
-              <div className={styles.artworkOverlay}>
-                <span className={styles.artCodeTag}>{print.code}</span>
-                <span className={styles.artTitleTag}>{print.title}</span>
-              </div>
+              <Image
+                src={artworkSrc}
+                alt={`Estampa ${print.code} ${print.title}`}
+                fill
+                sizes="(max-width: 430px) 100vw, 430px"
+                className={styles.artworkOverlayImage}
+                priority
+              />
             </div>
           </>
         )}

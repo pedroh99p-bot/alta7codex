@@ -248,8 +248,13 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
                     onClick={() => handleSelectPrint(print.id)}
                   >
                     {isSelected && <span className={styles.printBadgeCheck}>✓</span>}
-                    <div className={styles.printThumbPlaceholder}>
-                      <span className={styles.printCodeLarge}>{print.code}</span>
+                    <div className={`${styles.printThumbPlaceholder} ${config.colorId === 'branca' ? styles.printThumbLightBg : ''}`}>
+                      <Image
+                        src={config.colorId === 'branca' ? (print.overlayImageBackBlack || print.thumbnail) : (print.overlayImageBackWhite || print.thumbnail)}
+                        alt={print.title}
+                        fill
+                        className={styles.printThumbImage}
+                      />
                     </div>
                     <div className={styles.printInfo}>
                       <span className={styles.printTitle}>{print.code}</span>

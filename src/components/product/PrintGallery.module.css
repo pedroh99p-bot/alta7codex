@@ -1,7 +1,7 @@
 .section {
   width: 100%;
   padding: var(--space-48) 0;
-  background-color: var(--bg-surface-1);
+  background-color: var(--bg-main);
   border-top: 1px solid var(--border-subtle);
 }
 
@@ -11,7 +11,7 @@
   padding: 0 var(--mobile-padding);
   display: flex;
   flex-direction: column;
-  gap: var(--space-20);
+  gap: var(--space-24);
 }
 
 .header {
@@ -45,18 +45,18 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: var(--space-12);
 }
 
 .card {
-  background-color: var(--bg-surface-2);
+  background-color: var(--bg-surface-1);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   overflow: hidden;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
-  cursor: pointer;
   transition: border-color var(--transition-fast), transform var(--transition-fast);
 }
 
@@ -66,47 +66,59 @@
 }
 
 .cardFrame {
+  width: 100%;
   aspect-ratio: 3 / 4;
-  background: #121212;
+  background-color: #121212;
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-8);
-  border-bottom: 1px solid var(--border-subtle);
-  text-align: center;
+  justify-content: space-between;
+  padding: var(--space-12);
+  overflow: hidden;
+}
+
+.imageSlot {
+  position: relative;
+  width: 100%;
+  height: 75%;
+}
+
+.printImage {
+  object-fit: contain;
+  object-position: center;
+}
+
+.cardInfo {
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
 }
 
 .artCode {
   font-family: var(--font-editorial);
-  font-size: 22px;
+  font-size: 18px;
   color: var(--yellow-alta7);
 }
 
 .artTitle {
   font-family: var(--font-ui);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-size: 11px;
+  font-weight: 600;
   color: var(--text-primary);
-  text-transform: uppercase;
-  margin-top: 4px;
 }
 
 .cardFooter {
-  padding: 6px var(--space-8);
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.02);
+  padding: var(--space-8) var(--space-12);
+  background-color: var(--bg-surface-2);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: flex-end;
 }
 
 .selectBtnText {
   font-family: var(--font-ui);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--text-secondary);
-}
-
-.card:hover .selectBtnText {
   color: var(--yellow-alta7);
+  letter-spacing: 0.05em;
 }

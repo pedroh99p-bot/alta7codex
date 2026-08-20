@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { ALTA7_PRODUCT } from '@/data/product';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import styles from './PrintGallery.module.css';
@@ -31,8 +32,18 @@ export const PrintGallery: React.FC<PrintGalleryProps> = ({ onSelectPrint }) => 
                 onClick={() => onSelectPrint(print.id)}
               >
                 <div className={styles.cardFrame}>
-                  <span className={styles.artCode}>{print.code}</span>
-                  <span className={styles.artTitle}>{print.title}</span>
+                  <div className={styles.imageSlot}>
+                    <Image
+                      src={print.overlayImageBackWhite || print.thumbnail}
+                      alt={print.title}
+                      fill
+                      className={styles.printImage}
+                    />
+                  </div>
+                  <div className={styles.cardInfo}>
+                    <span className={styles.artCode}>{print.code}</span>
+                    <span className={styles.artTitle}>{print.title}</span>
+                  </div>
                 </div>
                 <div className={styles.cardFooter}>
                   <span className={styles.selectBtnText}>SELECIONAR ➔</span>

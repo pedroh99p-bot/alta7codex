@@ -50,12 +50,17 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
-        {/* Preload all 5 T-Shirt color base images to prevent white flash or image loading delay */}
-        <link rel="preload" as="image" href="/products/tshirt/bases/cld-base-5-1_vqnc4y.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/cld-base-2-2_x8oucf.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/cld-base-4-3_x1e0bp.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/cld-base-3-4_fwq1du.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/cld-base-1-5_a9gq5v.webp" />
+        {/* Preload all 10 T-Shirt color base images (Front & Back) to prevent image loading delay */}
+        <link rel="preload" as="image" href="/products/tshirt/bases/niw8pljgeipbfkswviaz_a5ysmn.webp" />
+        <link rel="preload" as="image" href="/products/tshirt/bases/czvtrkizefiba6icnaf2_qrczqg.webp" />
+        <link rel="preload" as="image" href="/products/tshirt/bases/nedb4dhcvjg442rkfqap_tsslk4.webp" />
+        <link rel="preload" as="image" href="/products/tshirt/bases/jobypfygnjsamfqibr5y_wteddo.webp" />
+        <link rel="preload" as="image" href="/products/tshirt/bases/msremr9sm5zktxopotbp_gvrpx5.webp" />
+        <link rel="preload" as="image" href="/products/tshirt/bases/wygnf5ayrmhur0kzusby_bqppvk.webp" />
+        <link rel="preload" as="image" href="/products/tshirt/bases/hw82wxjq2uq55mexdrea_djstiq.webp" />
+        <link rel="preload" as="image" href="/products/tshirt/bases/l0iiziafhh9lbht6nuxb_ytoz59.webp" />
+        <link rel="preload" as="image" href="/products/tshirt/bases/rkennsuvmen4znhmhgyz_to913v.webp" />
+        <link rel="preload" as="image" href="/products/tshirt/bases/l1ulb3h8des7eidcrgql_sxeckr.webp" />
       </head>
       <body>
         <CartProvider>

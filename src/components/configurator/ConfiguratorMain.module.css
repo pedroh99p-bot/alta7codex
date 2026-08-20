@@ -283,10 +283,23 @@
   aspect-ratio: 3 / 4;
   background-color: #121212;
   border-radius: var(--radius-xs);
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color var(--transition-fast);
+}
+
+.printThumbLightBg {
+  background-color: #EAEAEA;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.printThumbImage {
+  object-fit: contain;
+  padding: 6px;
 }
 
 .printCodeLarge {
