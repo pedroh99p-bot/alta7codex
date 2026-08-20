@@ -22,9 +22,14 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
 }) => {
   const isFront = viewSide === 'front';
 
-  // Automatically select Black PNG for White t-shirt and White PNG for Dark t-shirts
+  // Determine front logo artwork (White PNG for dark shirts, Black WebP for white shirt)
   const isWhiteShirt = color.id === 'branca';
-  const artworkSrc = isWhiteShirt
+  const frontLogoSrc = isWhiteShirt
+    ? '/brand/front-logo-black.webp'
+    : '/brand/front-logo-white.png';
+
+  // Determine back artwork PNG
+  const backArtworkSrc = isWhiteShirt
     ? print.overlayImageBackBlack || print.overlayImageBack
     : print.overlayImageBackWhite || print.overlayImageBack;
 
@@ -54,6 +59,11 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
 
       {/* 4:5 Aspect Ratio Canvas (1122x1402px) */}
       <div className={styles.canvas}>
+        {/* Collar View Text Tag (FRENTE / COSTAS) */}
+        <div className={styles.collarViewTag}>
+          {isFront ? 'FRENTE' : 'COSTAS'}
+        </div>
+
         {/* Layer 1: Base T-Shirt Image (Cloudinary 4:5 Asset - Front or Back) */}
         <div className={styles.baseLayer}>
           <Image
@@ -66,15 +76,15 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
           />
         </div>
 
-        {/* Layer 2: Front Chest Branding Overlay (Official Logo Image) */}
+        {/* Layer 2: Front Chest Branding Artwork (Reduced 15% & Moved 15% Higher) */}
         {isFront && (
           <div className={styles.frontLogoLayer}>
             <div className={styles.brandLogoWrapper}>
               <Image
-                src="/brand/logo-alta7.webp"
-                alt="ALTA7 Logo"
-                width={120}
-                height={40}
+                src={frontLogoSrc}
+                alt="ALTA7 Front Logo"
+                width={100}
+                height={35}
                 className={styles.brandLogoImage}
                 priority
               />
@@ -82,7 +92,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
           </div>
         )}
 
-        {/* Layer 3: Back Print Overlay (Dynamic White/Black PNG) */}
+        {/* Layer 3: Back Print Overlay (Enlarged & Positioned Naturally across Upper Back) */}
         {!isFront && (
           <>
             <div className={styles.collarSymbol}>
@@ -90,7 +100,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
             </div>
             <div className={styles.backPrintLayer}>
               <Image
-                src={artworkSrc}
+                src={backArtworkSrc}
                 alt={`Estampa ${print.code} ${print.title}`}
                 fill
                 sizes="(max-width: 430px) 100vw, 430px"

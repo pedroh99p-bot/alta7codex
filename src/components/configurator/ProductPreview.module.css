@@ -2,40 +2,36 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: var(--space-12);
 }
 
 .tabsContainer {
   display: flex;
   gap: var(--space-8);
   width: 100%;
-  justify-content: center;
-  margin-bottom: var(--space-12);
 }
 
 .tabButton {
   flex: 1;
-  max-width: 140px;
-  padding: var(--space-8) var(--space-16);
-  background: transparent;
+  padding: var(--space-8) var(--space-12);
+  background-color: var(--bg-surface-1);
   border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
   color: var(--text-secondary);
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 600;
+  font-family: var(--font-editorial);
+  font-size: 14px;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .tabActive {
+  background-color: var(--bg-surface-2);
   border-color: var(--yellow-alta7);
   color: var(--yellow-alta7);
-  background: rgba(230, 198, 25, 0.05);
 }
 
-/* 4:5 Aspect Ratio Canvas */
+/* 4:5 Canvas Container */
 .canvas {
   width: 100%;
   aspect-ratio: 4 / 5;
@@ -46,22 +42,41 @@
   border: 1px solid var(--border-subtle);
 }
 
+/* Collar View Text Indicator Badge (FRENTE / COSTAS) */
+.collarViewTag {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-family: var(--font-editorial);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--yellow-alta7);
+  background: rgba(8, 8, 8, 0.75);
+  backdrop-filter: blur(4px);
+  padding: 3px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(230, 198, 25, 0.4);
+  pointer-events: none;
+}
+
 .baseLayer {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  z-index: 1;
 }
 
 .baseImage {
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
-  transition: opacity 0.15s ease-in-out;
+  transition: opacity 0.25s ease-in-out;
 }
 
+/* Front Chest Logo Layer (15% Smaller & 15% Higher Up) */
 .frontLogoLayer {
   position: absolute;
-  top: 36%;
+  top: 27%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
@@ -69,7 +84,7 @@
 }
 
 .brandLogoWrapper {
-  width: clamp(90px, 25vw, 130px);
+  width: clamp(75px, 20vw, 105px);
   height: auto;
   display: flex;
   align-items: center;
@@ -94,13 +109,14 @@
   pointer-events: none;
 }
 
+/* Back Print Layer (Enlarged for Natural Upper Back Fit) */
 .backPrintLayer {
   position: absolute;
-  top: 48%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 54%;
-  height: 52%;
+  width: 65%;
+  height: 60%;
   z-index: 2;
   pointer-events: none;
 }
@@ -108,6 +124,7 @@
 .artworkOverlayImage {
   object-fit: contain;
   object-position: center;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
   opacity: 0.95;
+  transition: opacity 0.25s ease-in-out;
 }

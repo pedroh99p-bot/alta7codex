@@ -59,14 +59,15 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
     setConfig((prev) => ({ ...prev, colorId }));
   };
 
-  const handleSelectFabric = (fabricId: string) => {
-    startCustomizing();
-    setConfig((prev) => ({ ...prev, fabricId }));
-  };
-
+  // Selecting back artwork automatically switches view side to BACK
   const handleSelectPrint = (printId: string) => {
     startCustomizing();
     setConfig((prev) => ({ ...prev, printId, viewSide: 'back' }));
+  };
+
+  const handleSelectFabric = (fabricId: string) => {
+    startCustomizing();
+    setConfig((prev) => ({ ...prev, fabricId }));
   };
 
   const handleSelectSize = (sizeId: SizeCode) => {
@@ -159,7 +160,7 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
         {/* Controls Container */}
         <div className={styles.controls}>
 
-          {/* Color Selector */}
+          {/* 1. Color Selector */}
           <div className={styles.controlGroup}>
             <div className={styles.groupHeader}>
               <span className={styles.groupTitle}>COR</span>
@@ -186,7 +187,42 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
             </div>
           </div>
 
-          {/* Fabric Selector */}
+          {/* 2. Prints / Artwork Selector (Placed ABOVE Fabric Selector & Switches View to BACK) */}
+          <div className={styles.controlGroup}>
+            <div className={styles.groupHeader}>
+              <span className={styles.groupTitle}>ESCOLHA SUA ARTE (COSTAS)</span>
+              <span className={styles.groupValue}>{currentPrint.code} - {currentPrint.title}</span>
+            </div>
+            <div className={styles.printsRail}>
+              {ALTA7_PRODUCT.prints.map((print) => {
+                const isSelected = print.id === config.printId;
+                return (
+                  <button
+                    key={print.id}
+                    type="button"
+                    className={`${styles.printCard} ${isSelected ? styles.printSelected : ''}`}
+                    onClick={() => handleSelectPrint(print.id)}
+                  >
+                    {isSelected && <span className={styles.printBadgeCheck}>✓</span>}
+                    <div className={`${styles.printThumbPlaceholder} ${config.colorId === 'branca' ? styles.printThumbLightBg : ''}`}>
+                      <Image
+                        src={config.colorId === 'branca' ? (print.overlayImageBackBlack || print.thumbnail) : (print.overlayImageBackWhite || print.thumbnail)}
+                        alt={print.title}
+                        fill
+                        className={styles.printThumbImage}
+                      />
+                    </div>
+                    <div className={styles.printInfo}>
+                      <span className={styles.printTitle}>{print.code}</span>
+                      <span className={styles.printSubtitle}>{print.title}</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 3. Fabric Selector (Placed BELOW Artwork Selector) */}
           <div className={styles.controlGroup}>
             <div className={styles.groupHeader}>
               <span className={styles.groupTitle}>TECIDO</span>
@@ -231,42 +267,7 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
             </div>
           </div>
 
-          {/* Prints / Artwork Selector (Horizontal Scroll Rail) */}
-          <div className={styles.controlGroup}>
-            <div className={styles.groupHeader}>
-              <span className={styles.groupTitle}>ESCOLHA SUA ARTE</span>
-              <span className={styles.groupValue}>{currentPrint.code} - {currentPrint.title}</span>
-            </div>
-            <div className={styles.printsRail}>
-              {ALTA7_PRODUCT.prints.map((print) => {
-                const isSelected = print.id === config.printId;
-                return (
-                  <button
-                    key={print.id}
-                    type="button"
-                    className={`${styles.printCard} ${isSelected ? styles.printSelected : ''}`}
-                    onClick={() => handleSelectPrint(print.id)}
-                  >
-                    {isSelected && <span className={styles.printBadgeCheck}>✓</span>}
-                    <div className={`${styles.printThumbPlaceholder} ${config.colorId === 'branca' ? styles.printThumbLightBg : ''}`}>
-                      <Image
-                        src={config.colorId === 'branca' ? (print.overlayImageBackBlack || print.thumbnail) : (print.overlayImageBackWhite || print.thumbnail)}
-                        alt={print.title}
-                        fill
-                        className={styles.printThumbImage}
-                      />
-                    </div>
-                    <div className={styles.printInfo}>
-                      <span className={styles.printTitle}>{print.code}</span>
-                      <span className={styles.printSubtitle}>{print.title}</span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Size Selector */}
+          {/* 4. Size Selector */}
           <div id="size-section" className={styles.controlGroup}>
             <div className={styles.groupHeader}>
               <span className={styles.groupTitle}>
@@ -297,7 +298,7 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
             </div>
           </div>
 
-          {/* Quantity Selector */}
+          {/* 5. Quantity Selector */}
           <div className={styles.controlGroup}>
             <div className={styles.groupHeader}>
               <span className={styles.groupTitle}>QUANTIDADE</span>
