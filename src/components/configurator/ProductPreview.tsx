@@ -76,7 +76,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
           />
         </div>
 
-        {/* Layer 2: Front Chest Branding Artwork (Reduced 15% & Moved 15% Higher) */}
+        {/* Layer 2: Front Chest Branding Artwork */}
         {isFront && (
           <div className={styles.frontLogoLayer}>
             <div className={styles.brandLogoWrapper}>
@@ -92,23 +92,18 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
           </div>
         )}
 
-        {/* Layer 3: Back Print Overlay (Enlarged & Positioned Naturally across Upper Back) */}
+        {/* Layer 3: Back Print Overlay */}
         {!isFront && (
-          <>
-            <div className={styles.collarSymbol}>
-              <Image src="/brand/symbol-alta7.webp" alt="Symbol" width={14} height={14} />
-            </div>
-            <div className={styles.backPrintLayer}>
-              <Image
-                src={backArtworkSrc}
-                alt={`Estampa ${print.code} ${print.title}`}
-                fill
-                sizes="(max-width: 430px) 100vw, 430px"
-                className={styles.artworkOverlayImage}
-                priority
-              />
-            </div>
-          </>
+          <div className={styles.backPrintLayer}>
+            <Image
+              src={backArtworkSrc}
+              alt={`Estampa ${print.code} ${print.title}`}
+              fill
+              sizes="(max-width: 430px) 100vw, 430px"
+              className={styles.artworkOverlayImage}
+              priority
+            />
+          </div>
         )}
       </div>
     </div>

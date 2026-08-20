@@ -73,10 +73,10 @@
   transition: opacity 0.25s ease-in-out;
 }
 
-/* Front Chest Logo Layer (15% Smaller & 15% Higher Up) */
+/* Front Chest Logo Layer (Lowered by 7% to top: 34%) */
 .frontLogoLayer {
   position: absolute;
-  top: 27%;
+  top: 34%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
@@ -98,27 +98,19 @@
   object-fit: contain;
 }
 
-.collarSymbol {
-  position: absolute;
-  top: 18%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  font-size: 12px;
-  opacity: 0.85;
-  pointer-events: none;
-}
-
-/* Back Print Layer (Enlarged for Natural Upper Back Fit) */
+/* Back Print Layer (Standardized Upper-Mid Back Fit) */
 .backPrintLayer {
   position: absolute;
-  top: 50%;
+  top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 65%;
-  height: 60%;
+  width: 62%;
+  height: 58%;
   z-index: 2;
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .artworkOverlayImage {
