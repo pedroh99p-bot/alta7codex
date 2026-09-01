@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { ProductConfiguration, SizeCode, ProductModelCode, TShirtViewSide } from '@/types/product';
+import { ProductConfiguration, SizeCode, ProductModelCode, SubModelCode, TShirtViewSide } from '@/types/product';
 import { ALTA7_PRODUCT } from '@/data/product';
 import { calculateItemPrice } from '@/lib/pricing';
 import { useCart } from '@/context/CartContext';
@@ -33,6 +33,9 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
   const currentColor = ALTA7_PRODUCT.colors.find((c) => c.id === config.colorId) || ALTA7_PRODUCT.colors[0];
   const currentFabric = ALTA7_PRODUCT.fabrics.find((f) => f.id === config.fabricId) || ALTA7_PRODUCT.fabrics[0];
   const currentPrint = ALTA7_PRODUCT.prints.find((p) => p.id === config.printId) || ALTA7_PRODUCT.prints[0];
+
+  const subModels = config.model === 'female' ? ALTA7_PRODUCT.femaleSubModels : ALTA7_PRODUCT.maleSubModels;
+  const currentSubModel = subModels.find((s) => s.id === config.subModel) || subModels[0];
 
   const itemPrice = calculateItemPrice(config);
 
@@ -76,9 +79,9 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
     setConfig((prev) => ({ ...prev, sizeId }));
   };
 
-  const handleSelectModel = (model: ProductModelCode) => {
+  const handleSelectModel = (model: ProductModelCode, subModel: SubModelCode) => {
     startCustomizing();
-    setConfig((prev) => ({ ...prev, model }));
+    setConfig((prev) => ({ ...prev, model, subModel }));
   };
 
   const handleQuantityChange = (delta: number) => {
@@ -116,7 +119,7 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
           <div className={styles.modelInfo}>
             <span className={styles.modelLabel}>MODELAGEM:</span>
             <span className={`${styles.modelBadge} ${config.model === 'female' ? styles.badgeFemale : styles.badgeMale}`}>
-              {config.model === 'female' ? '♀ FEMININO' : '♂ MASCULINO'}
+              {config.model === 'female' ? '♀ FEMININO' : '♂ MASCULINO'} ({currentSubModel.name.toUpperCase()})
             </span>
           </div>
           <button
@@ -204,9 +207,9 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
                     onClick={() => handleSelectPrint(print.id)}
                   >
                     {isSelected && <span className={styles.printBadgeCheck}>✓</span>}
-                    <div className={`${styles.printThumbPlaceholder} ${config.colorId === 'branca' ? styles.printThumbLightBg : ''}`}>
+                    <div className={`${styles.printThumbPlaceholder} ${config.colorId === 'branco' ? styles.printThumbLightBg : ''}`}>
                       <Image
-                        src={config.colorId === 'branca' ? (print.overlayImageBackBlack || print.thumbnail) : (print.overlayImageBackWhite || print.thumbnail)}
+                        src={config.colorId === 'branco' ? (print.overlayImageBackBlack || print.thumbnail) : (print.overlayImageBackWhite || print.thumbnail)}
                         alt={print.title}
                         fill
                         className={styles.printThumbImage}
@@ -239,21 +242,12 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
                     onClick={() => handleSelectFabric(fabric.id)}
                   >
                     <div className={styles.fabricIconWrapper}>
-                      {fabric.id === 'cotton' && (
+                      {fabric.id === 'malha-1' && (
                         <svg className={styles.fabricIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                           <path d="M12 3a6 6 0 00-6 6c0 1.6.6 3 1.6 4.1L12 21l4.4-7.9A6 6 0 0012 3z" />
                         </svg>
                       )}
-                      {fabric.id === 'performance' && (
-                        <svg className={styles.fabricIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <circle cx="6" cy="6" r="2" />
-                          <circle cx="18" cy="6" r="2" />
-                          <circle cx="12" cy="12" r="2" />
-                          <circle cx="6" cy="18" r="2" />
-                          <circle cx="18" cy="18" r="2" />
-                        </svg>
-                      )}
-                      {fabric.id === 'premium' && (
+                      {fabric.id === 'malha-premium' && (
                         <svg className={styles.fabricIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                           <path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19" />
                         </svg>
@@ -373,6 +367,7 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
       <ModelSelectorModal
         isOpen={isModelModalOpen}
         selectedModel={config.model}
+        selectedSubModel={config.subModel}
         onSelectModel={handleSelectModel}
         onClose={() => setIsModelModalOpen(false)}
       />

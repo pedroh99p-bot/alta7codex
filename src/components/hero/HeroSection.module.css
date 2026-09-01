@@ -13,6 +13,19 @@
   overflow: hidden;
 }
 
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  pointer-events: none;
+}
+
+.slideActive {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .lifestyleImage {
   object-fit: cover;
   object-position: center;
@@ -21,7 +34,8 @@
 .mediaOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(8, 8, 8, 0.4) 0%, rgba(8, 8, 8, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(8, 8, 8, 0.35) 0%, rgba(8, 8, 8, 0.85) 100%);
+  pointer-events: none;
 }
 
 .topOverlayLeft {
@@ -69,23 +83,31 @@
 
 .progressLineContainer {
   display: flex;
-  gap: 4px;
+  gap: 6px;
   padding: 0 var(--mobile-padding);
   margin-top: var(--space-16);
 }
 
 .progressActive {
   flex: 1.5;
-  height: 3px;
+  height: 4px;
   background-color: var(--yellow-alta7);
   border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: flex 0.3s ease, background-color 0.3s ease;
 }
 
 .progressInactive {
   flex: 1;
-  height: 3px;
+  height: 4px;
   background-color: var(--border-subtle);
   border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: flex 0.3s ease, background-color 0.3s ease;
 }
 
 .content {
@@ -115,8 +137,9 @@
   margin: 0;
 }
 
-.ballIcon {
-  font-size: 12px;
+.inlineSymbol {
+  display: inline-block;
+  object-fit: contain;
 }
 
 .ctaButton {
@@ -208,4 +231,8 @@
   letter-spacing: 0.15em;
   color: var(--text-muted);
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }

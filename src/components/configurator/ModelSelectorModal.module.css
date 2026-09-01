@@ -26,6 +26,8 @@
   flex-direction: column;
   gap: var(--space-16);
   animation: slideUp 0.25s ease-out;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 @media (min-width: 640px) {
@@ -87,18 +89,41 @@
 .grid {
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
+  gap: var(--space-16);
+}
+
+.genderSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.genderTitle {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
 }
 
 .optionCard {
   width: 100%;
-  padding: var(--space-16);
+  padding: var(--space-12) var(--space-16);
   background-color: var(--bg-surface-2);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
-  gap: var(--space-16);
+  justify-content: space-between;
   text-align: left;
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -106,26 +131,26 @@
 }
 
 .iconCircleFemale {
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   border-radius: var(--radius-full);
-  background: rgba(236, 72, 153, 0.1);
+  background: rgba(236, 72, 153, 0.15);
   color: #EC4899;
-  font-size: 20px;
-  display: flex;
+  font-size: 14px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
 }
 
 .iconCircleMale {
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   border-radius: var(--radius-full);
-  background: rgba(59, 130, 246, 0.1);
+  background: rgba(59, 130, 246, 0.15);
   color: #3B82F6;
-  font-size: 20px;
-  display: flex;
+  font-size: 14px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
@@ -139,7 +164,7 @@
 
 .cardTitle {
   font-family: var(--font-editorial);
-  font-size: 18px;
+  font-size: 16px;
   color: var(--text-primary);
   letter-spacing: 0.05em;
 }
@@ -148,17 +173,17 @@
   font-family: var(--font-ui);
   font-size: 11px;
   color: var(--text-muted);
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 .cardSelectedFemale {
   border-color: #EC4899;
-  background: rgba(236, 72, 153, 0.05);
+  background: rgba(236, 72, 153, 0.08);
 }
 
 .cardSelectedMale {
   border-color: #3B82F6;
-  background: rgba(59, 130, 246, 0.05);
+  background: rgba(59, 130, 246, 0.08);
 }
 
 .checkMark {

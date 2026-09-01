@@ -23,7 +23,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
   const isFront = viewSide === 'front';
 
   // Determine front logo artwork (White PNG for dark shirts, Black WebP for white shirt)
-  const isWhiteShirt = color.id === 'branca';
+  const isWhiteShirt = color.id === 'branco' || color.id === 'branca';
   const frontLogoSrc = isWhiteShirt
     ? '/brand/front-logo-black.webp'
     : '/brand/front-logo-white.png';

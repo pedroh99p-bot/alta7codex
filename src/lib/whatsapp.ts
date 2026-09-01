@@ -8,7 +8,12 @@ export function buildWhatsAppMessage(items: CartItem[]): string {
 
   const itemsText = items
     .map((item, index) => {
-      const modelLabel = item.configuration.model === 'female' ? 'Feminino' : 'Masculino';
+      const genderLabel = item.configuration.model === 'female' ? 'Feminino' : 'Masculino';
+      const subModels = item.configuration.model === 'female' ? ALTA7_PRODUCT.femaleSubModels : ALTA7_PRODUCT.maleSubModels;
+      const subModelObj = subModels.find((s) => s.id === item.configuration.subModel);
+      const subModelName = subModelObj ? subModelObj.name : '';
+      const modelLabel = subModelName ? `${genderLabel} (${subModelName})` : genderLabel;
+
       const printText = `${item.print.code} / ${item.print.title}`;
       const colorText = item.color.name;
       const fabricText = item.fabric.name;
@@ -17,7 +22,7 @@ export function buildWhatsAppMessage(items: CartItem[]): string {
       const subtotalText = `R$ ${item.totalPrice}`;
 
       return `👕 *ITEM ${index + 1}*
-🧍 Modelo: ${modelLabel}
+🧍 Modelagem: ${modelLabel}
 🎨 Estampa: ${printText}
 ⚫ Cor: ${colorText}
 🧵 Tecido: ${fabricText}

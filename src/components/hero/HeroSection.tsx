@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 import styles from './HeroSection.module.css';
@@ -9,19 +9,43 @@ interface HeroSectionProps {
   onStartConfigurator: () => void;
 }
 
+const HERO_IMAGES = [
+  { src: '/lifestyle/hero-lifestyle.jpg', alt: 'ALTA7 Lifestyle - Jogador na praia do Rio de costas com bola' },
+  { src: '/lifestyle/lifestyle-1.jpg', alt: 'ALTA7 Lifestyle - Casal na praia no pôr do sol' },
+  { src: '/lifestyle/lifestyle-2.webp', alt: 'ALTA7 Lifestyle - Jogadora na barraca de praia' },
+  { src: '/lifestyle/lifestyle-3.webp', alt: 'ALTA7 Lifestyle - Modelo na praia no fim de tarde' },
+];
+
 export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section className={styles.hero}>
       {/* Lifestyle Media Slot Container (4:5 Ratio) */}
       <ScrollReveal>
         <div className={styles.mediaContainer}>
-          <Image
-            src="/lifestyle/hero-lifestyle.jpg"
-            alt="ALTA7 Lifestyle - Player on Rio Beach with ALTA7 T-Shirt"
-            fill
-            priority
-            className={styles.lifestyleImage}
-          />
+          {HERO_IMAGES.map((img, idx) => (
+            <div
+              key={img.src}
+              className={`${styles.slide} ${idx === currentIndex ? styles.slideActive : ''}`}
+            >
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                priority={idx === 0}
+                className={styles.lifestyleImage}
+              />
+            </div>
+          ))}
+
           <div className={styles.mediaOverlay} />
 
           {/* Top Overlay Location & Brand Tags */}
@@ -43,12 +67,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator })
         </div>
       </ScrollReveal>
 
-      {/* Progress Indicator Line */}
+      {/* Progress Indicator Line Sync with Carousel */}
       <div className={styles.progressLineContainer}>
-        <div className={styles.progressActive} />
-        <div className={styles.progressInactive} />
-        <div className={styles.progressInactive} />
-        <div className={styles.progressInactive} />
+        {HERO_IMAGES.map((_, idx) => (
+          <button
+            key={idx}
+            type="button"
+            className={idx === currentIndex ? styles.progressActive : styles.progressInactive}
+            onClick={() => setCurrentIndex(idx)}
+            aria-label={`Ir para imagem ${idx + 1}`}
+          />
+        ))}
       </div>
 
       {/* Hero Content & Headline */}
@@ -94,7 +123,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator })
                 <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10a2 2 0 002 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z" />
               </svg>
               <div className={styles.statContent}>
-                <span className={styles.statNumber}>9</span>
+                <span className={styles.statNumber}>4</span>
                 <span className={styles.statLabel}>ARTES</span>
               </div>
             </div>
@@ -113,7 +142,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator })
                 <circle cx="12" cy="12" r="3" />
               </svg>
               <div className={styles.statContent}>
-                <span className={styles.statNumber}>5</span>
+                <span className={styles.statNumber}>6</span>
                 <span className={styles.statLabel}>CORES</span>
               </div>
             </div>
@@ -131,7 +160,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator })
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
               </svg>
               <div className={styles.statContent}>
-                <span className={styles.statNumber}>3</span>
+                <span className={styles.statNumber}>2</span>
                 <span className={styles.statLabel}>TECIDOS</span>
               </div>
             </div>

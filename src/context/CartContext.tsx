@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { CartItem, ProductConfiguration } from '@/types/product';
 import { ALTA7_PRODUCT } from '@/data/product';
+import { calculateItemPrice } from '@/lib/pricing';
 
 interface CartContextType {
   items: CartItem[];
@@ -56,8 +57,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const print = ALTA7_PRODUCT.prints.find((p) => p.id === config.printId) || ALTA7_PRODUCT.prints[0];
     const size = ALTA7_PRODUCT.sizes.find((s) => s.id === config.sizeId) || null;
 
-    const unitPrice = ALTA7_PRODUCT.basePrice + (fabric.priceModifier || 0);
-    const totalPrice = unitPrice * config.quantity;
+    const { unitPrice, totalPrice } = calculateItemPrice(config);
 
     const newItem: CartItem = {
       id: `${Date.now()}-${Math.random().toString(36).substr(2, 4)}`,

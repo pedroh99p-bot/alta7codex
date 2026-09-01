@@ -5,6 +5,7 @@ import { Preloader } from '@/components/ui/Preloader';
 import { Navbar } from '@/components/layout/Navbar';
 import { HeroSection } from '@/components/hero/HeroSection';
 import { ConfiguratorMain } from '@/components/configurator/ConfiguratorMain';
+import { LookbookShowcase } from '@/components/product/LookbookShowcase';
 import { FabricShowcase } from '@/components/product/FabricShowcase';
 import { PrintGallery } from '@/components/product/PrintGallery';
 import { FaqSection } from '@/components/product/FaqSection';
@@ -34,22 +35,25 @@ export default function HomePage() {
       {/* 02. Minimalist Navbar */}
       <Navbar onStartConfigurator={handleScrollToConfigurator} />
 
-      {/* 03. Hero Lifestyle Section */}
+      {/* 03. Hero Lifestyle Section with Auto-play Carousel */}
       <HeroSection onStartConfigurator={handleScrollToConfigurator} />
 
       {/* 04. Main Visual Configurator Engine */}
       <ConfiguratorMain onOpenOrderReview={() => setIsOrderReviewOpen(true)} />
 
-      {/* 05. Fabrics & Details Showcase */}
+      {/* 05. Lifestyle Lookbook Rio de Janeiro Gallery */}
+      <LookbookShowcase onGoToConfigurator={handleScrollToConfigurator} />
+
+      {/* 06. Fabrics & Details Showcase */}
       <FabricShowcase onGoToConfigurator={handleScrollToConfigurator} />
 
-      {/* 06. Editorial Prints Collection Gallery */}
+      {/* 07. Editorial Prints Collection Gallery */}
       <PrintGallery onSelectPrint={handleSelectPrintFromGallery} />
 
-      {/* 07. FAQ Section */}
+      {/* 08. FAQ Section */}
       <FaqSection />
 
-      {/* 08. Footer */}
+      {/* 09. Footer */}
       <Footer />
 
       {/* Persistent Shopping Cart Drawer */}

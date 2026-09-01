@@ -1,9 +1,17 @@
 import { ProductConfiguration, ItemPriceSummary } from '@/types/product';
-import { ALTA7_PRODUCT } from '@/data/product';
 
 export function calculateItemPrice(config: ProductConfiguration): ItemPriceSummary {
-  const fabric = ALTA7_PRODUCT.fabrics.find((f) => f.id === config.fabricId) || ALTA7_PRODUCT.fabrics[0];
-  const unitPrice = ALTA7_PRODUCT.basePrice + (fabric.priceModifier || 0);
+  const isFemale = config.model === 'female';
+  const isPremium = config.fabricId === 'malha-premium';
+
+  let unitPrice = 100;
+
+  if (isFemale) {
+    unitPrice = isPremium ? 100 : 80;
+  } else {
+    unitPrice = isPremium ? 120 : 100;
+  }
+
   const totalPrice = unitPrice * config.quantity;
 
   return {

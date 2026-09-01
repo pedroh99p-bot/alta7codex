@@ -2,7 +2,17 @@ export type TShirtViewSide = 'front' | 'back';
 
 export type ProductModelCode = 'male' | 'female';
 
-export type SizeCode = 'P' | 'M' | 'G' | 'GG';
+export type MaleSubModelCode = 'tshirt' | 'oversized' | 'boxy';
+export type FemaleSubModelCode = 'babytee' | 'babylook';
+export type SubModelCode = MaleSubModelCode | FemaleSubModelCode;
+
+export type SizeCode = 'PP' | 'P' | 'M' | 'G' | 'GG' | 'EX';
+
+export interface SubModelOption {
+  id: SubModelCode;
+  name: string;
+  tagline: string;
+}
 
 export interface ColorOption {
   id: string;
@@ -20,9 +30,7 @@ export interface FabricOption {
   name: string;
   tagline: string;
   description: string;
-  priceModifier: number; // Price added to base price
   iconName: string;
-  textureImage?: string;
 }
 
 export interface PrintOption {
@@ -49,6 +57,7 @@ export interface SizeOption {
 
 export interface ProductConfiguration {
   model: ProductModelCode;
+  subModel: SubModelCode;
   colorId: string;
   fabricId: string;
   printId: string;
@@ -90,8 +99,9 @@ export interface ProductData {
   id: string;
   name: string;
   logoUrl: string;
-  basePrice: number;
   whatsappNumber: string;
+  maleSubModels: SubModelOption[];
+  femaleSubModels: SubModelOption[];
   colors: ColorOption[];
   fabrics: FabricOption[];
   prints: PrintOption[];
