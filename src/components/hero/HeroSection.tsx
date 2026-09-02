@@ -19,6 +19,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator })
             src="https://res.cloudinary.com/dhbrxzt5a/image/upload/WhatsApp_Image_2026-09-01_at_13.03.35_1_h1wanp.webp"
             alt="ALTA7 Lifestyle - Jogador na praia do Rio com camiseta ALTA7"
             fill
+            sizes="(max-width: 430px) 100vw, 430px"
             priority
             className={styles.lifestyleImage}
           />

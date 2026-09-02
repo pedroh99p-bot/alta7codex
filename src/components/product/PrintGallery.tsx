@@ -37,6 +37,7 @@ export const PrintGallery: React.FC<PrintGalleryProps> = ({ onSelectPrint }) => 
                       src={print.overlayImageBackWhite || print.thumbnail}
                       alt={print.title}
                       fill
+                      sizes="(max-width: 430px) 45vw, 160px"
                       className={styles.printImage}
                     />
                   </div>

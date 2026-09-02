@@ -161,7 +161,13 @@ export const ConfiguratorMain: React.FC = () => {
                     priority
                   />
                   <div className={styles.initialLogoOverlay}>
-                    <Image src="/brand/front-logo-white.png" alt="ALTA7" width={60} height={20} />
+                    <Image
+                      src="/brand/front-logo-white.png"
+                      alt="ALTA7"
+                      width={60}
+                      height={20}
+                      className={styles.initialLogoImage}
+                    />
                   </div>
                 </div>
                 <div className={styles.initialCardFooter}>
@@ -188,7 +194,13 @@ export const ConfiguratorMain: React.FC = () => {
                     priority
                   />
                   <div className={styles.initialLogoOverlay}>
-                    <Image src="/brand/front-logo-white.png" alt="ALTA7" width={65} height={22} />
+                    <Image
+                      src="/brand/front-logo-white.png"
+                      alt="ALTA7"
+                      width={65}
+                      height={22}
+                      className={styles.initialLogoImage}
+                    />
                   </div>
                 </div>
                 <div className={styles.initialCardFooter}>
@@ -360,6 +372,7 @@ export const ConfiguratorMain: React.FC = () => {
                                 src={config.colorId === 'branco' ? (print.overlayImageBackBlack || print.thumbnail) : (print.overlayImageBackWhite || print.thumbnail)}
                                 alt={print.title}
                                 fill
+                                sizes="110px"
                                 className={styles.printThumbImage}
                               />
                             </div>
