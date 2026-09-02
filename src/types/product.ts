@@ -2,16 +2,13 @@ export type TShirtViewSide = 'front' | 'back';
 
 export type ProductModelCode = 'male' | 'female';
 
-export type MaleSubModelCode = 'tshirt' | 'oversized' | 'boxy';
-export type FemaleSubModelCode = 'babytee' | 'babylook';
-export type SubModelCode = MaleSubModelCode | FemaleSubModelCode;
+export type FabricCode = 'cotton' | 'malha-30-1';
 
-export type SizeCode = 'PP' | 'P' | 'M' | 'G' | 'GG' | 'EX';
+export type SizeCode = 'P' | 'M' | 'G' | 'GG';
 
-export interface SubModelOption {
-  id: SubModelCode;
-  name: string;
-  tagline: string;
+export interface GenderBaseImages {
+  front: string;
+  back: string;
 }
 
 export interface ColorOption {
@@ -19,17 +16,16 @@ export interface ColorOption {
   name: string;
   hex: string;
   borderHex?: string;
-  baseImages: {
-    front: string;
-    back: string;
-  };
+  maleBaseImages: GenderBaseImages;
+  femaleBaseImages: GenderBaseImages;
 }
 
 export interface FabricOption {
-  id: string;
+  id: FabricCode;
   name: string;
   tagline: string;
   description: string;
+  price: number;
   iconName: string;
 }
 
@@ -39,10 +35,10 @@ export interface PrintOption {
   title: string; // e.g. "FREESTYLE"
   subtitle?: string;
   thumbnail: string;
-  overlayImageBack: string; // PNG transparent artwork for back view
+  overlayImageBack: string; // PNG/WebP transparent artwork for back view
   overlayImageFront?: string; // Optional front artwork override
-  overlayImageBackWhite?: string; // White artwork PNG for dark t-shirts
-  overlayImageBackBlack?: string; // Black artwork PNG for white t-shirts
+  overlayImageBackWhite?: string; // White artwork WebP for dark t-shirts
+  overlayImageBackBlack?: string; // Black artwork WebP for white t-shirts
 }
 
 export interface SizeOption {
@@ -56,12 +52,11 @@ export interface SizeOption {
 }
 
 export interface ProductConfiguration {
-  model: ProductModelCode;
-  subModel: SubModelCode;
+  model: ProductModelCode | null;
   colorId: string;
-  fabricId: string;
+  fabricId: FabricCode | null;
   printId: string;
-  sizeId: SizeCode | null; // Null initially to enforce conscious pick
+  sizeId: SizeCode | null;
   quantity: number;
   viewSide: TShirtViewSide;
 }
@@ -100,8 +95,6 @@ export interface ProductData {
   name: string;
   logoUrl: string;
   whatsappNumber: string;
-  maleSubModels: SubModelOption[];
-  femaleSubModels: SubModelOption[];
   colors: ColorOption[];
   fabrics: FabricOption[];
   prints: PrintOption[];

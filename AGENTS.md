@@ -5,7 +5,7 @@
 ---
 
 ## 1. Visão Geral do Projeto
-O **ALTA7** é uma landing page / microloja mobile-first com configurador visual interativo de produto. A marca possui identidade fortemente ligada ao **futebol de praia, rua, Rio de Janeiro e cultura streetwear/esportiva premium**.
+O **ALTA7** é uma landing page / microloja mobile-first com configurador visual interativo de produto. A marca possui identidade fortemente ligada à **altinha, praia, rua, Rio de Janeiro e cultura streetwear/esportiva premium**.
 
 ## 2. Objetivo Comercial
 Não se trata de um e-commerce tradicional com dezenas de produtos. Há essencialmente **um produto-base** (Camiseta ALTA7). O objetivo é engajar o cliente no processo de personalização ("Monte a sua ALTA7") e converter a intenção de compra através do **WhatsApp**.
@@ -33,8 +33,8 @@ A experiência deve transmitir:
   /brand              -> Logo oficial ALTA7 (logo-alta7.webp)
   /products
     /tshirt
-      /bases          -> 5 bases reais Cloudinary (4:5 aspect ratio, 1122x1402px)
-      /prints         -> Artes em PNG transparente e thumbnails (ART.01 a ART.09)
+      /bases          -> Bases antigas locais removidas quando órfãs; bases oficiais são Cloudinary
+      /prints         -> Artes em PNG/WebP transparente e thumbnails
       /details        -> Fotos de detalhes de costura e acabamento
   /lifestyle          -> Fotos editoriais e de campanha
 /src
@@ -42,7 +42,7 @@ A experiência deve transmitir:
   /components
     /layout           -> Navbar, Footer
     /hero             -> HeroSection
-    /configurator     -> ProductPreview (4:5 canvas), ModelSelectorModal (Masculino/Feminino), SizeGuideModal, ConfiguratorMain
+    /configurator     -> ProductPreview (4:5 canvas), SizeGuideModal, ConfiguratorMain
     /product          -> FabricShowcase, PrintGallery, FaqSection
     /order            -> CartDrawer, OrderReviewModal
     /ui               -> Preloader, Modais, botões base
@@ -70,12 +70,11 @@ A experiência deve transmitir:
 - Utilizar container centralizador `.mobile-container` para visualização desktop/tablet mantendo a fidelidade do design mobile.
 
 ## 9. Estrutura dos Assets (Padrão 4:5 - 1122x1402px)
-- Todas as imagens de base compartilham rigorosamente a **mesma proporção 4:5** e o **mesmo canvas**:
-  - `preto` → `/products/tshirt/bases/cld-base-5-1_vqnc4y.webp`
-  - `marinho` → `/products/tshirt/bases/cld-base-2-2_x8oucf.webp`
-  - `bordo` → `/products/tshirt/bases/cld-base-4-3_x1e0bp.webp`
-  - `verde` → `/products/tshirt/bases/cld-base-3-4_fwq1du.webp`
-  - `branca` → `/products/tshirt/bases/cld-base-1-5_a9gq5v.webp`
+- As bases oficiais são mapeadas em `src/data/product.ts`:
+  - 5 cores: `preto`, `branco`, `verde`, `azul-marinho`, `vinho-bordo`
+  - 2 lados: `front`, `back`
+  - 2 modelos: `male`, `female`
+- Total esperado: 20 imagens-base oficiais Cloudinary.
 
 ## 10. Regra Crítica: Composição Visual por Camadas (0 Pulos)
 - O preview visual é composto por **Camadas Sobrepostas (Canvas 4:5 / Absolute Positioning)**:
@@ -94,3 +93,13 @@ A experiência deve transmitir:
 
 ## 13. Instrução Obrigatória
 > **ATENÇÃO:** Antes de realizar qualquer alteração significativa na interface, o agente DEVE abrir e inspecionar visualmente os mockups localizados na pasta `/referencias` (`hero tela principal.png`, `seleçao da cor e do tecido.png`, `seleçao da estampa.png`, `tecidos e detalhes.png`, `pedido confirmado.png`).
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

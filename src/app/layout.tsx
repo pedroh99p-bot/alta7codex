@@ -3,9 +3,9 @@ import { CartProvider } from '@/context/CartContext';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'ALTA7 — Camiseta Autoral & Configurador Visual | Futebol, Praia e Rua',
-  description: 'Monte a sua camiseta ALTA7. Escolha modelo, cor, tecido, estampa e tamanho. Cultura de futebol de praia e rua do Rio de Janeiro.',
-  keywords: ['ALTA7', 'camiseta personalizada', 'futebol de praia', 'streetwear rio de janeiro', 'configurador de camiseta'],
+  title: 'ALTA7 — Camiseta Autoral & Configurador Visual | Altinha, Praia e Rua',
+  description: 'Monte a sua camiseta ALTA7. Escolha modelo, cor, tecido, estampa e tamanho. Cultura da altinha, praia e rua do Rio de Janeiro.',
+  keywords: ['ALTA7', 'camiseta personalizada', 'altinha', 'streetwear rio de janeiro', 'configurador de camiseta'],
   icons: {
     icon: '/brand/symbol-alta7.webp',
     shortcut: '/brand/symbol-alta7.webp',
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'ALTA7 — Monte a sua Camiseta',
-    description: 'Monte a sua camiseta ALTA7. Escolha modelo, cor, tecido, estampa e tamanho. Futebol, praia e rua.',
+    description: 'Monte a sua camiseta ALTA7. Escolha modelo, cor, tecido, estampa e tamanho. Altinha, praia e rua.',
     url: 'https://alta7.vercel.app',
     siteName: 'ALTA7',
     images: [
@@ -49,19 +49,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
-      <head>
-        {/* Preload all 10 T-Shirt color base images (Front & Back) to prevent image loading delay */}
-        <link rel="preload" as="image" href="/products/tshirt/bases/niw8pljgeipbfkswviaz_a5ysmn.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/czvtrkizefiba6icnaf2_qrczqg.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/nedb4dhcvjg442rkfqap_tsslk4.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/jobypfygnjsamfqibr5y_wteddo.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/msremr9sm5zktxopotbp_gvrpx5.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/wygnf5ayrmhur0kzusby_bqppvk.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/hw82wxjq2uq55mexdrea_djstiq.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/l0iiziafhh9lbht6nuxb_ytoz59.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/rkennsuvmen4znhmhgyz_to913v.webp" />
-        <link rel="preload" as="image" href="/products/tshirt/bases/l1ulb3h8des7eidcrgql_sxeckr.webp" />
-      </head>
       <body>
         <CartProvider>
           <div className="mobile-container bg-grain">

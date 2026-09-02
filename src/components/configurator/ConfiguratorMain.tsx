@@ -2,101 +2,120 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { ProductConfiguration, SizeCode, ProductModelCode, SubModelCode, TShirtViewSide } from '@/types/product';
+import { FabricCode, ProductConfiguration, ProductModelCode, SizeCode, TShirtViewSide } from '@/types/product';
 import { ALTA7_PRODUCT } from '@/data/product';
-import { calculateItemPrice } from '@/lib/pricing';
+import { calculateItemPrice, normalizeFabricForModel } from '@/lib/pricing';
 import { useCart } from '@/context/CartContext';
 import { ProductPreview } from './ProductPreview';
-import { ModelSelectorModal } from './ModelSelectorModal';
 import { SizeGuideModal } from './SizeGuideModal';
 import styles from './ConfiguratorMain.module.css';
 
-interface ConfiguratorMainProps {
-  onOpenOrderReview?: () => void;
-}
+type AccordionStep = 'model' | 'color' | 'print' | 'fabric' | 'size' | null;
 
-export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderReview }) => {
+export const ConfiguratorMain: React.FC = () => {
   const { addToCart } = useCart();
 
-  // Customization active state (starts false until user initiates)
-  const [isCustomizing, setIsCustomizing] = useState<boolean>(false);
+  // Initial Model Selection State (false until user confirms initial model screen)
+  const [hasChosenInitialModel, setHasChosenInitialModel] = useState<boolean>(false);
+  const [initialModelPick, setInitialModelPick] = useState<ProductModelCode | null>(null);
 
-  // Local state for active configuration
+  // Active product configuration
   const [config, setConfig] = useState<ProductConfiguration>(ALTA7_PRODUCT.defaultConfiguration);
 
-  // Modals state
-  const [isModelModalOpen, setIsModelModalOpen] = useState(false);
+  // Accordion active step (only ONE open at a time)
+  const [openStep, setOpenStep] = useState<AccordionStep>('color');
+
+  // Modals and Warnings
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
   const [sizeWarning, setSizeWarning] = useState(false);
 
-  // Derived selections from data source of truth
+  // Derived current options
   const currentColor = ALTA7_PRODUCT.colors.find((c) => c.id === config.colorId) || ALTA7_PRODUCT.colors[0];
-  const currentFabric = ALTA7_PRODUCT.fabrics.find((f) => f.id === config.fabricId) || ALTA7_PRODUCT.fabrics[0];
+  const normalizedFabricId = normalizeFabricForModel(config.model, config.fabricId);
+  const currentFabric = ALTA7_PRODUCT.fabrics.find((f) => f.id === normalizedFabricId) || ALTA7_PRODUCT.fabrics[0];
   const currentPrint = ALTA7_PRODUCT.prints.find((p) => p.id === config.printId) || ALTA7_PRODUCT.prints[0];
-
-  const subModels = config.model === 'female' ? ALTA7_PRODUCT.femaleSubModels : ALTA7_PRODUCT.maleSubModels;
-  const currentSubModel = subModels.find((s) => s.id === config.subModel) || subModels[0];
+  const currentSize = ALTA7_PRODUCT.sizes.find((s) => s.id === config.sizeId) || null;
+  const activeModel = config.model ?? 'male';
 
   const itemPrice = calculateItemPrice(config);
 
-  const startCustomizing = () => {
-    if (!isCustomizing) {
-      setIsCustomizing(true);
+  // Toggle Accordion step (ensures ONLY ONE is open)
+  const toggleStep = (step: AccordionStep) => {
+    if (openStep === step) {
+      setOpenStep(null);
+    } else {
+      setOpenStep(step);
+      // Auto-switch to COSTAS when ART step is opened
+      if (step === 'print') {
+        setConfig((prev) => ({ ...prev, viewSide: 'back' }));
+      }
     }
   };
 
-  // Reset / Cancel current customization & hide sticky bar
-  const handleResetCustomization = () => {
-    setIsCustomizing(false);
-    setSizeWarning(false);
-    setConfig(ALTA7_PRODUCT.defaultConfiguration);
+  // Initial Model Confirm Handler
+  const handleConfirmInitialModel = () => {
+    if (!initialModelPick) return;
+
+    setConfig((prev) => ({
+      ...prev,
+      model: initialModelPick,
+      fabricId: 'cotton',
+    }));
+    setHasChosenInitialModel(true);
+    setOpenStep('color'); // Move naturally to color step
   };
 
-  const handleToggleSide = (side: TShirtViewSide) => {
-    startCustomizing();
-    setConfig((prev) => ({ ...prev, viewSide: side }));
+  // Model change handler (preserves compatible options)
+  const handleSelectModel = (model: ProductModelCode) => {
+    setConfig((prev) => {
+      const fabricId = model === 'female' ? 'cotton' : prev.fabricId;
+      return {
+        ...prev,
+        model,
+        fabricId,
+      };
+    });
+    setOpenStep('color');
   };
 
+  // Color change handler
   const handleSelectColor = (colorId: string) => {
-    startCustomizing();
     setConfig((prev) => ({ ...prev, colorId }));
+    setOpenStep('print'); // Advance naturally to ART
+    setConfig((prev) => ({ ...prev, viewSide: 'back' })); // Auto-switch to COSTAS
   };
 
-  // Selecting back artwork automatically switches view side to BACK
+  // Print change handler
   const handleSelectPrint = (printId: string) => {
-    startCustomizing();
     setConfig((prev) => ({ ...prev, printId, viewSide: 'back' }));
+    // If Male, move to fabric; if Female, move to size (since fabric is auto-cotton)
+    setOpenStep(config.model === 'male' ? 'fabric' : 'size');
   };
 
-  const handleSelectFabric = (fabricId: string) => {
-    startCustomizing();
+  // Fabric change handler
+  const handleSelectFabric = (fabricId: FabricCode) => {
+    if (config.model === 'female' && fabricId === 'malha-30-1') return; // Enforce rule
     setConfig((prev) => ({ ...prev, fabricId }));
+    setOpenStep('size'); // Advance naturally to SIZE
   };
 
+  // Size change handler
   const handleSelectSize = (sizeId: SizeCode) => {
-    startCustomizing();
     setSizeWarning(false);
     setConfig((prev) => ({ ...prev, sizeId }));
   };
 
-  const handleSelectModel = (model: ProductModelCode, subModel: SubModelCode) => {
-    startCustomizing();
-    setConfig((prev) => ({ ...prev, model, subModel }));
+  // Toggle view side
+  const handleToggleSide = (side: TShirtViewSide) => {
+    setConfig((prev) => ({ ...prev, viewSide: side }));
   };
 
-  const handleQuantityChange = (delta: number) => {
-    startCustomizing();
-    setConfig((prev) => {
-      const next = prev.quantity + delta;
-      return { ...prev, quantity: Math.max(1, Math.min(10, next)) };
-    });
-  };
-
+  // Add to cart handler
   const handleAddToCart = () => {
-    startCustomizing();
     if (!config.sizeId) {
       setSizeWarning(true);
-      const sizeElem = document.getElementById('size-section');
+      setOpenStep('size');
+      const sizeElem = document.getElementById('step-size');
       if (sizeElem) {
         sizeElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
@@ -108,269 +127,386 @@ export const ConfiguratorMain: React.FC<ConfiguratorMainProps> = ({ onOpenOrderR
   return (
     <section id="configurator" className={styles.section}>
       <div className={styles.container}>
-        {/* Header Title */}
-        <div className={styles.sectionHeader}>
-          <span className={styles.eyebrow}>MONTE A SUA ALTA7</span>
-          <h2 className={styles.title}>CONFIGURADOR VISUAL</h2>
-        </div>
 
-        {/* Model Selector Bar */}
-        <div className={styles.modelBar}>
-          <div className={styles.modelInfo}>
-            <span className={styles.modelLabel}>MODELAGEM:</span>
-            <span className={`${styles.modelBadge} ${config.model === 'female' ? styles.badgeFemale : styles.badgeMale}`}>
-              {config.model === 'female' ? '♀ FEMININO' : '♂ MASCULINO'} ({currentSubModel.name.toUpperCase()})
-            </span>
-          </div>
-          <button
-            type="button"
-            className={styles.changeModelBtn}
-            onClick={() => setIsModelModalOpen(true)}
-          >
-            ALTERAR MODELO
-          </button>
-        </div>
+        {/* ---------------------------------------------------- */}
+        {/* INITIAL SCREEN: ESCOLHA SEU MODELO (First Contact)    */}
+        {/* ---------------------------------------------------- */}
+        {!hasChosenInitialModel ? (
+          <div className={styles.initialScreen}>
+            <div className={styles.sectionHeader}>
+              <span className={styles.eyebrow}>PASSO 1 • PERSONALIZAÇÃO</span>
+              <h2 className={styles.title}>ESCOLHA SEU MODELO</h2>
+              <p className={styles.subtitle}>
+                Selecione a modelagem para começar a personalizar sua camisa.
+              </p>
+            </div>
 
-        {/* Product Preview Engine Component */}
-        <div className={styles.previewWrapper}>
-          <ProductPreview
-            color={currentColor}
-            print={currentPrint}
-            viewSide={config.viewSide}
-            onToggleSide={handleToggleSide}
-          />
-        </div>
+            {/* Side-by-Side Model Cards (Mobile & Desktop) */}
+            <div className={styles.initialGrid}>
+              {/* FEMININO Card */}
+              <button
+                type="button"
+                className={`${styles.initialCard} ${initialModelPick === 'female' ? styles.initialCardSelected : ''}`}
+                onClick={() => setInitialModelPick('female')}
+                aria-pressed={initialModelPick === 'female'}
+              >
+                {initialModelPick === 'female' && <span className={styles.checkBadge}>✓</span>}
+                <div className={styles.initialImageWrapper}>
+                  <Image
+                    src="https://res.cloudinary.com/dhbrxzt5a/image/upload/fem_preta_frente_impu3b.webp"
+                    alt="Modelagem Feminina ALTA7"
+                    fill
+                    sizes="(max-width: 430px) 45vw, 240px"
+                    className={styles.initialImage}
+                    priority
+                  />
+                  <div className={styles.initialLogoOverlay}>
+                    <Image src="/brand/front-logo-white.png" alt="ALTA7" width={60} height={20} />
+                  </div>
+                </div>
+                <div className={styles.initialCardFooter}>
+                  <span className={styles.initialCardTitle}>FEMININO</span>
+                  <span className={styles.initialCardSubtitle}>R$ 100,00</span>
+                </div>
+              </button>
 
-        {/* Active Config Status Summary Line */}
-        <div className={styles.statusLine}>
-          <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={12} height={12} />
-          <span>
-            {currentColor.name.toUpperCase()} / {currentFabric.name} / {currentPrint.code} {config.sizeId ? `/ ${config.sizeId}` : ''}
-          </span>
-          {isCustomizing && (
+              {/* MASCULINO Card */}
+              <button
+                type="button"
+                className={`${styles.initialCard} ${initialModelPick === 'male' ? styles.initialCardSelected : ''}`}
+                onClick={() => setInitialModelPick('male')}
+                aria-pressed={initialModelPick === 'male'}
+              >
+                {initialModelPick === 'male' && <span className={styles.checkBadge}>✓</span>}
+                <div className={styles.initialImageWrapper}>
+                  <Image
+                    src="https://res.cloudinary.com/dhbrxzt5a/image/upload/masc_preta_frente_mbhxtx.webp"
+                    alt="Modelagem Masculina ALTA7"
+                    fill
+                    sizes="(max-width: 430px) 45vw, 240px"
+                    className={styles.initialImage}
+                    priority
+                  />
+                  <div className={styles.initialLogoOverlay}>
+                    <Image src="/brand/front-logo-white.png" alt="ALTA7" width={65} height={22} />
+                  </div>
+                </div>
+                <div className={styles.initialCardFooter}>
+                  <span className={styles.initialCardTitle}>MASCULINO</span>
+                  <span className={styles.initialCardSubtitle}>A partir de R$ 100,00</span>
+                </div>
+              </button>
+            </div>
+
+            {/* CTA Button */}
             <button
               type="button"
-              className={styles.resetInlineBtn}
-              onClick={handleResetCustomization}
-              title="Cancelar customização atual"
-              aria-label="Cancelar customização"
+              className={styles.initialCtaButton}
+              onClick={handleConfirmInitialModel}
+              disabled={!initialModelPick}
             >
-              ✕
+              <span>CONTINUAR</span>
+              <span>➔</span>
             </button>
-          )}
-        </div>
-
-        {/* Controls Container */}
-        <div className={styles.controls}>
-
-          {/* 1. Color Selector */}
-          <div className={styles.controlGroup}>
-            <div className={styles.groupHeader}>
-              <span className={styles.groupTitle}>COR</span>
-              <span className={styles.groupValue}>{currentColor.name}</span>
-            </div>
-            <div className={styles.colorSwatches}>
-              {ALTA7_PRODUCT.colors.map((color) => {
-                const isSelected = color.id === config.colorId;
-                return (
-                  <button
-                    key={color.id}
-                    type="button"
-                    className={`${styles.swatchBtn} ${isSelected ? styles.swatchSelected : ''}`}
-                    onClick={() => handleSelectColor(color.id)}
-                    aria-label={`Cor ${color.name}`}
-                  >
-                    <span
-                      className={styles.swatchFill}
-                      style={{ backgroundColor: color.hex, borderColor: color.borderHex || 'transparent' }}
-                    />
-                  </button>
-                );
-              })}
-            </div>
+            <span className={styles.microcopy}>Depois você poderá trocar o modelo.</span>
           </div>
+        ) : (
 
-          {/* 2. Prints / Artwork Selector (Placed ABOVE Fabric Selector & Switches View to BACK) */}
-          <div className={styles.controlGroup}>
-            <div className={styles.groupHeader}>
-              <span className={styles.groupTitle}>ESCOLHA SUA ARTE (COSTAS)</span>
-              <span className={styles.groupValue}>{currentPrint.code} - {currentPrint.title}</span>
+          /* ---------------------------------------------------- */
+          /* MAIN CONFIGURATOR (ACCORDION & DOMINANT PREVIEW)     */
+          /* ---------------------------------------------------- */
+          <div className={styles.mainLayout}>
+            {/* Header Title */}
+            <div className={styles.sectionHeader}>
+              <span className={styles.eyebrow}>ALTA7 AUTORAL</span>
+              <h2 className={styles.title}>MONTE SUA CAMISA</h2>
             </div>
-            <div className={styles.printsRail}>
-              {ALTA7_PRODUCT.prints.map((print) => {
-                const isSelected = print.id === config.printId;
-                return (
-                  <button
-                    key={print.id}
-                    type="button"
-                    className={`${styles.printCard} ${isSelected ? styles.printSelected : ''}`}
-                    onClick={() => handleSelectPrint(print.id)}
-                  >
-                    {isSelected && <span className={styles.printBadgeCheck}>✓</span>}
-                    <div className={`${styles.printThumbPlaceholder} ${config.colorId === 'branco' ? styles.printThumbLightBg : ''}`}>
-                      <Image
-                        src={config.colorId === 'branco' ? (print.overlayImageBackBlack || print.thumbnail) : (print.overlayImageBackWhite || print.thumbnail)}
-                        alt={print.title}
-                        fill
-                        className={styles.printThumbImage}
-                      />
-                    </div>
-                    <div className={styles.printInfo}>
-                      <span className={styles.printTitle}>{print.code}</span>
-                      <span className={styles.printSubtitle}>{print.title}</span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
 
-          {/* 3. Fabric Selector (Placed BELOW Artwork Selector) */}
-          <div className={styles.controlGroup}>
-            <div className={styles.groupHeader}>
-              <span className={styles.groupTitle}>TECIDO</span>
-              <span className={styles.groupValue}>{currentFabric.name}</span>
+            {/* Dominant Product Preview Engine */}
+            <div className={styles.previewWrapper}>
+              <ProductPreview
+                model={activeModel}
+                color={currentColor}
+                print={currentPrint}
+                viewSide={config.viewSide}
+                onToggleSide={handleToggleSide}
+              />
             </div>
-            <div className={styles.fabricGrid}>
-              {ALTA7_PRODUCT.fabrics.map((fabric) => {
-                const isSelected = fabric.id === config.fabricId;
-                return (
-                  <button
-                    key={fabric.id}
-                    type="button"
-                    className={`${styles.fabricCard} ${isSelected ? styles.fabricSelected : ''}`}
-                    onClick={() => handleSelectFabric(fabric.id)}
-                  >
-                    <div className={styles.fabricIconWrapper}>
-                      {fabric.id === 'malha-1' && (
-                        <svg className={styles.fabricIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M12 3a6 6 0 00-6 6c0 1.6.6 3 1.6 4.1L12 21l4.4-7.9A6 6 0 0012 3z" />
-                        </svg>
-                      )}
-                      {fabric.id === 'malha-premium' && (
-                        <svg className={styles.fabricIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                          <path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19" />
-                        </svg>
-                      )}
-                    </div>
-                    <span className={styles.fabricTitle}>{fabric.name}</span>
-                    <span className={styles.fabricTagline}>{fabric.tagline}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
 
-          {/* 4. Size Selector */}
-          <div id="size-section" className={styles.controlGroup}>
-            <div className={styles.groupHeader}>
-              <span className={styles.groupTitle}>
-                TAMANHO {sizeWarning && <span className={styles.warningText}>— ESCOLHA UM TAMANHO</span>}
+            {/* Real-time Summary Line */}
+            <div className={styles.summaryLine}>
+              <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={12} height={12} />
+              <span>
+                {config.model === 'female' ? 'Feminino' : 'Masculino'} / {currentColor.name} / {currentFabric.name} / {currentPrint.code} {currentSize ? `/ ${currentSize.label}` : ''}
               </span>
-              <button
-                type="button"
-                className={styles.sizeGuideLink}
-                onClick={() => setIsSizeGuideOpen(true)}
-              >
-                Guia de medidas
-              </button>
             </div>
-            <div className={styles.sizeGrid}>
-              {ALTA7_PRODUCT.sizes.map((size) => {
-                const isSelected = size.id === config.sizeId;
-                return (
-                  <button
-                    key={size.id}
-                    type="button"
-                    className={`${styles.sizePill} ${isSelected ? styles.sizeSelected : ''}`}
-                    onClick={() => handleSelectSize(size.id)}
-                  >
-                    {size.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
 
-          {/* 5. Quantity Selector */}
-          <div className={styles.controlGroup}>
-            <div className={styles.groupHeader}>
-              <span className={styles.groupTitle}>QUANTIDADE</span>
-            </div>
-            <div className={styles.quantityRow}>
-              <div className={styles.quantityPicker}>
+            {/* Progressive Single-Step Accordion */}
+            <div className={styles.accordionContainer}>
+
+              {/* STEP 01: MODELO */}
+              <div className={`${styles.accordionItem} ${openStep === 'model' ? styles.accordionItemOpen : ''}`}>
                 <button
                   type="button"
-                  className={styles.qtyBtn}
-                  onClick={() => handleQuantityChange(-1)}
-                  disabled={config.quantity <= 1}
-                  aria-label="Diminuir quantidade"
+                  className={styles.accordionHeader}
+                  onClick={() => toggleStep('model')}
                 >
-                  −
+                  <div className={styles.stepTitleGroup}>
+                    <span className={styles.stepNumber}>01</span>
+                    <span className={styles.stepName}>MODELO</span>
+                  </div>
+                  <span className={styles.stepValue}>
+                    {config.model === 'female' ? 'Feminino' : 'Masculino'} <span className={styles.checkDone}>✓</span>
+                  </span>
                 </button>
-                <span className={styles.qtyVal}>{config.quantity}</span>
+
+                {openStep === 'model' && (
+                  <div className={styles.accordionBody}>
+                    <div className={styles.modelOptionsGrid}>
+                      <button
+                        type="button"
+                        className={`${styles.modelOptBtn} ${config.model === 'male' ? styles.modelOptActive : ''}`}
+                        onClick={() => handleSelectModel('male')}
+                      >
+                        <span className={styles.modelOptTitle}>MASCULINO</span>
+                        <span className={styles.modelOptSub}>R$ 100,00 ou R$ 120,00</span>
+                      </button>
+                      <button
+                        type="button"
+                        className={`${styles.modelOptBtn} ${config.model === 'female' ? styles.modelOptActive : ''}`}
+                        onClick={() => handleSelectModel('female')}
+                      >
+                        <span className={styles.modelOptTitle}>FEMININO</span>
+                        <span className={styles.modelOptSub}>Cotton • R$ 100,00</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* STEP 02: COR */}
+              <div className={`${styles.accordionItem} ${openStep === 'color' ? styles.accordionItemOpen : ''}`}>
                 <button
                   type="button"
-                  className={styles.qtyBtn}
-                  onClick={() => handleQuantityChange(1)}
-                  disabled={config.quantity >= 10}
-                  aria-label="Aumentar quantidade"
+                  className={styles.accordionHeader}
+                  onClick={() => toggleStep('color')}
                 >
-                  +
+                  <div className={styles.stepTitleGroup}>
+                    <span className={styles.stepNumber}>02</span>
+                    <span className={styles.stepName}>COR</span>
+                  </div>
+                  <span className={styles.stepValue}>
+                    {currentColor.name} <span className={styles.checkDone}>✓</span>
+                  </span>
+                </button>
+
+                {openStep === 'color' && (
+                  <div className={styles.accordionBody}>
+                    <div className={styles.colorSwatches}>
+                      {ALTA7_PRODUCT.colors.map((color) => {
+                        const isSelected = color.id === config.colorId;
+                        return (
+                          <button
+                            key={color.id}
+                            type="button"
+                            className={`${styles.swatchBtn} ${isSelected ? styles.swatchSelected : ''}`}
+                            onClick={() => handleSelectColor(color.id)}
+                            aria-label={`Cor ${color.name}`}
+                          >
+                            <span
+                              className={styles.swatchFill}
+                              style={{ backgroundColor: color.hex, borderColor: color.borderHex || 'transparent' }}
+                            />
+                            <span className={styles.swatchName}>{color.name}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* STEP 03: ARTE (Auto-switches to COSTAS) */}
+              <div className={`${styles.accordionItem} ${openStep === 'print' ? styles.accordionItemOpen : ''}`}>
+                <button
+                  type="button"
+                  className={styles.accordionHeader}
+                  onClick={() => toggleStep('print')}
+                >
+                  <div className={styles.stepTitleGroup}>
+                    <span className={styles.stepNumber}>03</span>
+                    <span className={styles.stepName}>ARTE (COSTAS)</span>
+                  </div>
+                  <span className={styles.stepValue}>
+                    {currentPrint.code} <span className={styles.checkDone}>✓</span>
+                  </span>
+                </button>
+
+                {openStep === 'print' && (
+                  <div className={styles.accordionBody}>
+                    <div className={styles.printsRail}>
+                      {ALTA7_PRODUCT.prints.map((print) => {
+                        const isSelected = print.id === config.printId;
+                        return (
+                          <button
+                            key={print.id}
+                            type="button"
+                            className={`${styles.printCard} ${isSelected ? styles.printSelected : ''}`}
+                            onClick={() => handleSelectPrint(print.id)}
+                          >
+                            {isSelected && <span className={styles.printBadgeCheck}>✓</span>}
+                            <div className={`${styles.printThumbPlaceholder} ${config.colorId === 'branco' ? styles.printThumbLightBg : ''}`}>
+                              <Image
+                                src={config.colorId === 'branco' ? (print.overlayImageBackBlack || print.thumbnail) : (print.overlayImageBackWhite || print.thumbnail)}
+                                alt={print.title}
+                                fill
+                                className={styles.printThumbImage}
+                              />
+                            </div>
+                            <div className={styles.printInfo}>
+                              <span className={styles.printTitle}>{print.code}</span>
+                              <span className={styles.printSubtitle}>{print.title}</span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* STEP 04: TECIDO (Dynamic per gender) */}
+              <div className={`${styles.accordionItem} ${openStep === 'fabric' ? styles.accordionItemOpen : ''}`}>
+                <button
+                  type="button"
+                  className={styles.accordionHeader}
+                  onClick={() => toggleStep('fabric')}
+                >
+                  <div className={styles.stepTitleGroup}>
+                    <span className={styles.stepNumber}>04</span>
+                    <span className={styles.stepName}>TECIDO</span>
+                  </div>
+                  <span className={styles.stepValue}>
+                    {currentFabric.name} <span className={styles.checkDone}>✓</span>
+                  </span>
+                </button>
+
+                {openStep === 'fabric' && (
+                  <div className={styles.accordionBody}>
+                    {config.model === 'male' ? (
+                      <div className={styles.fabricGrid}>
+                        <button
+                          type="button"
+                          className={`${styles.fabricCard} ${config.fabricId === 'cotton' ? styles.fabricSelected : ''}`}
+                          onClick={() => handleSelectFabric('cotton')}
+                        >
+                          <div className={styles.fabricCardHeader}>
+                            <span className={styles.fabricTitle}>COTTON</span>
+                            <span className={styles.fabricPriceTag}>R$ 100,00</span>
+                          </div>
+                          <span className={styles.fabricDesc}>Algodão leve & macio com excelente toque.</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          className={`${styles.fabricCard} ${config.fabricId === 'malha-30-1' ? styles.fabricSelected : ''}`}
+                          onClick={() => handleSelectFabric('malha-30-1')}
+                        >
+                          <div className={styles.fabricCardHeader}>
+                            <span className={styles.fabricTitle}>MALHA 30.1</span>
+                            <span className={styles.fabricPriceTag}>R$ 120,00</span>
+                          </div>
+                          <span className={styles.fabricDesc}>Algodão penteado encorpado alta gramatura.</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <div className={styles.femaleFabricNote}>
+                        <div className={`${styles.fabricCard} ${styles.fabricSelected}`}>
+                          <div className={styles.fabricCardHeader}>
+                            <span className={styles.fabricTitle}>COTTON</span>
+                            <span className={styles.fabricPriceTag}>R$ 100,00</span>
+                          </div>
+                          <span className={styles.fabricDesc}>Modelagem feminina disponível exclusivamente em Cotton macio.</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* STEP 05: TAMANHO */}
+              <div id="step-size" className={`${styles.accordionItem} ${openStep === 'size' ? styles.accordionItemOpen : ''}`}>
+                <button
+                  type="button"
+                  className={styles.accordionHeader}
+                  onClick={() => toggleStep('size')}
+                >
+                  <div className={styles.stepTitleGroup}>
+                    <span className={styles.stepNumber}>05</span>
+                    <span className={styles.stepName}>TAMANHO</span>
+                  </div>
+                  <span className={styles.stepValue}>
+                    {currentSize ? currentSize.label : 'Escolher'} {currentSize && <span className={styles.checkDone}>✓</span>}
+                  </span>
+                </button>
+
+                {openStep === 'size' && (
+                  <div className={styles.accordionBody}>
+                    <div className={styles.sizeHeaderGroup}>
+                      {sizeWarning && <span className={styles.warningText}>Selecione um tamanho para continuar</span>}
+                      <button
+                        type="button"
+                        className={styles.sizeGuideLink}
+                        onClick={() => setIsSizeGuideOpen(true)}
+                      >
+                        Guia de medidas 📏
+                      </button>
+                    </div>
+
+                    <div className={styles.sizeGrid}>
+                      {ALTA7_PRODUCT.sizes.map((size) => {
+                        const isSelected = size.id === config.sizeId;
+                        return (
+                          <button
+                            key={size.id}
+                            type="button"
+                            className={`${styles.sizePill} ${isSelected ? styles.sizeSelected : ''}`}
+                            onClick={() => handleSelectSize(size.id)}
+                          >
+                            {size.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+            </div>
+
+            {/* Bottom Sticky Action & Purchase Bar */}
+            <div className={styles.stickyBar}>
+              <div className={styles.stickyContainer}>
+                <div className={styles.stickyPriceGroup}>
+                  <span className={styles.stickyPriceLabel}>VALOR TOTAL:</span>
+                  <span className={styles.stickyPriceValue}>R$ {itemPrice.totalPrice},00</span>
+                </div>
+
+                <button
+                  type="button"
+                  className={`${styles.stickyButton} ${!config.sizeId ? styles.buttonWarn : ''}`}
+                  onClick={handleAddToCart}
+                >
+                  <span>{config.sizeId ? 'ADICIONAR AO PEDIDO' : 'ESCOLHA O TAMANHO'}</span>
+                  <span>➔</span>
                 </button>
               </div>
-
-              <div className={styles.priceBreakdown}>
-                <span className={styles.unitPriceLabel}>Preço unitário: R$ {itemPrice.unitPrice}</span>
-                <span className={styles.totalPriceLabel}>Total: R$ {itemPrice.totalPrice}</span>
-              </div>
             </div>
-          </div>
 
-        </div>
-
-        {/* Bottom Sticky Action Bar - ONLY Appears when customization process is started */}
-        {isCustomizing && (
-          <div className={styles.stickyBar}>
-            <div className={styles.stickyContainer}>
-              {/* Cancel / Reset Small ✕ Button */}
-              <button
-                type="button"
-                className={styles.cancelCustomizationBtn}
-                onClick={handleResetCustomization}
-                title="Cancelar customização e zerar seleções"
-                aria-label="Cancelar customização e fechar barra"
-              >
-                ✕
-              </button>
-
-              <div className={styles.stickyPrice}>
-                <span className={styles.currencySymbol}>R$</span>
-                <span className={styles.priceValue}>{itemPrice.totalPrice}</span>
-              </div>
-
-              <button
-                type="button"
-                className={`${styles.stickyButton} ${!config.sizeId ? styles.buttonWarn : ''}`}
-                onClick={handleAddToCart}
-              >
-                <span>{config.sizeId ? 'ADICIONAR AO CARRINHO' : 'ESCOLHA O TAMANHO'}</span>
-                <span className={styles.stickyArrow}>➔</span>
-              </button>
-            </div>
           </div>
         )}
 
       </div>
-
-      {/* Model Selector Modal */}
-      <ModelSelectorModal
-        isOpen={isModelModalOpen}
-        selectedModel={config.model}
-        selectedSubModel={config.subModel}
-        onSelectModel={handleSelectModel}
-        onClose={() => setIsModelModalOpen(false)}
-      />
 
       {/* Size Guide Modal */}
       <SizeGuideModal

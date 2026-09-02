@@ -12,18 +12,18 @@ Esta documentação define o padrão visual oficial de assets da **ALTA7**, atua
 
 ---
 
-## 2. Alinhamento de 0 Pulos Visuais (Zero Layout Shift)
-Todas as 5 imagens de base da camiseta compartilham **exatamente as mesmas coordenadas de pixel, escala, ângulo e posição de gola/ombro**:
-1. `Preta`: `public/products/tshirt/bases/cld-base-5-1_vqnc4y.webp`
-2. `Azul Marinho`: `public/products/tshirt/bases/cld-base-2-2_x8oucf.webp`
-3. `Vinho Bordô`: `public/products/tshirt/bases/cld-base-4-3_x1e0bp.webp`
-4. `Verde`: `public/products/tshirt/bases/cld-base-3-4_fwq1du.webp`
-5. `Branca`: `public/products/tshirt/bases/cld-base-1-5_a9gq5v.webp`
+## 2. Bases Oficiais Cloudinary
+O configurador usa 20 bases oficiais, consumidas diretamente do Cloudinary e mapeadas em `src/data/product.ts`:
+- 5 cores;
+- 2 lados (`front`, `back`);
+- 2 modelos (`male`, `female`).
 
-A alternância entre qualquer uma das 5 cores ocorre sem nenhum deslocamento visual.
+A alternância entre cor, modelo e lado deve ocorrer dentro do mesmo canvas 4:5, sem deslocamento visual perceptível.
 
 ---
 
 ## 3. Especificação da Camada de Aplicação de Arte (Prints)
-- **Posicionamento Costas:** Centralizada nas costas da camiseta, a `320px` do topo do canvas 4:5, cobrindo até `520px` de largura por `620px` de altura.
+- **Posicionamento Costas Masculino:** `top: 47%`, `width: 60%`, `height: 56%`.
+- **Posicionamento Costas Feminino:** `top: 45%`, `width: 56%`, `height: 52%`.
 - **Formato:** PNG com canal alfa transparente ou WebP com transparência.
+- **Debug:** `?debugPrintArea=true` exibe o contorno da área calibrada.

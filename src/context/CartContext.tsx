@@ -24,34 +24,31 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 const CART_STORAGE_KEY = 'alta7_cart_items_v1';
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [items, setItems] = useState<CartItem[]>([]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window === 'undefined') return [];
 
-  // Load from localStorage on mount
-  useEffect(() => {
     try {
       const saved = localStorage.getItem(CART_STORAGE_KEY);
-      if (saved) {
-        setItems(JSON.parse(saved));
-      }
+      return saved ? JSON.parse(saved) : [];
     } catch (e) {
       console.warn('Failed to restore cart from localStorage:', e);
+      return [];
     }
-    setIsLoaded(true);
-  }, []);
+  });
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // Save to localStorage on items change
   useEffect(() => {
-    if (!isLoaded) return;
     try {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
     } catch (e) {
       console.warn('Failed to save cart to localStorage:', e);
     }
-  }, [items, isLoaded]);
+  }, [items]);
 
   const addToCart = (config: ProductConfiguration) => {
+    if (!config.model || !config.fabricId || !config.sizeId) return;
+
     const color = ALTA7_PRODUCT.colors.find((c) => c.id === config.colorId) || ALTA7_PRODUCT.colors[0];
     const fabric = ALTA7_PRODUCT.fabrics.find((f) => f.id === config.fabricId) || ALTA7_PRODUCT.fabrics[0];
     const print = ALTA7_PRODUCT.prints.find((p) => p.id === config.printId) || ALTA7_PRODUCT.prints[0];
@@ -88,8 +85,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setItems((prev) =>
       prev.map((item) => {
         if (item.id === itemId) {
-          const totalPrice = item.unitPrice * quantity;
-          return { ...item, quantity, totalPrice };
+          const configuration = { ...item.configuration, quantity };
+          const { unitPrice, totalPrice } = calculateItemPrice(configuration);
+          return { ...item, configuration, quantity, unitPrice, totalPrice };
         }
         return item;
       })

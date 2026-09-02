@@ -7,23 +7,18 @@ import styles from './LookbookShowcase.module.css';
 
 const LOOKBOOK_ITEMS = [
   {
-    src: '/lifestyle/hero-lifestyle.jpg',
-    title: 'FUTEBOL DE PRAIA',
+    src: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/WhatsApp_Image_2026-09-01_at_13.03.35_1_h1wanp.webp',
+    title: 'CULTURA DA ALTINHA',
     location: 'POSTO 9 • IPANEMA',
   },
   {
-    src: '/lifestyle/lifestyle-1.jpg',
+    src: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/WhatsApp_Image_2026-09-01_at_13.03.35_2_xcd3gz.webp',
     title: 'FEITA PRA RUA',
     location: 'LAPA • RIO DE JANEIRO',
   },
   {
-    src: '/lifestyle/lifestyle-2.webp',
-    title: 'CULTURA STREETWEAR',
-    location: 'COPACABANA • RIO',
-  },
-  {
-    src: '/lifestyle/lifestyle-3.webp',
-    title: 'ALTA7 LIFESTYLE',
+    src: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/WhatsApp_Image_2026-09-01_at_13.03.35_djf2hr.webp',
+    title: 'STREETWEAR AUTORAL',
     location: 'ARPOADOR • RIO',
   },
 ];
@@ -41,7 +36,7 @@ export const LookbookShowcase: React.FC<LookbookShowcaseProps> = ({ onGoToConfig
             <span className={styles.eyebrow}>CAMPANHA RIO DE JANEIRO</span>
             <h2 className={styles.title}>ALTA7 NA PRAIA & NA RUA</h2>
             <p className={styles.subtitle}>
-              Estilo autoral testado e aprovado na rotina de quem vive o futebol de praia.
+              Estilo autoral testado e aprovado na rotina de quem vive a altinha.
             </p>
           </div>
         </ScrollReveal>
@@ -77,7 +72,7 @@ export const LookbookShowcase: React.FC<LookbookShowcaseProps> = ({ onGoToConfig
               className={styles.ctaButton}
               onClick={onGoToConfigurator}
             >
-              <span>MONTE O SEU MODELO</span>
+              <span>MONTE SUA CAMISA</span>
               <span>➔</span>
             </button>
           </ScrollReveal>

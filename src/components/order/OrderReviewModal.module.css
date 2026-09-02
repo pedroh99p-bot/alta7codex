@@ -80,6 +80,7 @@
 
 .previewBox {
   aspect-ratio: 4 / 5;
+  background: #eaeaea;
   border-radius: var(--radius-xs);
   position: relative;
   overflow: hidden;
@@ -90,7 +91,8 @@
 }
 
 .previewImg {
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
 }
 
 .viewLabel {

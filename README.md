@@ -1,14 +1,15 @@
 # ALTA7 — Configurador de Camisetas (Landing Page & Microloja Mobile-First)
 
-> Experiência visual interativa de personalização e intenção de compra para a **ALTA7** — marca com identidade no futebol de praia, rua, Rio de Janeiro e cultura streetwear.
+> Experiência visual interativa de personalização e intenção de compra para a **ALTA7** — marca com identidade na altinha, praia, rua, Rio de Janeiro e cultura streetwear.
 
 ---
 
-## ⚽ Conceito do Produto
+## Conceito do Produto
 A ALTA7 não opera como um e-commerce genérico com catálogo exaustivo. O núcleo do projeto é a **Camiseta ALTA7**, permitindo ao cliente montar sua versão customizada escolhendo:
-- **Cor** (Preto, Off-White, Grafite, Marinho, Oliva)
-- **Tecido** (Cotton, Performance, Premium)
-- **Estampa Editorial** (ART.01 a ART.09)
+- **Modelo** (Feminino ou Masculino)
+- **Cor** (Preta, Branca, Verde, Azul-Marinho, Vinho Bordô)
+- **Tecido** (Cotton ou Malha 30.1, conforme a modelagem)
+- **Estampa Editorial** (ART.01 a ART.04)
 - **Tamanho** (P, M, G, GG)
 - **Quantidade**
 
@@ -16,7 +17,7 @@ A conclusão do pedido é realizada através do **WhatsApp** com uma mensagem es
 
 ---
 
-## 🛠️ Tech Stack & Arquitetura
+## Tech Stack & Arquitetura
 - **Framework:** Next.js 16 (App Router)
 - **Linguagem:** TypeScript (strict mode)
 - **Estilização:** CSS Variables Design Tokens + CSS Modules

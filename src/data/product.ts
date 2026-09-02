@@ -5,24 +5,19 @@ export const ALTA7_PRODUCT: ProductData = {
   name: 'Camiseta ALTA7 Autoral',
   logoUrl: '/brand/logo-alta7.webp',
   whatsappNumber: '5521983565005',
-  maleSubModels: [
-    { id: 'tshirt', name: 'T-Shirt', tagline: 'Modelagem Tradicional Street' },
-    { id: 'oversized', name: 'Oversized', tagline: 'Caimento Amplo & Ombros Deslocados' },
-    { id: 'boxy', name: 'Boxy Fit', tagline: 'Corte Quadrado Encorpado' },
-  ],
-  femaleSubModels: [
-    { id: 'babytee', name: 'Baby Tee', tagline: 'Corte Cropped Ajustado' },
-    { id: 'babylook', name: 'Baby Look', tagline: 'Modelagem Feminina Tradicional' },
-  ],
   colors: [
     {
       id: 'preto',
       name: 'Preta',
       hex: '#111111',
       borderHex: '#333333',
-      baseImages: {
-        front: '/products/tshirt/bases/niw8pljgeipbfkswviaz_a5ysmn.webp',
-        back: '/products/tshirt/bases/czvtrkizefiba6icnaf2_qrczqg.webp',
+      maleBaseImages: {
+        front: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/masc_preta_frente_mbhxtx.webp',
+        back: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/masc_preta_costas_uq5ih0.webp',
+      },
+      femaleBaseImages: {
+        front: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/fem_preta_frente_impu3b.webp',
+        back: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/fem_preta_costas_u8rg5m.webp',
       },
     },
     {
@@ -30,9 +25,13 @@ export const ALTA7_PRODUCT: ProductData = {
       name: 'Branca',
       hex: '#F2F0E8',
       borderHex: '#CCCCCC',
-      baseImages: {
-        front: '/products/tshirt/bases/nedb4dhcvjg442rkfqap_tsslk4.webp',
-        back: '/products/tshirt/bases/jobypfygnjsamfqibr5y_wteddo.webp',
+      maleBaseImages: {
+        front: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/masc_branca_frente_eqd0ce.webp',
+        back: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/masc_branca_costas_qxn0uh.webp',
+      },
+      femaleBaseImages: {
+        front: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/fem_branca_frente_f2ncdr.webp',
+        back: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/fem_branca_costas_rugce5.webp',
       },
     },
     {
@@ -40,55 +39,59 @@ export const ALTA7_PRODUCT: ProductData = {
       name: 'Verde',
       hex: '#23392B',
       borderHex: '#32523E',
-      baseImages: {
-        front: '/products/tshirt/bases/rkennsuvmen4znhmhgyz_to913v.webp',
-        back: '/products/tshirt/bases/l1ulb3h8des7eidcrgql_sxeckr.webp',
+      maleBaseImages: {
+        front: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/masc_verde_frente_im1fta.webp',
+        back: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/masc_verde_costas_xek8fd.webp',
+      },
+      femaleBaseImages: {
+        front: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/fem_verde_frente_p7cjn3.webp',
+        back: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/fem_verde_costas_ihmc2e.webp',
       },
     },
     {
-      id: 'marrom',
-      name: 'Marrom',
-      hex: '#4A2E1B',
-      borderHex: '#5C3A22',
-      baseImages: {
-        front: '/products/tshirt/bases/msremr9sm5zktxopotbp_gvrpx5.webp',
-        back: '/products/tshirt/bases/wygnf5ayrmhur0kzusby_bqppvk.webp',
+      id: 'azul-marinho',
+      name: 'Azul-marinho',
+      hex: '#1E2A3A',
+      borderHex: '#2C3E55',
+      maleBaseImages: {
+        front: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/masc_azul_frente_fn3rbs.webp',
+        back: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/masc_azul_costas_q6nbi0.webp',
+      },
+      femaleBaseImages: {
+        front: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/fem_azul_frente_epumdk.webp',
+        back: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/fem_azul_costas_qehych.webp',
       },
     },
     {
-      id: 'marsala',
-      name: 'Marsala',
-      hex: '#6A1B29',
-      borderHex: '#802234',
-      baseImages: {
-        front: '/products/tshirt/bases/hw82wxjq2uq55mexdrea_djstiq.webp',
-        back: '/products/tshirt/bases/l0iiziafhh9lbht6nuxb_ytoz59.webp',
+      id: 'vinho-bordo',
+      name: 'Vinho Bordô',
+      hex: '#5A1B28',
+      borderHex: '#7A2437',
+      maleBaseImages: {
+        front: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/masc_vinho_frente_tjjjbh.webp',
+        back: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/masc_vinho_costas_bpa8bk.webp',
       },
-    },
-    {
-      id: 'bordo',
-      name: 'Bordô',
-      hex: '#4A121A',
-      borderHex: '#5E1822',
-      baseImages: {
-        front: '/products/tshirt/bases/hw82wxjq2uq55mexdrea_djstiq.webp',
-        back: '/products/tshirt/bases/l0iiziafhh9lbht6nuxb_ytoz59.webp',
+      femaleBaseImages: {
+        front: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/fem_vinho_frente_a9awu6.webp',
+        back: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/fem_vinho_costas_awltak.webp',
       },
     },
   ],
   fabrics: [
     {
-      id: 'malha-1',
-      name: 'Malha 1',
+      id: 'cotton',
+      name: 'COTTON',
       tagline: 'Algodão leve & macio',
-      description: 'Algodão leve de toque suave, excelente caimento para o dia a dia e praia.',
+      description: 'Algodão leve e macio com pré-encolhimento e excelente caimento para a rotina da altinha.',
+      price: 100,
       iconName: 'feather',
     },
     {
-      id: 'malha-premium',
-      name: 'Malha Premium',
-      tagline: 'Algodão encorpado alta gramatura',
-      description: 'Algodão penteado premium de alta gramatura com estrutura encorpada e alta durabilidade.',
+      id: 'malha-30-1',
+      name: 'MALHA 30.1',
+      tagline: 'Algodão penteado premium encorpado',
+      description: 'Malha 30.1 de alta gramatura encorpada com caimento street fit e alta durabilidade.',
+      price: 120,
       iconName: 'shield',
     },
   ],
@@ -97,7 +100,7 @@ export const ALTA7_PRODUCT: ProductData = {
       id: 'art-01',
       code: 'ART.01',
       title: 'Beach Game',
-      subtitle: 'Altinha & futebol de praia do Rio',
+      subtitle: 'Altinha & movimento do Rio',
       thumbnail: '/products/tshirt/prints/white/2_2_x6bsl8.png',
       overlayImageBack: '/products/tshirt/prints/white/2_2_x6bsl8.png',
       overlayImageBackWhite: '/products/tshirt/prints/white/2_2_x6bsl8.png',
@@ -116,7 +119,7 @@ export const ALTA7_PRODUCT: ProductData = {
     {
       id: 'art-03',
       code: 'ART.03',
-      title: 'Futebol & Mar',
+      title: 'Altinha & Mar',
       subtitle: 'Cultura praiana streetwear',
       thumbnail: '/products/tshirt/prints/white/4_1_slaspp.png',
       overlayImageBack: '/products/tshirt/prints/white/4_1_slaspp.png',
@@ -135,18 +138,15 @@ export const ALTA7_PRODUCT: ProductData = {
     },
   ],
   sizes: [
-    { id: 'PP', label: 'PP', measurements: { chest: 49, length: 67, sleeve: 19 } },
     { id: 'P', label: 'P', measurements: { chest: 52, length: 70, sleeve: 20 } },
     { id: 'M', label: 'M', measurements: { chest: 55, length: 73, sleeve: 21 } },
     { id: 'G', label: 'G', measurements: { chest: 58, length: 76, sleeve: 22 } },
     { id: 'GG', label: 'GG', measurements: { chest: 61, length: 79, sleeve: 23 } },
-    { id: 'EX', label: 'EX', measurements: { chest: 64, length: 82, sleeve: 24 } },
   ],
   defaultConfiguration: {
-    model: 'male',
-    subModel: 'tshirt',
+    model: null,
     colorId: 'preto',
-    fabricId: 'malha-1',
+    fabricId: null,
     printId: 'art-01',
     sizeId: null,
     quantity: 1,

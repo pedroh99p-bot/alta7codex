@@ -2,26 +2,15 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { ALTA7_PRODUCT } from '@/data/product';
 import styles from './Preloader.module.css';
 
-// All 10 color base image paths (Front & Back for 5 colors) to preload in browser memory
-const PRELOAD_BASES = [
-  // Preta (Front & Back)
-  '/products/tshirt/bases/niw8pljgeipbfkswviaz_a5ysmn.webp',
-  '/products/tshirt/bases/czvtrkizefiba6icnaf2_qrczqg.webp',
-  // Branca (Front & Back)
-  '/products/tshirt/bases/nedb4dhcvjg442rkfqap_tsslk4.webp',
-  '/products/tshirt/bases/jobypfygnjsamfqibr5y_wteddo.webp',
-  // Azul Marinho (Front & Back)
-  '/products/tshirt/bases/msremr9sm5zktxopotbp_gvrpx5.webp',
-  '/products/tshirt/bases/wygnf5ayrmhur0kzusby_bqppvk.webp',
-  // Vinho Bordô (Front & Back)
-  '/products/tshirt/bases/hw82wxjq2uq55mexdrea_djstiq.webp',
-  '/products/tshirt/bases/l0iiziafhh9lbht6nuxb_ytoz59.webp',
-  // Verde (Front & Back)
-  '/products/tshirt/bases/rkennsuvmen4znhmhgyz_to913v.webp',
-  '/products/tshirt/bases/l1ulb3h8des7eidcrgql_sxeckr.webp',
-];
+const PRELOAD_BASES = ALTA7_PRODUCT.colors.flatMap((color) => [
+  color.maleBaseImages.front,
+  color.maleBaseImages.back,
+  color.femaleBaseImages.front,
+  color.femaleBaseImages.back,
+]);
 
 export const Preloader: React.FC = () => {
   const [curtainUp, setCurtainUp] = useState(false);
@@ -77,7 +66,7 @@ export const Preloader: React.FC = () => {
         </div>
 
         {/* 03. Preloader Tagline Phrase */}
-        <span className={styles.tagline}>FUTEBOL • PRAIA • RUA • RIO DE JANEIRO</span>
+        <span className={styles.tagline}>ALTINHA • PRAIA • RUA • RIO DE JANEIRO</span>
 
         {/* 04. Subtle Loading Progress Bar */}
         <div className={styles.progressBar}>

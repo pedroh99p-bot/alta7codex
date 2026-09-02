@@ -100,7 +100,7 @@ export const FabricShowcase: React.FC<FabricShowcaseProps> = ({ onGoToConfigurat
         </ScrollReveal>
 
         <div className={styles.footerNote}>
-          <span>⚽ ALTA7. FUTEBOL É LIBERDADE.</span>
+          <span>⚽ ALTA7. ALTINHA É LIBERDADE.</span>
         </div>
       </div>
     </section>

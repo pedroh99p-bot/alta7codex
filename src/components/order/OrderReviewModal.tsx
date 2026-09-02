@@ -43,26 +43,31 @@ export const OrderReviewModal: React.FC<OrderReviewModalProps> = ({
 
         {/* Items List */}
         <div className={styles.itemsContainer}>
-          {items.map((item, idx) => (
+          {items.map((item) => {
+            const baseImages = item.configuration.model === 'female'
+              ? item.color.femaleBaseImages
+              : item.color.maleBaseImages;
+
+            return (
             <div key={item.id} className={styles.reviewCard}>
               {/* Dual View Side-by-side T-Shirt Preview */}
               <div className={styles.dualPreviewRow}>
-                <div className={styles.previewBox} style={{ backgroundColor: item.color.hex }}>
+                <div className={styles.previewBox}>
                   <Image
-                    src={item.color.baseImages.front}
+                    src={baseImages.front}
                     alt="Frente"
-                    width={100}
-                    height={125}
+                    fill
+                    sizes="(max-width: 430px) 44vw, 180px"
                     className={styles.previewImg}
                   />
                   <span className={styles.viewLabel}>FRENTE</span>
                 </div>
-                <div className={styles.previewBox} style={{ backgroundColor: item.color.hex }}>
+                <div className={styles.previewBox}>
                   <Image
-                    src={item.color.baseImages.back}
+                    src={baseImages.back}
                     alt="Costas"
-                    width={100}
-                    height={125}
+                    fill
+                    sizes="(max-width: 430px) 44vw, 180px"
                     className={styles.previewImg}
                   />
                   <span className={styles.viewLabel}>COSTAS ({item.print.code})</span>
@@ -117,7 +122,8 @@ export const OrderReviewModal: React.FC<OrderReviewModalProps> = ({
                 </div>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Total & Action Buttons */}
@@ -150,7 +156,7 @@ export const OrderReviewModal: React.FC<OrderReviewModalProps> = ({
 
           <div className={styles.modalFooterNote}>
             <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={12} height={12} />
-            <span>ALTA7. FUTEBOL É LIBERDADE.</span>
+            <span>ALTA7. ALTINHA É LIBERDADE.</span>
           </div>
         </div>
       </div>

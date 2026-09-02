@@ -3,17 +3,12 @@ import { ALTA7_PRODUCT } from '@/data/product';
 
 export function buildWhatsAppMessage(items: CartItem[]): string {
   if (!items || items.length === 0) {
-    return 'Fala! Quero conhecer mais sobre os produtos ALTA7. ⚽';
+    return 'Fala! Quero conhecer mais sobre os produtos ALTA7 pro jogo de altinha. ⚽';
   }
 
   const itemsText = items
     .map((item, index) => {
-      const genderLabel = item.configuration.model === 'female' ? 'Feminino' : 'Masculino';
-      const subModels = item.configuration.model === 'female' ? ALTA7_PRODUCT.femaleSubModels : ALTA7_PRODUCT.maleSubModels;
-      const subModelObj = subModels.find((s) => s.id === item.configuration.subModel);
-      const subModelName = subModelObj ? subModelObj.name : '';
-      const modelLabel = subModelName ? `${genderLabel} (${subModelName})` : genderLabel;
-
+      const modelLabel = item.configuration.model === 'female' ? 'Feminino' : 'Masculino';
       const printText = `${item.print.code} / ${item.print.title}`;
       const colorText = item.color.name;
       const fabricText = item.fabric.name;
@@ -34,7 +29,7 @@ export function buildWhatsAppMessage(items: CartItem[]): string {
 
   const grandTotal = items.reduce((acc, curr) => acc + curr.totalPrice, 0);
 
-  return `🛍️ *NOVO PEDIDO ALTA7*
+  return `🛍️ *NOVO PEDIDO ALTA7 — ALTINHA & RUA*
 
 Fala! Montei meu pedido pelo site 👇
 

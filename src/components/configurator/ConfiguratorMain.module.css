@@ -36,6 +36,150 @@
   margin-top: 2px;
 }
 
+.subtitle {
+  margin: var(--space-8) 0 0;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.initialScreen,
+.mainLayout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-20);
+}
+
+.initialGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-12);
+}
+
+.initialCard {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-1);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.initialCard:hover,
+.initialCard:focus-visible {
+  border-color: rgba(230, 198, 25, 0.65);
+  outline: none;
+}
+
+.initialCardSelected {
+  border-color: var(--yellow-alta7);
+  background: rgba(230, 198, 25, 0.04);
+}
+
+.checkBadge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 4;
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  border-radius: var(--radius-full);
+  background: var(--yellow-alta7);
+  color: var(--text-dark);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.initialImageWrapper {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: #eaeaea;
+}
+
+.initialImage {
+  object-fit: contain;
+  object-position: center;
+  pointer-events: none;
+}
+
+.initialLogoOverlay {
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.6));
+}
+
+.initialCardFooter {
+  display: flex;
+  min-height: 64px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--space-12);
+  text-align: left;
+}
+
+.initialCardTitle {
+  font-family: var(--font-editorial);
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+.initialCardSubtitle {
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+.initialCtaButton {
+  display: flex;
+  min-height: 54px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-12);
+  border: 1px solid var(--yellow-alta7);
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), opacity var(--transition-fast);
+}
+
+.initialCtaButton:hover:not(:disabled),
+.initialCtaButton:focus-visible:not(:disabled) {
+  background: rgba(230, 198, 25, 0.1);
+  outline: none;
+}
+
+.microcopy {
+  display: block;
+  margin-top: calc(-1 * var(--space-12));
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  text-align: center;
+}
+
 .modelBar {
   display: flex;
   align-items: center;
@@ -95,6 +239,144 @@
 
 .previewWrapper {
   width: 100%;
+}
+
+.summaryLine {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  background: var(--bg-surface-1);
+  padding: var(--space-8) var(--space-12);
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.accordionContainer {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.accordionItem {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.accordionItemOpen {
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.accordionHeader {
+  display: flex;
+  min-height: 56px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  padding: var(--space-12) 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accordionHeader:focus-visible {
+  outline: 1px solid var(--yellow-alta7);
+  outline-offset: 2px;
+}
+
+.stepTitleGroup {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: var(--space-10);
+}
+
+.stepNumber {
+  color: var(--yellow-alta7);
+  font-family: var(--font-editorial);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.stepName {
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.stepValue {
+  flex-shrink: 0;
+  max-width: 48%;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  overflow-wrap: anywhere;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.checkDone {
+  color: var(--yellow-alta7);
+}
+
+.accordionBody {
+  padding: 0 0 var(--space-16);
+}
+
+.modelOptionsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-10);
+}
+
+.modelOptBtn {
+  display: flex;
+  min-height: 72px;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xs);
+  background: var(--bg-surface-1);
+  padding: var(--space-12);
+  color: var(--text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.modelOptActive {
+  border-color: var(--yellow-alta7);
+  background: rgba(230, 198, 25, 0.05);
+}
+
+.modelOptTitle {
+  font-family: var(--font-editorial);
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+.modelOptSub {
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  line-height: 1.3;
 }
 
 .statusLine {
@@ -161,12 +443,19 @@
   display: flex;
   gap: var(--space-12);
   align-items: center;
+  overflow-x: auto;
+  padding: 2px 0 var(--space-4);
 }
 
 .swatchBtn {
+  display: flex;
+  min-width: 54px;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   background: transparent;
   border: 2px solid transparent;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-xs);
   padding: 3px;
   cursor: pointer;
   transition: transform var(--transition-fast), border-color var(--transition-fast);
@@ -182,13 +471,24 @@
 
 .swatchSelected {
   border-color: var(--yellow-alta7);
-  transform: scale(1.1);
+}
+
+.swatchName {
+  width: 100%;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 /* Fabric Grid */
 .fabricGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-8);
 }
 
@@ -205,6 +505,14 @@
   transition: all var(--transition-fast);
 }
 
+.fabricCardHeader {
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
 .fabricIconWrapper {
   margin-bottom: 4px;
 }
@@ -217,9 +525,31 @@
 
 .fabricTitle {
   font-family: var(--font-editorial);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-primary);
   letter-spacing: 0.05em;
+}
+
+.fabricPriceTag {
+  color: var(--yellow-alta7);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.fabricDesc {
+  margin-top: var(--space-8);
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 10px;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.femaleFabricNote {
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
 .fabricTagline {
@@ -348,6 +678,14 @@
   text-decoration: underline;
   text-underline-offset: 2px;
   cursor: pointer;
+}
+
+.sizeHeaderGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+  margin-bottom: var(--space-10);
 }
 
 .sizeGrid {
@@ -486,6 +824,30 @@
   gap: var(--space-12);
 }
 
+.stickyPriceGroup {
+  display: flex;
+  min-width: 88px;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stickyPriceLabel {
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.stickyPriceValue {
+  color: var(--text-primary);
+  font-family: var(--font-editorial);
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
 .cancelCustomizationBtn {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-subtle);
@@ -550,6 +912,11 @@
 
 .stickyButton:hover {
   background-color: rgba(230, 198, 25, 0.1);
+}
+
+.initialCtaButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 
 .buttonWarn {

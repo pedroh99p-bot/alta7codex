@@ -23,7 +23,7 @@ export default function HomePage() {
     }
   };
 
-  const handleSelectPrintFromGallery = (printId: string) => {
+  const handleSelectPrintFromGallery = () => {
     handleScrollToConfigurator();
   };
 
@@ -39,7 +39,7 @@ export default function HomePage() {
       <HeroSection onStartConfigurator={handleScrollToConfigurator} />
 
       {/* 04. Main Visual Configurator Engine */}
-      <ConfiguratorMain onOpenOrderReview={() => setIsOrderReviewOpen(true)} />
+      <ConfiguratorMain />
 
       {/* 05. Lifestyle Lookbook Rio de Janeiro Gallery */}
       <LookbookShowcase onGoToConfigurator={handleScrollToConfigurator} />

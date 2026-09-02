@@ -1,21 +1,30 @@
-import { ProductConfiguration, ItemPriceSummary } from '@/types/product';
+import { FabricCode, ItemPriceSummary, ProductConfiguration, ProductModelCode } from '@/types/product';
+
+export function normalizeFabricForModel(
+  model: ProductModelCode | null,
+  fabricId: FabricCode | null
+): FabricCode | null {
+  if (!model) return null;
+  if (model === 'female') return 'cotton';
+  return fabricId ?? 'cotton';
+}
+
+export function getProductPrice(
+  model: ProductModelCode | null,
+  fabricId: FabricCode | null
+): number {
+  const normalizedFabric = normalizeFabricForModel(model, fabricId);
+
+  if (!model || !normalizedFabric) return 0;
+  if (model === 'female') return 100;
+  return normalizedFabric === 'malha-30-1' ? 120 : 100;
+}
 
 export function calculateItemPrice(config: ProductConfiguration): ItemPriceSummary {
-  const isFemale = config.model === 'female';
-  const isPremium = config.fabricId === 'malha-premium';
-
-  let unitPrice = 100;
-
-  if (isFemale) {
-    unitPrice = isPremium ? 100 : 80;
-  } else {
-    unitPrice = isPremium ? 120 : 100;
-  }
-
-  const totalPrice = unitPrice * config.quantity;
+  const unitPrice = getProductPrice(config.model, config.fabricId);
 
   return {
     unitPrice,
-    totalPrice,
+    totalPrice: unitPrice * config.quantity,
   };
 }

@@ -43,15 +43,20 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onProceedToReview }) => 
               </button>
             </div>
           ) : (
-            items.map((item) => (
+            items.map((item) => {
+              const baseImages = item.configuration.model === 'female'
+                ? item.color.femaleBaseImages
+                : item.color.maleBaseImages;
+
+              return (
               <div key={item.id} className={styles.cartCard}>
                 {/* Mini Preview Thumbnail */}
-                <div className={styles.thumbWrapper} style={{ backgroundColor: item.color.hex }}>
+                <div className={styles.thumbWrapper}>
                   <Image
-                    src={item.color.baseImages.front}
+                    src={baseImages.back}
                     alt={item.color.name}
-                    width={70}
-                    height={87}
+                    fill
+                    sizes="70px"
                     className={styles.thumbImage}
                   />
                   <span className={styles.thumbPrintCode}>{item.print.code}</span>
@@ -106,7 +111,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onProceedToReview }) => 
                   </div>
                 </div>
               </div>
-            ))
+              );
+            })
           )}
         </div>
 

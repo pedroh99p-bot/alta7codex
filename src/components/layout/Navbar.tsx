@@ -162,7 +162,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onStartConfigurator }) => {
 
             <div className={styles.menuFooter}>
               <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={14} height={14} />
-              <span>ALTA7. FUTEBOL É LIBERDADE.</span>
+              <span>ALTA7. ALTINHA É LIBERDADE.</span>
             </div>
           </div>
         </div>

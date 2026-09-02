@@ -2,10 +2,11 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { ColorOption, PrintOption, TShirtViewSide } from '@/types/product';
+import { ColorOption, PrintOption, ProductModelCode, TShirtViewSide } from '@/types/product';
 import styles from './ProductPreview.module.css';
 
 interface ProductPreviewProps {
+  model: ProductModelCode;
   color: ColorOption;
   print: PrintOption;
   viewSide: TShirtViewSide;
@@ -14,6 +15,7 @@ interface ProductPreviewProps {
 }
 
 export const ProductPreview: React.FC<ProductPreviewProps> = ({
+  model,
   color,
   print,
   viewSide,
@@ -21,14 +23,23 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
   showTabs = true,
 }) => {
   const isFront = viewSide === 'front';
+  const isMale = model === 'male';
+  const isWhiteShirt = color.id === 'branco';
 
-  // Determine front logo artwork (White PNG for dark shirts, Black WebP for white shirt)
-  const isWhiteShirt = color.id === 'branco' || color.id === 'branca';
+  const isDebugPrintArea = typeof window !== 'undefined'
+    && new URLSearchParams(window.location.search).get('debugPrintArea') === 'true';
+
+  // Base image selection according to model + color + viewSide
+  const baseImageSrc = isMale
+    ? (isFront ? color.maleBaseImages.front : color.maleBaseImages.back)
+    : (isFront ? color.femaleBaseImages.front : color.femaleBaseImages.back);
+
+  // Front logo artwork (White for dark shirts, Black for white shirt)
   const frontLogoSrc = isWhiteShirt
     ? '/brand/front-logo-black.webp'
     : '/brand/front-logo-white.png';
 
-  // Determine back artwork PNG
+  // Back artwork overlay
   const backArtworkSrc = isWhiteShirt
     ? print.overlayImageBackBlack || print.overlayImageBack
     : print.overlayImageBackWhite || print.overlayImageBack;
@@ -42,7 +53,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
             type="button"
             className={`${styles.tabButton} ${isFront ? styles.tabActive : ''}`}
             onClick={() => onToggleSide?.('front')}
-            aria-label="Ver frente da camiseta"
+            aria-label="Ver frente da camisa"
           >
             FRENTE
           </button>
@@ -50,25 +61,25 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
             type="button"
             className={`${styles.tabButton} ${!isFront ? styles.tabActive : ''}`}
             onClick={() => onToggleSide?.('back')}
-            aria-label="Ver costas da camiseta"
+            aria-label="Ver costas da camisa"
           >
             COSTAS
           </button>
         </div>
       )}
 
-      {/* 4:5 Aspect Ratio Canvas (1122x1402px) */}
+      {/* 4:5 Aspect Ratio Preview Canvas */}
       <div className={styles.canvas}>
-        {/* Collar View Text Tag (FRENTE / COSTAS) */}
+        {/* Collar View Text Tag Badge */}
         <div className={styles.collarViewTag}>
           {isFront ? 'FRENTE' : 'COSTAS'}
         </div>
 
-        {/* Layer 1: Base T-Shirt Image (Cloudinary 4:5 Asset - Front or Back) */}
+        {/* Layer 1: Base T-Shirt Image */}
         <div className={styles.baseLayer}>
           <Image
-            src={isFront ? color.baseImages.front : color.baseImages.back}
-            alt={`Camiseta ALTA7 cor ${color.name} vista ${isFront ? 'frente' : 'costas'}`}
+            src={baseImageSrc}
+            alt={`Camisa ALTA7 ${isMale ? 'Masculina' : 'Feminina'} cor ${color.name} vista ${isFront ? 'frente' : 'costas'}`}
             fill
             sizes="(max-width: 430px) 100vw, 430px"
             priority
@@ -76,15 +87,15 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
           />
         </div>
 
-        {/* Layer 2: Front Chest Branding Artwork */}
+        {/* Layer 2: Front Chest Branding Logo Layer */}
         {isFront && (
-          <div className={styles.frontLogoLayer}>
+          <div className={`${styles.frontLogoLayer} ${isMale ? styles.maleFrontLogo : styles.femaleFrontLogo}`}>
             <div className={styles.brandLogoWrapper}>
               <Image
                 src={frontLogoSrc}
                 alt="ALTA7 Front Logo"
-                width={100}
-                height={35}
+                width={95}
+                height={32}
                 className={styles.brandLogoImage}
                 priority
               />
@@ -92,9 +103,18 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
           </div>
         )}
 
-        {/* Layer 3: Back Print Overlay */}
+        {/* Layer 3: Back Print Area Overlay System (Calibrated per Gender) */}
         {!isFront && (
-          <div className={styles.backPrintLayer}>
+          <div
+            className={`${styles.printArea} ${isMale ? styles.malePrintArea : styles.femalePrintArea} ${
+              isDebugPrintArea ? styles.debugActive : ''
+            }`}
+          >
+            {isDebugPrintArea && (
+              <span className={styles.debugLabel}>
+                PRINT AREA ({isMale ? 'MASC' : 'FEM'})
+              </span>
+            )}
             <Image
               src={backArtworkSrc}
               alt={`Estampa ${print.code} ${print.title}`}

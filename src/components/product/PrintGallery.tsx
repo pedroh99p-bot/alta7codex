@@ -19,7 +19,7 @@ export const PrintGallery: React.FC<PrintGalleryProps> = ({ onSelectPrint }) => 
             <span className={styles.eyebrow}>COLEÇÃO EDITORIAL</span>
             <h2 className={styles.title}>COLEÇÃO DE ARTES</h2>
             <p className={styles.subtitle}>
-              Artes exclusivas inspiradas na cultura de futebol de praia e rua do Rio de Janeiro.
+              Artes exclusivas inspiradas na altinha, na praia e na rua do Rio de Janeiro.
             </p>
           </div>
         </ScrollReveal>

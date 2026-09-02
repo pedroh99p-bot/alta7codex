@@ -13,28 +13,15 @@
   overflow: hidden;
 }
 
-.slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.8s ease-in-out;
-  pointer-events: none;
-}
-
-.slideActive {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 .lifestyleImage {
   object-fit: cover;
-  object-position: center;
+  object-position: center 20%;
 }
 
 .mediaOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(8, 8, 8, 0.35) 0%, rgba(8, 8, 8, 0.85) 100%);
+  background: linear-gradient(180deg, rgba(8, 8, 8, 0.25) 0%, rgba(8, 8, 8, 0.85) 100%);
   pointer-events: none;
 }
 
@@ -45,7 +32,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  z-index: 2;
+  z-index: 3;
 }
 
 .topOverlayRight {
@@ -56,7 +43,30 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 2px;
+  z-index: 3;
+}
+
+.watermarkEditorial {
+  position: absolute;
+  bottom: 16px;
+  left: var(--mobile-padding);
+  right: var(--mobile-padding);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
   z-index: 2;
+  pointer-events: none;
+  font-family: var(--font-editorial);
+  font-size: clamp(48px, 15vw, 84px);
+  line-height: 0.85;
+  color: rgba(242, 240, 232, 0.15);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.watermarkYellow {
+  color: rgba(230, 198, 25, 0.25);
 }
 
 .tagSmall {
@@ -79,35 +89,6 @@
   height: 2px;
   background-color: var(--yellow-alta7);
   margin-top: 2px;
-}
-
-.progressLineContainer {
-  display: flex;
-  gap: 6px;
-  padding: 0 var(--mobile-padding);
-  margin-top: var(--space-16);
-}
-
-.progressActive {
-  flex: 1.5;
-  height: 4px;
-  background-color: var(--yellow-alta7);
-  border-radius: var(--radius-full);
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  transition: flex 0.3s ease, background-color 0.3s ease;
-}
-
-.progressInactive {
-  flex: 1;
-  height: 4px;
-  background-color: var(--border-subtle);
-  border-radius: var(--radius-full);
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  transition: flex 0.3s ease, background-color 0.3s ease;
 }
 
 .content {

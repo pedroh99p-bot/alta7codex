@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
             height={45}
             className={styles.logoImage}
           />
-          <p className={styles.tagline}>FUTEBOL • PRAIA • RUA • RIO DE JANEIRO</p>
+          <p className={styles.tagline}>ALTINHA • PRAIA • RUA • RIO DE JANEIRO</p>
         </div>
 
         <div className={styles.linksRow}>
@@ -29,7 +29,7 @@ export const Footer: React.FC = () => {
         <div className={styles.copyRow}>
           <span>© {new Date().getFullYear()} ALTA7. Todos os direitos reservados.</span>
           <span className={styles.motto}>
-            <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={12} height={12} className={styles.inlineSymbol} /> ALTA7. FUTEBOL É LIBERDADE.
+            <Image src="/brand/symbol-alta7.webp" alt="ALTA7" width={12} height={12} className={styles.inlineSymbol} /> ALTA7. ALTINHA É LIBERDADE.
           </span>
         </div>
       </div>
