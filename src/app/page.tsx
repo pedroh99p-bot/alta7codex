@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Preloader } from '@/components/ui/Preloader';
 import { Navbar } from '@/components/layout/Navbar';
 import { HeroSection } from '@/components/hero/HeroSection';
@@ -15,6 +15,11 @@ import { OrderReviewModal } from '@/components/order/OrderReviewModal';
 
 export default function HomePage() {
   const [isOrderReviewOpen, setIsOrderReviewOpen] = useState(false);
+  const [isPreloaderDone, setIsPreloaderDone] = useState(false);
+
+  const handlePreloaderDone = useCallback(() => {
+    setIsPreloaderDone(true);
+  }, []);
 
   const handleScrollToConfigurator = () => {
     const configuratorElem = document.getElementById('configurator');
@@ -30,13 +35,16 @@ export default function HomePage() {
   return (
     <main>
       {/* 01. Preloader */}
-      <Preloader />
+      <Preloader onDone={handlePreloaderDone} />
 
       {/* 02. Minimalist Navbar */}
       <Navbar onStartConfigurator={handleScrollToConfigurator} />
 
       {/* 03. Hero Lifestyle Section with Auto-play Carousel */}
-      <HeroSection onStartConfigurator={handleScrollToConfigurator} />
+      <HeroSection
+        onStartConfigurator={handleScrollToConfigurator}
+        startSlideshow={isPreloaderDone}
+      />
 
       {/* 04. Main Visual Configurator Engine */}
       <ConfiguratorMain />

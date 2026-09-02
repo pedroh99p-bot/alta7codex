@@ -70,6 +70,7 @@
 .baseImage {
   object-fit: contain;
   object-position: center;
+  animation: previewFadeIn 220ms ease-out;
   transition: opacity 0.25s ease-in-out;
 }
 
@@ -157,5 +158,34 @@
   object-position: center;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
   opacity: 0.95;
+  animation: artworkFadeIn 180ms ease-out;
   transition: opacity 0.25s ease-in-out;
+}
+
+@keyframes previewFadeIn {
+  from {
+    opacity: 0.74;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes artworkFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 0.95;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .baseImage,
+  .artworkOverlayImage {
+    animation: none;
+    transition: none;
+  }
 }

@@ -4,13 +4,16 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { FabricCode, ProductConfiguration, ProductModelCode, SizeCode, TShirtViewSide } from '@/types/product';
 import { ALTA7_PRODUCT } from '@/data/product';
-import { calculateItemPrice, normalizeFabricForModel } from '@/lib/pricing';
+import { calculateItemPrice, formatPriceBRL, normalizeFabricForModel } from '@/lib/pricing';
 import { useCart } from '@/context/CartContext';
 import { ProductPreview } from './ProductPreview';
 import { SizeGuideModal } from './SizeGuideModal';
 import styles from './ConfiguratorMain.module.css';
 
 type AccordionStep = 'model' | 'color' | 'print' | 'fabric' | 'size' | null;
+type CompletionStep = Exclude<AccordionStep, null>;
+
+const TOTAL_STEPS = 5;
 
 export const ConfiguratorMain: React.FC = () => {
   const { addToCart } = useCart();
@@ -21,6 +24,13 @@ export const ConfiguratorMain: React.FC = () => {
 
   // Active product configuration
   const [config, setConfig] = useState<ProductConfiguration>(ALTA7_PRODUCT.defaultConfiguration);
+  const [completedSteps, setCompletedSteps] = useState<Record<CompletionStep, boolean>>({
+    model: false,
+    color: false,
+    print: false,
+    fabric: false,
+    size: false,
+  });
 
   // Accordion active step (only ONE open at a time)
   const [openStep, setOpenStep] = useState<AccordionStep>('color');
@@ -38,6 +48,16 @@ export const ConfiguratorMain: React.FC = () => {
   const activeModel = config.model ?? 'male';
 
   const itemPrice = calculateItemPrice(config);
+  const completedCount = Object.values(completedSteps).filter(Boolean).length;
+  const progressPercent = Math.round((completedCount / TOTAL_STEPS) * 100);
+
+  const markStepCompleted = (step: CompletionStep) => {
+    setCompletedSteps((prev) => ({ ...prev, [step]: true }));
+  };
+
+  const renderCheck = (step: CompletionStep) => (
+    completedSteps[step] ? <span className={styles.checkDone}>✓</span> : null
+  );
 
   // Toggle Accordion step (ensures ONLY ONE is open)
   const toggleStep = (step: AccordionStep) => {
@@ -61,6 +81,7 @@ export const ConfiguratorMain: React.FC = () => {
       model: initialModelPick,
       fabricId: 'cotton',
     }));
+    markStepCompleted('model');
     setHasChosenInitialModel(true);
     setOpenStep('color'); // Move naturally to color step
   };
@@ -75,19 +96,24 @@ export const ConfiguratorMain: React.FC = () => {
         fabricId,
       };
     });
+    markStepCompleted('model');
     setOpenStep('color');
   };
 
   // Color change handler
   const handleSelectColor = (colorId: string) => {
-    setConfig((prev) => ({ ...prev, colorId }));
+    setConfig((prev) => ({ ...prev, colorId, viewSide: 'back' }));
+    markStepCompleted('color');
     setOpenStep('print'); // Advance naturally to ART
-    setConfig((prev) => ({ ...prev, viewSide: 'back' })); // Auto-switch to COSTAS
   };
 
   // Print change handler
   const handleSelectPrint = (printId: string) => {
     setConfig((prev) => ({ ...prev, printId, viewSide: 'back' }));
+    markStepCompleted('print');
+    if (config.model === 'female') {
+      markStepCompleted('fabric');
+    }
     // If Male, move to fabric; if Female, move to size (since fabric is auto-cotton)
     setOpenStep(config.model === 'male' ? 'fabric' : 'size');
   };
@@ -96,6 +122,7 @@ export const ConfiguratorMain: React.FC = () => {
   const handleSelectFabric = (fabricId: FabricCode) => {
     if (config.model === 'female' && fabricId === 'malha-30-1') return; // Enforce rule
     setConfig((prev) => ({ ...prev, fabricId }));
+    markStepCompleted('fabric');
     setOpenStep('size'); // Advance naturally to SIZE
   };
 
@@ -103,6 +130,7 @@ export const ConfiguratorMain: React.FC = () => {
   const handleSelectSize = (sizeId: SizeCode) => {
     setSizeWarning(false);
     setConfig((prev) => ({ ...prev, sizeId }));
+    markStepCompleted('size');
   };
 
   // Toggle view side
@@ -139,6 +167,15 @@ export const ConfiguratorMain: React.FC = () => {
               <p className={styles.subtitle}>
                 Selecione a modelagem para começar a personalizar sua camisa.
               </p>
+              <div className={styles.progressGroup} aria-label="Progresso da personalização">
+                <div className={styles.progressMeta}>
+                  <span>PROGRESSO</span>
+                  <span>0/{TOTAL_STEPS}</span>
+                </div>
+                <div className={styles.progressTrack}>
+                  <span className={styles.progressFill} style={{ width: '0%' }} />
+                </div>
+              </div>
             </div>
 
             {/* Side-by-Side Model Cards (Mobile & Desktop) */}
@@ -160,12 +197,12 @@ export const ConfiguratorMain: React.FC = () => {
                     className={styles.initialImage}
                     priority
                   />
-                  <div className={styles.initialLogoOverlay}>
+                  <div className={`${styles.initialFrontLogoArea} ${styles.initialFrontLogoAreaFemale}`}>
                     <Image
-                      src="/brand/front-logo-white.png"
+                      src="/brand/front-logo-white-cropped.png"
                       alt="ALTA7"
-                      width={60}
-                      height={20}
+                      fill
+                      sizes="44px"
                       className={styles.initialLogoImage}
                     />
                   </div>
@@ -193,12 +230,12 @@ export const ConfiguratorMain: React.FC = () => {
                     className={styles.initialImage}
                     priority
                   />
-                  <div className={styles.initialLogoOverlay}>
+                  <div className={`${styles.initialFrontLogoArea} ${styles.initialFrontLogoAreaMale}`}>
                     <Image
-                      src="/brand/front-logo-white.png"
+                      src="/brand/front-logo-white-cropped.png"
                       alt="ALTA7"
-                      width={65}
-                      height={22}
+                      fill
+                      sizes="48px"
                       className={styles.initialLogoImage}
                     />
                   </div>
@@ -232,6 +269,15 @@ export const ConfiguratorMain: React.FC = () => {
             <div className={styles.sectionHeader}>
               <span className={styles.eyebrow}>ALTA7 AUTORAL</span>
               <h2 className={styles.title}>MONTE SUA CAMISA</h2>
+              <div className={styles.progressGroup} aria-label="Progresso da personalização">
+                <div className={styles.progressMeta}>
+                  <span>PROGRESSO</span>
+                  <span>{completedCount}/{TOTAL_STEPS}</span>
+                </div>
+                <div className={styles.progressTrack}>
+                  <span className={styles.progressFill} style={{ width: `${progressPercent}%` }} />
+                </div>
+              </div>
             </div>
 
             {/* Dominant Product Preview Engine */}
@@ -268,7 +314,7 @@ export const ConfiguratorMain: React.FC = () => {
                     <span className={styles.stepName}>MODELO</span>
                   </div>
                   <span className={styles.stepValue}>
-                    {config.model === 'female' ? 'Feminino' : 'Masculino'} <span className={styles.checkDone}>✓</span>
+                    {config.model === 'female' ? 'Feminino' : 'Masculino'} {renderCheck('model')}
                   </span>
                 </button>
 
@@ -308,7 +354,7 @@ export const ConfiguratorMain: React.FC = () => {
                     <span className={styles.stepName}>COR</span>
                   </div>
                   <span className={styles.stepValue}>
-                    {currentColor.name} <span className={styles.checkDone}>✓</span>
+                    {currentColor.name} {renderCheck('color')}
                   </span>
                 </button>
 
@@ -350,7 +396,7 @@ export const ConfiguratorMain: React.FC = () => {
                     <span className={styles.stepName}>ARTE (COSTAS)</span>
                   </div>
                   <span className={styles.stepValue}>
-                    {currentPrint.code} <span className={styles.checkDone}>✓</span>
+                    {currentPrint.code} {renderCheck('print')}
                   </span>
                 </button>
 
@@ -400,7 +446,7 @@ export const ConfiguratorMain: React.FC = () => {
                     <span className={styles.stepName}>TECIDO</span>
                   </div>
                   <span className={styles.stepValue}>
-                    {currentFabric.name} <span className={styles.checkDone}>✓</span>
+                    {currentFabric.name} {renderCheck('fabric')}
                   </span>
                 </button>
 
@@ -459,7 +505,7 @@ export const ConfiguratorMain: React.FC = () => {
                     <span className={styles.stepName}>TAMANHO</span>
                   </div>
                   <span className={styles.stepValue}>
-                    {currentSize ? currentSize.label : 'Escolher'} {currentSize && <span className={styles.checkDone}>✓</span>}
+                    {currentSize ? currentSize.label : 'Escolher'} {renderCheck('size')}
                   </span>
                 </button>
 
@@ -502,7 +548,7 @@ export const ConfiguratorMain: React.FC = () => {
               <div className={styles.stickyContainer}>
                 <div className={styles.stickyPriceGroup}>
                   <span className={styles.stickyPriceLabel}>VALOR TOTAL:</span>
-                  <span className={styles.stickyPriceValue}>R$ {itemPrice.totalPrice},00</span>
+                  <span className={styles.stickyPriceValue}>{formatPriceBRL(itemPrice.totalPrice)}</span>
                 </div>
 
                 <button

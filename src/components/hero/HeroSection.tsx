@@ -1,28 +1,59 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { ALTA7_HERO_SLIDES } from '@/data/campaign';
 import styles from './HeroSection.module.css';
 
 interface HeroSectionProps {
   onStartConfigurator: () => void;
+  startSlideshow?: boolean;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({
+  onStartConfigurator,
+  startSlideshow = true,
+}) => {
+  const slides = useMemo(() => ALTA7_HERO_SLIDES, []);
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    if (!startSlideshow || slides.length <= 1) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    let interval: number | null = null;
+    const delayTimer = window.setTimeout(() => {
+      interval = window.setInterval(() => {
+        setActiveSlide((current) => (current + 1) % slides.length);
+      }, 2000);
+    }, 2000);
+
+    return () => {
+      window.clearTimeout(delayTimer);
+      if (interval) window.clearInterval(interval);
+    };
+  }, [slides.length, startSlideshow]);
+
   return (
     <section className={styles.hero}>
       {/* Lifestyle Cover Media Slot Container (4:5 Ratio) */}
       <ScrollReveal>
         <div className={styles.mediaContainer}>
-          <Image
-            src="https://res.cloudinary.com/dhbrxzt5a/image/upload/WhatsApp_Image_2026-09-01_at_13.03.35_1_h1wanp.webp"
-            alt="ALTA7 Lifestyle - Jogador na praia do Rio com camiseta ALTA7"
-            fill
-            sizes="(max-width: 430px) 100vw, 430px"
-            priority
-            className={styles.lifestyleImage}
-          />
+          {slides.map((slide, index) => (
+            <Image
+              key={slide.id}
+              src={slide.src}
+              alt={slide.alt}
+              fill
+              sizes="(max-width: 430px) 100vw, 430px"
+              priority={index === 0}
+              className={`${styles.lifestyleImage} ${index === activeSlide ? styles.lifestyleImageActive : ''}`}
+              style={{ objectPosition: slide.objectPosition }}
+            />
+          ))}
 
           <div className={styles.mediaOverlay} />
 
@@ -38,7 +69,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartConfigurator })
             <span className={styles.tagSmall}>ALTINHA</span>
             <span className={styles.tagSmall}>PRAIA</span>
             <span className={`${styles.tagSmall} ${styles.tagActive}`}>
-              RUA
+              {slides[activeSlide]?.title || 'RUA'}
               <span className={styles.underlineYellow} />
             </span>
           </div>

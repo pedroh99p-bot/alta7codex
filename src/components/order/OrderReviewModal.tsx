@@ -4,6 +4,8 @@ import React from 'react';
 import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { generateWhatsAppUrl } from '@/lib/whatsapp';
+import { formatPriceBRL } from '@/lib/pricing';
+import { ProductPreview } from '@/components/configurator/ProductPreview';
 import styles from './OrderReviewModal.module.css';
 
 interface OrderReviewModalProps {
@@ -44,31 +46,33 @@ export const OrderReviewModal: React.FC<OrderReviewModalProps> = ({
         {/* Items List */}
         <div className={styles.itemsContainer}>
           {items.map((item) => {
-            const baseImages = item.configuration.model === 'female'
-              ? item.color.femaleBaseImages
-              : item.color.maleBaseImages;
+            const model = item.configuration.model ?? 'male';
 
             return (
             <div key={item.id} className={styles.reviewCard}>
               {/* Dual View Side-by-side T-Shirt Preview */}
               <div className={styles.dualPreviewRow}>
                 <div className={styles.previewBox}>
-                  <Image
-                    src={baseImages.front}
-                    alt="Frente"
-                    fill
-                    sizes="(max-width: 430px) 44vw, 180px"
-                    className={styles.previewImg}
+                  <ProductPreview
+                    model={model}
+                    color={item.color}
+                    print={item.print}
+                    viewSide="front"
+                    showTabs={false}
+                    showViewTag={false}
+                    priority={false}
                   />
                   <span className={styles.viewLabel}>FRENTE</span>
                 </div>
                 <div className={styles.previewBox}>
-                  <Image
-                    src={baseImages.back}
-                    alt="Costas"
-                    fill
-                    sizes="(max-width: 430px) 44vw, 180px"
-                    className={styles.previewImg}
+                  <ProductPreview
+                    model={model}
+                    color={item.color}
+                    print={item.print}
+                    viewSide="back"
+                    showTabs={false}
+                    showViewTag={false}
+                    priority={false}
                   />
                   <span className={styles.viewLabel}>COSTAS ({item.print.code})</span>
                 </div>
@@ -130,7 +134,7 @@ export const OrderReviewModal: React.FC<OrderReviewModalProps> = ({
         <div className={styles.footer}>
           <div className={styles.totalRow}>
             <span className={styles.totalLabel}>TOTAL</span>
-            <span className={styles.totalValue}>R$ {totalPrice}</span>
+            <span className={styles.totalValue}>{formatPriceBRL(totalPrice)}</span>
           </div>
 
           <a

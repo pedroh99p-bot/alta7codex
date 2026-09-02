@@ -1,8 +1,9 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
+import { ProductPreview } from '@/components/configurator/ProductPreview';
+import { formatPriceBRL } from '@/lib/pricing';
 import styles from './CartDrawer.module.css';
 
 interface CartDrawerProps {
@@ -44,22 +45,21 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onProceedToReview }) => 
             </div>
           ) : (
             items.map((item) => {
-              const baseImages = item.configuration.model === 'female'
-                ? item.color.femaleBaseImages
-                : item.color.maleBaseImages;
+              const model = item.configuration.model ?? 'male';
 
               return (
               <div key={item.id} className={styles.cartCard}>
                 {/* Mini Preview Thumbnail */}
                 <div className={styles.thumbWrapper}>
-                  <Image
-                    src={baseImages.back}
-                    alt={item.color.name}
-                    fill
-                    sizes="70px"
-                    className={styles.thumbImage}
+                  <ProductPreview
+                    model={model}
+                    color={item.color}
+                    print={item.print}
+                    viewSide="back"
+                    showTabs={false}
+                    showViewTag={false}
+                    priority={false}
                   />
-                  <span className={styles.thumbPrintCode}>{item.print.code}</span>
                 </div>
 
                 {/* Info & Specs */}
@@ -107,7 +107,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onProceedToReview }) => 
                       </button>
                     </div>
 
-                    <span className={styles.itemSubtotal}>R$ {item.totalPrice}</span>
+                    <span className={styles.itemSubtotal}>{formatPriceBRL(item.totalPrice)}</span>
                   </div>
                 </div>
               </div>
@@ -121,7 +121,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({ onProceedToReview }) => 
           <div className={styles.footer}>
             <div className={styles.totalRow}>
               <span className={styles.totalLabel}>SUBTOTAL SELEÇÃO</span>
-              <span className={styles.totalValue}>R$ {totalPrice}</span>
+              <span className={styles.totalValue}>{formatPriceBRL(totalPrice)}</span>
             </div>
 
             <button

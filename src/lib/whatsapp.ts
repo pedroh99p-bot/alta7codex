@@ -1,5 +1,6 @@
 import { CartItem } from '@/types/product';
 import { ALTA7_PRODUCT } from '@/data/product';
+import { formatPriceBRL } from '@/lib/pricing';
 
 export function buildWhatsAppMessage(items: CartItem[]): string {
   if (!items || items.length === 0) {
@@ -14,7 +15,7 @@ export function buildWhatsAppMessage(items: CartItem[]): string {
       const fabricText = item.fabric.name;
       const sizeText = item.size ? item.size.label : 'Não informado';
       const quantityText = item.quantity.toString();
-      const subtotalText = `R$ ${item.totalPrice}`;
+      const subtotalText = formatPriceBRL(item.totalPrice);
 
       return `👕 *ITEM ${index + 1}*
 🧍 Modelagem: ${modelLabel}
@@ -37,7 +38,7 @@ ${itemsText}
 
 ─────────────
 
-💰 *TOTAL: R$ ${grandTotal}*
+💰 *TOTAL: ${formatPriceBRL(grandTotal)}*
 
 Quero confirmar meu pedido. ⚽`;
 }

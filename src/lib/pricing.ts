@@ -28,3 +28,11 @@ export function calculateItemPrice(config: ProductConfiguration): ItemPriceSumma
     totalPrice: unitPrice * config.quantity,
   };
 }
+
+export function formatPriceBRL(value: number): string {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 2,
+  }).format(value).replace(/\u00a0/g, ' ');
+}

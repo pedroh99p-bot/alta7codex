@@ -119,7 +119,7 @@
 }
 
 .thumbWrapper {
-  width: 70px;
+  width: 78px;
   aspect-ratio: 4 / 5;
   border-radius: var(--radius-xs);
   position: relative;
@@ -128,27 +128,17 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  background: var(--bg-main);
+  border: 1px solid rgba(230, 198, 25, 0.22);
 }
 
-.thumbImage {
-  object-fit: contain;
-  object-position: center;
-}
-
-.thumbPrintCode {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  font-family: var(--font-editorial);
-  font-size: 10px;
-  color: var(--yellow-alta7);
-  background: rgba(0, 0, 0, 0.7);
-  padding: 1px 3px;
-  border-radius: 2px;
+.thumbWrapper > div {
+  gap: 0;
 }
 
 .cardDetails {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -190,6 +180,7 @@
 .specsRow {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 4px;
   font-family: var(--font-ui);
   font-size: 10px;

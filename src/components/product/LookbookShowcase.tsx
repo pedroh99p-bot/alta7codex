@@ -3,25 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
+import { ALTA7_LOOKBOOK_ITEMS } from '@/data/campaign';
 import styles from './LookbookShowcase.module.css';
-
-const LOOKBOOK_ITEMS = [
-  {
-    src: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/WhatsApp_Image_2026-09-01_at_13.03.35_1_h1wanp.webp',
-    title: 'CULTURA DA ALTINHA',
-    location: 'POSTO 9 • IPANEMA',
-  },
-  {
-    src: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/WhatsApp_Image_2026-09-01_at_13.03.35_2_xcd3gz.webp',
-    title: 'FEITA PRA RUA',
-    location: 'LAPA • RIO DE JANEIRO',
-  },
-  {
-    src: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/WhatsApp_Image_2026-09-01_at_13.03.35_djf2hr.webp',
-    title: 'STREETWEAR AUTORAL',
-    location: 'ARPOADOR • RIO',
-  },
-];
 
 interface LookbookShowcaseProps {
   onGoToConfigurator?: () => void;
@@ -43,18 +26,20 @@ export const LookbookShowcase: React.FC<LookbookShowcaseProps> = ({ onGoToConfig
 
         {/* Horizontal Scroll Rail */}
         <div className={styles.rail}>
-          {LOOKBOOK_ITEMS.map((item, idx) => (
+          {ALTA7_LOOKBOOK_ITEMS.map((item, idx) => (
             <ScrollReveal key={item.src} delayMs={idx * 100} className={styles.cardWrapper}>
               <div className={styles.card}>
                 <div className={styles.imageSlot}>
                   <Image
                     src={item.src}
-                    alt={item.title}
+                    alt={item.alt}
                     fill
                     sizes="(max-width: 430px) 80vw, 320px"
                     className={styles.image}
+                    style={{ objectPosition: item.objectPosition }}
                   />
                   <div className={styles.overlay} />
+                  {item.isNewCampaign && <span className={styles.newBadge}>NOVA CAMPANHA</span>}
                   <div className={styles.cardBadge}>
                     <span className={styles.locationText}>{item.location}</span>
                     <span className={styles.titleText}>{item.title}</span>

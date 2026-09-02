@@ -12,6 +12,8 @@ interface ProductPreviewProps {
   viewSide: TShirtViewSide;
   onToggleSide?: (side: TShirtViewSide) => void;
   showTabs?: boolean;
+  showViewTag?: boolean;
+  priority?: boolean;
 }
 
 export const ProductPreview: React.FC<ProductPreviewProps> = ({
@@ -21,6 +23,8 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
   viewSide,
   onToggleSide,
   showTabs = true,
+  showViewTag = true,
+  priority = true,
 }) => {
   const isFront = viewSide === 'front';
   const isMale = model === 'male';
@@ -37,7 +41,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
   // Front logo artwork (White for dark shirts, Black for white shirt)
   const frontLogoSrc = isWhiteShirt
     ? '/brand/front-logo-black.webp'
-    : '/brand/front-logo-white.png';
+    : '/brand/front-logo-white-cropped.png';
 
   // Back artwork overlay
   const backArtworkSrc = isWhiteShirt
@@ -71,18 +75,21 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
       {/* 4:5 Aspect Ratio Preview Canvas */}
       <div className={styles.canvas}>
         {/* Collar View Text Tag Badge */}
-        <div className={styles.collarViewTag}>
-          {isFront ? 'FRENTE' : 'COSTAS'}
-        </div>
+        {showViewTag && (
+          <div className={styles.collarViewTag}>
+            {isFront ? 'FRENTE' : 'COSTAS'}
+          </div>
+        )}
 
         {/* Layer 1: Base T-Shirt Image */}
         <div className={styles.baseLayer}>
           <Image
+            key={baseImageSrc}
             src={baseImageSrc}
             alt={`Camisa ALTA7 ${isMale ? 'Masculina' : 'Feminina'} cor ${color.name} vista ${isFront ? 'frente' : 'costas'}`}
             fill
             sizes="(max-width: 430px) 100vw, 430px"
-            priority
+            priority={priority}
             className={styles.baseImage}
           />
         </div>
@@ -97,7 +104,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
                 width={95}
                 height={32}
                 className={styles.brandLogoImage}
-                priority
+                priority={priority}
               />
             </div>
           </div>
@@ -116,12 +123,13 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
               </span>
             )}
             <Image
+              key={backArtworkSrc}
               src={backArtworkSrc}
               alt={`Estampa ${print.code} ${print.title}`}
               fill
               sizes="(max-width: 430px) 100vw, 430px"
               className={styles.artworkOverlayImage}
-              priority
+              priority={priority}
             />
           </div>
         )}

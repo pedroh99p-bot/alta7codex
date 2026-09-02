@@ -80,7 +80,7 @@
 
 .previewBox {
   aspect-ratio: 4 / 5;
-  background: #eaeaea;
+  background: var(--bg-main);
   border-radius: var(--radius-xs);
   position: relative;
   overflow: hidden;
@@ -88,11 +88,11 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(230, 198, 25, 0.18);
 }
 
-.previewImg {
-  object-fit: contain;
-  object-position: center;
+.previewBox > div {
+  gap: 0;
 }
 
 .viewLabel {
@@ -219,7 +219,7 @@
   text-align: center;
 }
 
-.legalFooter {
+.modalFooterNote {
   text-align: center;
   font-family: var(--font-ui);
   font-size: 9px;
@@ -227,4 +227,8 @@
   color: var(--text-muted);
   text-transform: uppercase;
   margin-top: var(--space-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
 }

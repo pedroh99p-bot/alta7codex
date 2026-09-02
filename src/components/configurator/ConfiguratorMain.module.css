@@ -44,6 +44,42 @@
   line-height: 1.45;
 }
 
+.progressGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: var(--space-14);
+}
+
+.progressMeta {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.progressTrack {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.progressFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: inherit;
+  background: var(--yellow-alta7);
+  box-shadow: 0 0 12px rgba(230, 198, 25, 0.35);
+  transition: width 320ms ease;
+}
+
 .initialScreen,
 .mainLayout {
   display: flex;
@@ -75,11 +111,13 @@
 .initialCard:focus-visible {
   border-color: rgba(230, 198, 25, 0.65);
   outline: none;
+  transform: translateY(-1px);
 }
 
 .initialCardSelected {
   border-color: var(--yellow-alta7);
   background: rgba(230, 198, 25, 0.04);
+  transform: translateY(-2px);
 }
 
 .checkBadge {
@@ -97,12 +135,13 @@
   font-family: var(--font-ui);
   font-size: 12px;
   font-weight: 800;
+  animation: checkPop 180ms ease-out;
 }
 
 .initialImageWrapper {
   position: relative;
   aspect-ratio: 4 / 5;
-  background: #eaeaea;
+  background: var(--bg-main);
 }
 
 .initialImage {
@@ -111,9 +150,8 @@
   pointer-events: none;
 }
 
-.initialLogoOverlay {
+.initialFrontLogoArea {
   position: absolute;
-  top: 32%;
   left: 50%;
   z-index: 3;
   transform: translate(-50%, -50%);
@@ -121,9 +159,21 @@
   filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.6));
 }
 
+.initialFrontLogoAreaFemale {
+  top: 37%;
+  width: 37%;
+  height: 10%;
+}
+
+.initialFrontLogoAreaMale {
+  top: 39%;
+  width: 35%;
+  height: 10%;
+}
+
 .initialLogoImage {
-  width: 100%;
-  height: auto;
+  object-fit: contain;
+  object-position: center;
 }
 
 .initialCardFooter {
@@ -273,6 +323,7 @@
 
 .accordionItem {
   border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .accordionItemOpen {
@@ -337,10 +388,14 @@
 
 .checkDone {
   color: var(--yellow-alta7);
+  display: inline-block;
+  animation: checkPop 180ms ease-out;
 }
 
 .accordionBody {
   padding: 0 0 var(--space-16);
+  animation: accordionReveal 220ms ease-out;
+  transform-origin: top;
 }
 
 .modelOptionsGrid {
@@ -363,6 +418,14 @@
   color: var(--text-primary);
   text-align: left;
   cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.modelOptBtn:hover,
+.modelOptBtn:focus-visible {
+  border-color: rgba(230, 198, 25, 0.5);
+  outline: none;
+  transform: translateY(-1px);
 }
 
 .modelOptActive {
@@ -466,6 +529,12 @@
   transition: transform var(--transition-fast), border-color var(--transition-fast);
 }
 
+.swatchBtn:hover,
+.swatchBtn:focus-visible {
+  outline: none;
+  transform: translateY(-1px);
+}
+
 .swatchFill {
   width: 32px;
   height: 32px;
@@ -508,6 +577,13 @@
   text-align: center;
   cursor: pointer;
   transition: all var(--transition-fast);
+}
+
+.fabricCard:hover,
+.fabricCard:focus-visible {
+  border-color: rgba(230, 198, 25, 0.5);
+  outline: none;
+  transform: translateY(-1px);
 }
 
 .fabricCardHeader {
@@ -595,6 +671,13 @@
   cursor: pointer;
   position: relative;
   transition: all var(--transition-fast);
+}
+
+.printCard:hover,
+.printCard:focus-visible {
+  border-color: rgba(230, 198, 25, 0.5);
+  outline: none;
+  transform: translateY(-1px);
 }
 
 .printBadgeCheck {
@@ -710,6 +793,13 @@
   font-weight: 700;
   cursor: pointer;
   transition: all var(--transition-fast);
+}
+
+.sizePill:hover,
+.sizePill:focus-visible {
+  border-color: rgba(230, 198, 25, 0.5);
+  outline: none;
+  transform: translateY(-1px);
 }
 
 .sizeSelected {
@@ -931,4 +1021,44 @@
 
 .stickyArrow {
   color: var(--yellow-alta7);
+}
+
+@keyframes accordionReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scaleY(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@keyframes checkPop {
+  0% {
+    transform: scale(0.72);
+  }
+  70% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressFill,
+  .accordionBody,
+  .checkDone,
+  .checkBadge,
+  .initialCard,
+  .modelOptBtn,
+  .swatchBtn,
+  .fabricCard,
+  .printCard,
+  .sizePill,
+  .stickyBar {
+    animation: none;
+    transition: none;
+  }
 }

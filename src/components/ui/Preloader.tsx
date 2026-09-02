@@ -12,26 +12,48 @@ const PRELOAD_BASES = ALTA7_PRODUCT.colors.flatMap((color) => [
   color.femaleBaseImages.back,
 ]);
 
-export const Preloader: React.FC = () => {
+interface PreloaderProps {
+  onDone?: () => void;
+}
+
+export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
   const [curtainUp, setCurtainUp] = useState(false);
   const [unmounted, setUnmounted] = useState(false);
 
   useEffect(() => {
+    const previousScrollRestoration = window.history.scrollRestoration;
+    if (!window.location.hash) {
+      window.history.scrollRestoration = 'manual';
+      window.scrollTo(0, 0);
+    }
+
     // JS Preload of all 10 t-shirt base color images
     PRELOAD_BASES.forEach((src) => {
       const img = new window.Image();
       img.src = src;
     });
 
+    let unmountTimer: ReturnType<typeof window.setTimeout> | undefined;
+
     // Start curtain lifting animation after preloading
     const timer = setTimeout(() => {
+      if (!window.location.hash) {
+        window.scrollTo(0, 0);
+      }
       setCurtainUp(true);
-      const unmountTimer = setTimeout(() => setUnmounted(true), 650);
-      return () => clearTimeout(unmountTimer);
+      unmountTimer = setTimeout(() => {
+        setUnmounted(true);
+        onDone?.();
+        window.history.scrollRestoration = previousScrollRestoration;
+      }, 650);
     }, 1200);
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => {
+      clearTimeout(timer);
+      if (unmountTimer) clearTimeout(unmountTimer);
+      window.history.scrollRestoration = previousScrollRestoration;
+    };
+  }, [onDone]);
 
   if (unmounted) return null;
 
