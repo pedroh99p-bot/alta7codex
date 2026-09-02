@@ -40,7 +40,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
 
   // Front logo artwork (White for dark shirts, Black for white shirt)
   const frontLogoSrc = isWhiteShirt
-    ? '/brand/front-logo-black.webp'
+    ? '/brand/front-logo-black-cropped.webp'
     : '/brand/front-logo-white-cropped.png';
 
   // Back artwork overlay
@@ -101,8 +101,8 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
               <Image
                 src={frontLogoSrc}
                 alt="ALTA7 Front Logo"
-                width={95}
-                height={32}
+                fill
+                sizes="95px"
                 className={styles.brandLogoImage}
                 priority={priority}
               />

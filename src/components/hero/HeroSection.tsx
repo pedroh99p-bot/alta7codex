@@ -49,7 +49,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               alt={slide.alt}
               fill
               sizes="(max-width: 430px) 100vw, 430px"
-              priority={index === 0}
+              preload={index === 0}
+              loading={index === 0 ? 'eager' : 'lazy'}
               className={`${styles.lifestyleImage} ${index === activeSlide ? styles.lifestyleImageActive : ''}`}
               style={{ objectPosition: slide.objectPosition }}
             />
