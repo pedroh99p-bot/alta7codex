@@ -28,16 +28,32 @@ export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
     const previousBodyRight = document.body.style.right;
     const previousBodyWidth = document.body.style.width;
     const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
     const previousHtmlScrollBehavior = document.documentElement.style.scrollBehavior;
-    let rafOne: number | undefined;
-    let rafTwo: number | undefined;
+    let topLockFrame: number | undefined;
 
-    const restorePageTop = () => {
-      window.scrollTo(0, 0);
-      rafOne = window.requestAnimationFrame(() => {
+    const restorePageTop = (durationMs = 0) => {
+      if (topLockFrame) {
+        window.cancelAnimationFrame(topLockFrame);
+      }
+      const startedAt = window.performance.now();
+
+      const tick = () => {
         window.scrollTo(0, 0);
-        rafTwo = window.requestAnimationFrame(() => window.scrollTo(0, 0));
-      });
+        if (window.performance.now() - startedAt < durationMs) {
+          topLockFrame = window.requestAnimationFrame(tick);
+        }
+      };
+
+      tick();
+    };
+
+    const resetTopLock = () => {
+      if (topLockFrame) {
+        window.cancelAnimationFrame(topLockFrame);
+        topLockFrame = undefined;
+      }
+      window.scrollTo(0, 0);
     };
 
     const releaseScrollLock = () => {
@@ -47,6 +63,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
       document.body.style.right = previousBodyRight;
       document.body.style.width = previousBodyWidth;
       document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
       document.documentElement.style.scrollBehavior = previousHtmlScrollBehavior;
       window.history.scrollRestoration = previousScrollRestoration;
     };
@@ -54,6 +71,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
     if (!window.location.hash) {
       window.history.scrollRestoration = 'manual';
       document.documentElement.style.scrollBehavior = 'auto';
+      document.documentElement.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
       document.body.style.top = '0';
       document.body.style.left = '0';
@@ -82,7 +100,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
         onDone?.();
         if (!window.location.hash) {
           releaseScrollLock();
-          restorePageTop();
+          restorePageTop(1200);
         } else {
           releaseScrollLock();
         }
@@ -92,8 +110,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
     return () => {
       clearTimeout(timer);
       if (unmountTimer) clearTimeout(unmountTimer);
-      if (rafOne) window.cancelAnimationFrame(rafOne);
-      if (rafTwo) window.cancelAnimationFrame(rafTwo);
+      resetTopLock();
       releaseScrollLock();
     };
   }, [onDone]);
