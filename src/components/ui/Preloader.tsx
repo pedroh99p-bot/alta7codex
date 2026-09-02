@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import Image from 'next/image';
 import { ALTA7_PRODUCT } from '@/data/product';
 import styles from './Preloader.module.css';
@@ -20,11 +20,47 @@ export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
   const [curtainUp, setCurtainUp] = useState(false);
   const [unmounted, setUnmounted] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const previousScrollRestoration = window.history.scrollRestoration;
+    const previousBodyPosition = document.body.style.position;
+    const previousBodyTop = document.body.style.top;
+    const previousBodyLeft = document.body.style.left;
+    const previousBodyRight = document.body.style.right;
+    const previousBodyWidth = document.body.style.width;
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlScrollBehavior = document.documentElement.style.scrollBehavior;
+    let rafOne: number | undefined;
+    let rafTwo: number | undefined;
+
+    const restorePageTop = () => {
+      window.scrollTo(0, 0);
+      rafOne = window.requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+        rafTwo = window.requestAnimationFrame(() => window.scrollTo(0, 0));
+      });
+    };
+
+    const releaseScrollLock = () => {
+      document.body.style.position = previousBodyPosition;
+      document.body.style.top = previousBodyTop;
+      document.body.style.left = previousBodyLeft;
+      document.body.style.right = previousBodyRight;
+      document.body.style.width = previousBodyWidth;
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.scrollBehavior = previousHtmlScrollBehavior;
+      window.history.scrollRestoration = previousScrollRestoration;
+    };
+
     if (!window.location.hash) {
       window.history.scrollRestoration = 'manual';
-      window.scrollTo(0, 0);
+      document.documentElement.style.scrollBehavior = 'auto';
+      document.body.style.position = 'fixed';
+      document.body.style.top = '0';
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+      restorePageTop();
     }
 
     // JS Preload of all 10 t-shirt base color images
@@ -38,20 +74,27 @@ export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
     // Start curtain lifting animation after preloading
     const timer = setTimeout(() => {
       if (!window.location.hash) {
-        window.scrollTo(0, 0);
+        restorePageTop();
       }
       setCurtainUp(true);
       unmountTimer = setTimeout(() => {
         setUnmounted(true);
         onDone?.();
-        window.history.scrollRestoration = previousScrollRestoration;
+        if (!window.location.hash) {
+          releaseScrollLock();
+          restorePageTop();
+        } else {
+          releaseScrollLock();
+        }
       }, 650);
     }, 1200);
 
     return () => {
       clearTimeout(timer);
       if (unmountTimer) clearTimeout(unmountTimer);
-      window.history.scrollRestoration = previousScrollRestoration;
+      if (rafOne) window.cancelAnimationFrame(rafOne);
+      if (rafTwo) window.cancelAnimationFrame(rafTwo);
+      releaseScrollLock();
     };
   }, [onDone]);
 

@@ -39,7 +39,6 @@ export const LookbookShowcase: React.FC<LookbookShowcaseProps> = ({ onGoToConfig
                     style={{ objectPosition: item.objectPosition }}
                   />
                   <div className={styles.overlay} />
-                  {item.isNewCampaign && <span className={styles.newBadge}>NOVA CAMPANHA</span>}
                   <div className={styles.cardBadge}>
                     <span className={styles.locationText}>{item.location}</span>
                     <span className={styles.titleText}>{item.title}</span>

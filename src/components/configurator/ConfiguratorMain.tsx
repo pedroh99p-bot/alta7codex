@@ -102,9 +102,8 @@ export const ConfiguratorMain: React.FC = () => {
 
   // Color change handler
   const handleSelectColor = (colorId: string) => {
-    setConfig((prev) => ({ ...prev, colorId, viewSide: 'back' }));
+    setConfig((prev) => ({ ...prev, colorId }));
     markStepCompleted('color');
-    setOpenStep('print'); // Advance naturally to ART
   };
 
   // Print change handler
@@ -114,8 +113,6 @@ export const ConfiguratorMain: React.FC = () => {
     if (config.model === 'female') {
       markStepCompleted('fabric');
     }
-    // If Male, move to fabric; if Female, move to size (since fabric is auto-cotton)
-    setOpenStep(config.model === 'male' ? 'fabric' : 'size');
   };
 
   // Fabric change handler
