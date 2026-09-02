@@ -29,6 +29,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
   const isFront = viewSide === 'front';
   const isMale = model === 'male';
   const isWhiteShirt = color.id === 'branco';
+  const isWineBordo = color.id === 'vinho-bordo';
 
   const isDebugPrintArea = typeof window !== 'undefined'
     && new URLSearchParams(window.location.search).get('debugPrintArea') === 'true';
@@ -81,58 +82,60 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
           </div>
         )}
 
-        {/* Layer 1: Base T-Shirt Image */}
-        <div className={styles.baseLayer}>
-          <Image
-            key={baseImageSrc}
-            src={baseImageSrc}
-            alt={`Camisa ALTA7 ${isMale ? 'Masculina' : 'Feminina'} cor ${color.name} vista ${isFront ? 'frente' : 'costas'}`}
-            fill
-            sizes="(max-width: 430px) 100vw, 430px"
-            priority={priority}
-            className={styles.baseImage}
-          />
-        </div>
+        <div className={`${styles.shirtLayer} ${isWineBordo ? styles.wineBordoShirtLayer : ''}`}>
+          {/* Layer 1: Base T-Shirt Image */}
+          <div className={styles.baseLayer}>
+            <Image
+              key={baseImageSrc}
+              src={baseImageSrc}
+              alt={`Camisa ALTA7 ${isMale ? 'Masculina' : 'Feminina'} cor ${color.name} vista ${isFront ? 'frente' : 'costas'}`}
+              fill
+              sizes="(max-width: 430px) 100vw, 430px"
+              priority={priority}
+              className={styles.baseImage}
+            />
+          </div>
 
-        {/* Layer 2: Front Chest Branding Logo Layer */}
-        {isFront && (
-          <div className={`${styles.frontLogoLayer} ${isMale ? styles.maleFrontLogo : styles.femaleFrontLogo}`}>
-            <div className={styles.brandLogoWrapper}>
+          {/* Layer 2: Front Chest Branding Logo Layer */}
+          {isFront && (
+            <div className={`${styles.frontLogoLayer} ${isMale ? styles.maleFrontLogo : styles.femaleFrontLogo}`}>
+              <div className={styles.brandLogoWrapper}>
+                <Image
+                  src={frontLogoSrc}
+                  alt="ALTA7 Front Logo"
+                  fill
+                  sizes="95px"
+                  className={styles.brandLogoImage}
+                  priority={priority}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Layer 3: Back Print Area Overlay System (Calibrated per Gender) */}
+          {!isFront && (
+            <div
+              className={`${styles.printArea} ${isMale ? styles.malePrintArea : styles.femalePrintArea} ${
+                isDebugPrintArea ? styles.debugActive : ''
+              }`}
+            >
+              {isDebugPrintArea && (
+                <span className={styles.debugLabel}>
+                  PRINT AREA ({isMale ? 'MASC' : 'FEM'})
+                </span>
+              )}
               <Image
-                src={frontLogoSrc}
-                alt="ALTA7 Front Logo"
+                key={backArtworkSrc}
+                src={backArtworkSrc}
+                alt={`Estampa ${print.code} ${print.title}`}
                 fill
-                sizes="95px"
-                className={styles.brandLogoImage}
+                sizes="(max-width: 430px) 100vw, 430px"
+                className={styles.artworkOverlayImage}
                 priority={priority}
               />
             </div>
-          </div>
-        )}
-
-        {/* Layer 3: Back Print Area Overlay System (Calibrated per Gender) */}
-        {!isFront && (
-          <div
-            className={`${styles.printArea} ${isMale ? styles.malePrintArea : styles.femalePrintArea} ${
-              isDebugPrintArea ? styles.debugActive : ''
-            }`}
-          >
-            {isDebugPrintArea && (
-              <span className={styles.debugLabel}>
-                PRINT AREA ({isMale ? 'MASC' : 'FEM'})
-              </span>
-            )}
-            <Image
-              key={backArtworkSrc}
-              src={backArtworkSrc}
-              alt={`Estampa ${print.code} ${print.title}`}
-              fill
-              sizes="(max-width: 430px) 100vw, 430px"
-              className={styles.artworkOverlayImage}
-              priority={priority}
-            />
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
