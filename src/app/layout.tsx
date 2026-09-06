@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import { CartProvider } from '@/context/CartContext';
 import './globals.css';
 
+const socialPreviewImage = 'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1788733843/77b6fca2-f487-45b8-9c99-c12c247da523_ne1bv4.webp';
+
 export const metadata: Metadata = {
   title: 'ALTA7 — Camiseta Autoral & Configurador Visual | Altinha, Praia e Rua',
   description: 'Monte a sua camiseta ALTA7. Escolha modelo, cor, tecido, estampa e tamanho. Cultura da altinha, praia e rua do Rio de Janeiro.',
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
     siteName: 'ALTA7',
     images: [
       {
-        url: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1786589565/5917ea7e-eff0-4d59-b00c-717fa55f2d89_hvtjia.webp',
+        url: socialPreviewImage,
         width: 1200,
         height: 630,
         alt: 'ALTA7 — Monte a sua Camiseta',
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'ALTA7 — Monte a sua Camiseta',
     description: 'Monte a sua camiseta ALTA7. Escolha modelo, cor, tecido, estampa e tamanho.',
-    images: ['https://res.cloudinary.com/dhbrxzt5a/image/upload/v1786589565/5917ea7e-eff0-4d59-b00c-717fa55f2d89_hvtjia.webp'],
+    images: [socialPreviewImage],
   },
 };
 
