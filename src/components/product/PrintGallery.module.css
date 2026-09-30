@@ -88,6 +88,10 @@
   object-position: center;
 }
 
+.printImageInverted {
+  filter: invert(1);
+}
+
 .cardInfo {
   display: flex;
   flex-direction: column;

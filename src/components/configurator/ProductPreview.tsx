@@ -130,7 +130,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
                 alt={`Estampa ${print.code} ${print.title}`}
                 fill
                 sizes="(max-width: 430px) 100vw, 430px"
-                className={styles.artworkOverlayImage}
+                className={`${styles.artworkOverlayImage} ${print.invertArtworkForDarkShirts && !isWhiteShirt ? styles.artworkInverted : ''}`}
                 priority={priority}
               />
             </div>

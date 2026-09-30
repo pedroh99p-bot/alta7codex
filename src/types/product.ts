@@ -2,7 +2,7 @@ export type TShirtViewSide = 'front' | 'back';
 
 export type ProductModelCode = 'male' | 'female';
 
-export type FabricCode = 'cotton' | 'malha-30-1';
+export type FabricCode = 'cotton' | 'malha-30-1' | 'viscolycra';
 
 export type SizeCode = 'P' | 'M' | 'G' | 'GG';
 
@@ -27,6 +27,7 @@ export interface FabricOption {
   description: string;
   price: number;
   iconName: string;
+  availableModels: ProductModelCode[];
 }
 
 export interface PrintOption {
@@ -39,6 +40,7 @@ export interface PrintOption {
   overlayImageFront?: string; // Optional front artwork override
   overlayImageBackWhite?: string; // White artwork WebP for dark t-shirts
   overlayImageBackBlack?: string; // Black artwork WebP for white t-shirts
+  invertArtworkForDarkShirts?: boolean;
 }
 
 export interface SizeOption {

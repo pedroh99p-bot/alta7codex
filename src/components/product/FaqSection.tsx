@@ -16,7 +16,7 @@ const FAQS: FaqItem[] = [
   },
   {
     q: 'Qual a diferença entre os 3 tecidos?',
-    a: 'O Cotton é 100% algodão casual macio. O Performance é tecido técnico leve com microfuros para alta mobilidade. O Premium é algodão penteado de alta gramatura com modelagem street fit mais encorpada.',
+    a: 'Cotton custa R$ 100,00 e está disponível nos modelos feminino e masculino. No feminino, você também pode escolher Viscolycra pelo mesmo preço. No masculino, há a opção Fio 30.1, uma malha premium mais encorpada, por R$ 120,00.',
   },
   {
     q: 'Qual o prazo de envio e entrega?',

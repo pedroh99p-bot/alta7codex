@@ -10,6 +10,15 @@ export interface CampaignAsset {
 
 export const ALTA7_CAMPAIGN_ASSETS: CampaignAsset[] = [
   {
+    id: 'dupla-altinha-nova',
+    src: '/assets/alta7/campaign/dupla-altinha.webp',
+    cloudinaryUrl: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1790789187/4f1be7b0-83be-4c6a-9895-e70c84dbec3a_ta7pqs.webp',
+    alt: 'Casal usando camisetas ALTA7 jogando altinha na praia',
+    title: 'ALTINHA EM JOGO',
+    location: 'PRAIA • RIO',
+    objectPosition: 'center 42%',
+  },
+  {
     id: 'capa-alta7',
     src: '/assets/alta7/campaign/capa-alta7.webp',
     cloudinaryUrl: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1788314298/WhatsApp_Image_2026-09-01_at_13.03.35_1_h1wanp.webp',
@@ -19,11 +28,29 @@ export const ALTA7_CAMPAIGN_ASSETS: CampaignAsset[] = [
     objectPosition: 'center 34%',
   },
   {
+    id: 'casal-praia-01',
+    src: '/assets/alta7/campaign/casal-praia-01.webp',
+    cloudinaryUrl: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1790789187/33a317b8-a9ae-46a1-b3b9-2efd6b8b7449_mvasfd.webp',
+    alt: 'Casal ALTA7 caminhando na praia com bola de altinha',
+    title: 'ALTA7 NA AREIA',
+    location: 'RECREIO • RIO',
+    objectPosition: 'center 48%',
+  },
+  {
     id: 'rio-altinha-duo',
     src: '/assets/alta7/campaign/whatsapp-image-2026-08-27-17-04-50.webp',
     cloudinaryUrl: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1788275700/WhatsApp_Image_2026-08-27_at_17.04.50_paar2w.webp',
     alt: 'Casal usando camisetas ALTA7 na praia com bola de altinha',
     title: 'ALTINHA NA PRAIA',
+    location: 'PRAIA • RIO',
+    objectPosition: 'center 38%',
+  },
+  {
+    id: 'casal-praia-02',
+    src: '/assets/alta7/campaign/casal-praia-02.webp',
+    cloudinaryUrl: 'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1790789187/768f37e0-23c1-475b-b452-2e910875dbb1_sejbkp.webp',
+    alt: 'Casal vestindo camisetas ALTA7 com bola na praia',
+    title: 'CULTURA DE PRAIA',
     location: 'PRAIA • RIO',
     objectPosition: 'center 38%',
   },

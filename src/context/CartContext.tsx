@@ -23,13 +23,23 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const CART_STORAGE_KEY = 'alta7_cart_items_v1';
 
+function refreshStoredCartItems(items: CartItem[]): CartItem[] {
+  return items.map((item) => {
+    const fabric = ALTA7_PRODUCT.fabrics.find((option) => option.id === item.configuration.fabricId);
+    if (!fabric) return item;
+
+    const { unitPrice, totalPrice } = calculateItemPrice(item.configuration);
+    return { ...item, fabric, unitPrice, totalPrice };
+  });
+}
+
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
     if (typeof window === 'undefined') return [];
 
     try {
       const saved = localStorage.getItem(CART_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [];
+      return saved ? refreshStoredCartItems(JSON.parse(saved) as CartItem[]) : [];
     } catch (e) {
       console.warn('Failed to restore cart from localStorage:', e);
       return [];
@@ -47,7 +57,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [items]);
 
   const addToCart = (config: ProductConfiguration) => {
-    if (!config.model || !config.fabricId || !config.sizeId) return;
+    const model = config.model;
+    if (!model || !config.fabricId || !config.sizeId) return;
+    if (!ALTA7_PRODUCT.fabrics.some((fabric) => fabric.id === config.fabricId && fabric.availableModels.includes(model))) return;
 
     const color = ALTA7_PRODUCT.colors.find((c) => c.id === config.colorId) || ALTA7_PRODUCT.colors[0];
     const fabric = ALTA7_PRODUCT.fabrics.find((f) => f.id === config.fabricId) || ALTA7_PRODUCT.fabrics[0];

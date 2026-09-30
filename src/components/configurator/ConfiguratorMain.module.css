@@ -628,18 +628,6 @@
   text-align: left;
 }
 
-.femaleFabricNote {
-  display: grid;
-  grid-template-columns: 1fr;
-}
-
-.fabricTagline {
-  font-family: var(--font-ui);
-  font-size: 9px;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
 .fabricSelected {
   border-color: var(--yellow-alta7);
   background-color: rgba(230, 198, 25, 0.04);
@@ -718,6 +706,10 @@
 .printThumbImage {
   object-fit: contain;
   padding: 6px;
+}
+
+.printThumbInverted {
+  filter: invert(1);
 }
 
 .printCodeLarge {

@@ -38,7 +38,7 @@ export const PrintGallery: React.FC<PrintGalleryProps> = ({ onSelectPrint }) => 
                       alt={print.title}
                       fill
                       sizes="(max-width: 430px) 45vw, 160px"
-                      className={styles.printImage}
+                      className={`${styles.printImage} ${print.invertArtworkForDarkShirts ? styles.printImageInverted : ''}`}
                     />
                   </div>
                   <div className={styles.cardInfo}>

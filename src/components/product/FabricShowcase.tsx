@@ -33,6 +33,11 @@ export const FabricShowcase: React.FC<FabricShowcaseProps> = ({ onGoToConfigurat
                 <div className={styles.cardDetails}>
                   <h3 className={styles.fabricName}>{fabric.name}</h3>
                   <p className={styles.fabricSub}>{fabric.tagline}</p>
+                  <p className={styles.fabricAvailability}>
+                    {fabric.availableModels.length === 2
+                      ? 'FEMININO E MASCULINO'
+                      : fabric.availableModels[0] === 'female' ? 'FEMININO' : 'MASCULINO'}
+                  </p>
                   <p className={styles.fabricDesc}>{fabric.description}</p>
                 </div>
               </div>

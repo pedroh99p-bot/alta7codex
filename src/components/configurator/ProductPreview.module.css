@@ -173,6 +173,10 @@
   transition: opacity 0.25s ease-in-out;
 }
 
+.artworkInverted {
+  filter: invert(1) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+}
+
 @keyframes previewFadeIn {
   from {
     opacity: 0.74;

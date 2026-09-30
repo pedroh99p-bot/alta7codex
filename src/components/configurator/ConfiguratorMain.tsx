@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { FabricCode, ProductConfiguration, ProductModelCode, SizeCode, TShirtViewSide } from '@/types/product';
 import { ALTA7_PRODUCT } from '@/data/product';
-import { calculateItemPrice, formatPriceBRL, normalizeFabricForModel } from '@/lib/pricing';
+import { calculateItemPrice, formatPriceBRL, getAvailableFabricsForModel, normalizeFabricForModel } from '@/lib/pricing';
 import { useCart } from '@/context/CartContext';
 import { ProductPreview } from './ProductPreview';
 import { SizeGuideModal } from './SizeGuideModal';
@@ -14,6 +14,14 @@ type AccordionStep = 'model' | 'color' | 'print' | 'fabric' | 'size' | null;
 type CompletionStep = Exclude<AccordionStep, null>;
 
 const TOTAL_STEPS = 5;
+
+const getModelFabricSummary = (model: ProductModelCode) => {
+  const fabrics = getAvailableFabricsForModel(model);
+  if (fabrics.length > 0 && fabrics.every((fabric) => fabric.price === fabrics[0].price)) {
+    return `${fabrics.map((fabric) => fabric.name).join(' / ')} • ${formatPriceBRL(fabrics[0].price)}`;
+  }
+  return fabrics.map((fabric) => `${fabric.name} ${formatPriceBRL(fabric.price)}`).join(' • ');
+};
 
 export const ConfiguratorMain: React.FC = () => {
   const { addToCart } = useCart();
@@ -46,6 +54,7 @@ export const ConfiguratorMain: React.FC = () => {
   const currentPrint = ALTA7_PRODUCT.prints.find((p) => p.id === config.printId) || ALTA7_PRODUCT.prints[0];
   const currentSize = ALTA7_PRODUCT.sizes.find((s) => s.id === config.sizeId) || null;
   const activeModel = config.model ?? 'male';
+  const availableFabrics = getAvailableFabricsForModel(config.model);
 
   const itemPrice = calculateItemPrice(config);
   const completedCount = Object.values(completedSteps).filter(Boolean).length;
@@ -88,8 +97,15 @@ export const ConfiguratorMain: React.FC = () => {
 
   // Model change handler (preserves compatible options)
   const handleSelectModel = (model: ProductModelCode) => {
+    const modelFabrics = getAvailableFabricsForModel(model);
+    const keepsCurrentFabric = modelFabrics.some((fabric) => fabric.id === config.fabricId);
+    if (!keepsCurrentFabric) {
+      setCompletedSteps((prev) => ({ ...prev, fabric: false }));
+    }
     setConfig((prev) => {
-      const fabricId = model === 'female' ? 'cotton' : prev.fabricId;
+      const fabricId = modelFabrics.some((fabric) => fabric.id === prev.fabricId)
+        ? prev.fabricId
+        : modelFabrics[0]?.id ?? null;
       return {
         ...prev,
         model,
@@ -110,14 +126,11 @@ export const ConfiguratorMain: React.FC = () => {
   const handleSelectPrint = (printId: string) => {
     setConfig((prev) => ({ ...prev, printId, viewSide: 'back' }));
     markStepCompleted('print');
-    if (config.model === 'female') {
-      markStepCompleted('fabric');
-    }
   };
 
   // Fabric change handler
   const handleSelectFabric = (fabricId: FabricCode) => {
-    if (config.model === 'female' && fabricId === 'malha-30-1') return; // Enforce rule
+    if (!availableFabrics.some((fabric) => fabric.id === fabricId)) return;
     setConfig((prev) => ({ ...prev, fabricId }));
     markStepCompleted('fabric');
     setOpenStep('size'); // Advance naturally to SIZE
@@ -324,7 +337,7 @@ export const ConfiguratorMain: React.FC = () => {
                         onClick={() => handleSelectModel('male')}
                       >
                         <span className={styles.modelOptTitle}>MASCULINO</span>
-                        <span className={styles.modelOptSub}>R$ 100,00 ou R$ 120,00</span>
+                        <span className={styles.modelOptSub}>{getModelFabricSummary('male')}</span>
                       </button>
                       <button
                         type="button"
@@ -332,7 +345,7 @@ export const ConfiguratorMain: React.FC = () => {
                         onClick={() => handleSelectModel('female')}
                       >
                         <span className={styles.modelOptTitle}>FEMININO</span>
-                        <span className={styles.modelOptSub}>Cotton • R$ 100,00</span>
+                        <span className={styles.modelOptSub}>{getModelFabricSummary('female')}</span>
                       </button>
                     </div>
                   </div>
@@ -416,7 +429,7 @@ export const ConfiguratorMain: React.FC = () => {
                                 alt={print.title}
                                 fill
                                 sizes="110px"
-                                className={styles.printThumbImage}
+                                className={`${styles.printThumbImage} ${print.invertArtworkForDarkShirts && config.colorId !== 'branco' ? styles.printThumbInverted : ''}`}
                               />
                             </div>
                             <div className={styles.printInfo}>
@@ -449,43 +462,23 @@ export const ConfiguratorMain: React.FC = () => {
 
                 {openStep === 'fabric' && (
                   <div className={styles.accordionBody}>
-                    {config.model === 'male' ? (
-                      <div className={styles.fabricGrid}>
+                    <div className={styles.fabricGrid}>
+                      {availableFabrics.map((fabric) => (
                         <button
+                          key={fabric.id}
                           type="button"
-                          className={`${styles.fabricCard} ${config.fabricId === 'cotton' ? styles.fabricSelected : ''}`}
-                          onClick={() => handleSelectFabric('cotton')}
+                          className={`${styles.fabricCard} ${config.fabricId === fabric.id ? styles.fabricSelected : ''}`}
+                          onClick={() => handleSelectFabric(fabric.id)}
+                          aria-pressed={config.fabricId === fabric.id}
                         >
                           <div className={styles.fabricCardHeader}>
-                            <span className={styles.fabricTitle}>COTTON</span>
-                            <span className={styles.fabricPriceTag}>R$ 100,00</span>
+                            <span className={styles.fabricTitle}>{fabric.name}</span>
+                            <span className={styles.fabricPriceTag}>{formatPriceBRL(fabric.price)}</span>
                           </div>
-                          <span className={styles.fabricDesc}>Algodão leve & macio com excelente toque.</span>
+                          <span className={styles.fabricDesc}>{fabric.description}</span>
                         </button>
-
-                        <button
-                          type="button"
-                          className={`${styles.fabricCard} ${config.fabricId === 'malha-30-1' ? styles.fabricSelected : ''}`}
-                          onClick={() => handleSelectFabric('malha-30-1')}
-                        >
-                          <div className={styles.fabricCardHeader}>
-                            <span className={styles.fabricTitle}>MALHA 30.1</span>
-                            <span className={styles.fabricPriceTag}>R$ 120,00</span>
-                          </div>
-                          <span className={styles.fabricDesc}>Algodão penteado encorpado alta gramatura.</span>
-                        </button>
-                      </div>
-                    ) : (
-                      <div className={styles.femaleFabricNote}>
-                        <div className={`${styles.fabricCard} ${styles.fabricSelected}`}>
-                          <div className={styles.fabricCardHeader}>
-                            <span className={styles.fabricTitle}>COTTON</span>
-                            <span className={styles.fabricPriceTag}>R$ 100,00</span>
-                          </div>
-                          <span className={styles.fabricDesc}>Modelagem feminina disponível exclusivamente em Cotton macio.</span>
-                        </div>
-                      </div>
-                    )}
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
