@@ -118,6 +118,7 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBack: '/products/tshirt/prints/white/2_2_x6bsl8.png',
       overlayImageBackWhite: '/products/tshirt/prints/white/2_2_x6bsl8.png',
       overlayImageBackBlack: '/products/tshirt/prints/black/arte_praia_1_preta_transparente_sq70y1.png',
+      artworkScale: 1.04,
     },
     {
       id: 'art-02',
@@ -128,6 +129,7 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBack: '/products/tshirt/prints/white/3_1_fvdqdf.png',
       overlayImageBackWhite: '/products/tshirt/prints/white/3_1_fvdqdf.png',
       overlayImageBackBlack: '/products/tshirt/prints/black/arte_praia_2_preta_transparente_dtyxdu.png',
+      artworkScale: 1.04,
     },
     {
       id: 'art-03',
@@ -138,6 +140,7 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBack: '/products/tshirt/prints/white/4_1_slaspp.png',
       overlayImageBackWhite: '/products/tshirt/prints/white/4_1_slaspp.png',
       overlayImageBackBlack: '/products/tshirt/prints/black/687338e9-7c5f-4ef8-8179-3d8cecb1c1a5_sbtvqw.webp',
+      artworkScale: 1.04,
     },
     {
       id: 'art-04',
@@ -148,6 +151,7 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBack: '/products/tshirt/prints/white/5_2_ruu1fn.png',
       overlayImageBackWhite: '/products/tshirt/prints/white/5_2_ruu1fn.png',
       overlayImageBackBlack: '/products/tshirt/prints/black/art04-black.png',
+      artworkScale: 1.04,
     },
     {
       id: 'art-05',
@@ -159,6 +163,8 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBackWhite: '/products/tshirt/prints/new/altinha-dupla.webp',
       overlayImageBackBlack: '/products/tshirt/prints/new/altinha-dupla.webp',
       invertArtworkForDarkShirts: true,
+      artworkScale: 0.93,
+      artworkOffsetYPercent: -4.1,
     },
     {
       id: 'art-06',
@@ -170,6 +176,8 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBackWhite: '/products/tshirt/prints/new/jogo-na-praia.webp',
       overlayImageBackBlack: '/products/tshirt/prints/new/jogo-na-praia.webp',
       invertArtworkForDarkShirts: true,
+      artworkScale: 0.83,
+      artworkOffsetYPercent: -1.4,
     },
     {
       id: 'art-07',
@@ -181,6 +189,8 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBackWhite: '/products/tshirt/prints/new/altinha-em-grupo.webp',
       overlayImageBackBlack: '/products/tshirt/prints/new/altinha-em-grupo.webp',
       invertArtworkForDarkShirts: true,
+      artworkScale: 0.88,
+      artworkOffsetYPercent: -4.3,
     },
     {
       id: 'art-08',
@@ -192,6 +202,8 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBackWhite: '/products/tshirt/prints/new/samurai.webp',
       overlayImageBackBlack: '/products/tshirt/prints/new/samurai.webp',
       invertArtworkForDarkShirts: true,
+      artworkScale: 0.84,
+      artworkOffsetYPercent: -1.8,
     },
     {
       id: 'art-09',
@@ -203,6 +215,8 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBackWhite: '/products/tshirt/prints/new/toque-de-cabeca.webp',
       overlayImageBackBlack: '/products/tshirt/prints/new/toque-de-cabeca.webp',
       invertArtworkForDarkShirts: true,
+      artworkScale: 0.8,
+      artworkOffsetYPercent: -0.8,
     },
     {
       id: 'art-10',
@@ -214,6 +228,8 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBackWhite: '/products/tshirt/prints/new/altinha-ao-por-do-sol.webp',
       overlayImageBackBlack: '/products/tshirt/prints/new/altinha-ao-por-do-sol.webp',
       invertArtworkForDarkShirts: true,
+      artworkScale: 0.8,
+      artworkOffsetYPercent: -0.5,
     },
   ],
   sizes: [

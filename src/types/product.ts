@@ -41,6 +41,8 @@ export interface PrintOption {
   overlayImageBackWhite?: string; // White artwork WebP for dark t-shirts
   overlayImageBackBlack?: string; // Black artwork WebP for white t-shirts
   invertArtworkForDarkShirts?: boolean;
+  artworkScale?: number;
+  artworkOffsetYPercent?: number;
 }
 
 export interface SizeOption {

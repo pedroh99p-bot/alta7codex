@@ -29,7 +29,6 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
   const isFront = viewSide === 'front';
   const isMale = model === 'male';
   const isWhiteShirt = color.id === 'branco';
-  const isWineBordo = color.id === 'vinho-bordo';
 
   const isDebugPrintArea = typeof window !== 'undefined'
     && new URLSearchParams(window.location.search).get('debugPrintArea') === 'true';
@@ -82,7 +81,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
           </div>
         )}
 
-        <div className={`${styles.shirtLayer} ${isWineBordo ? styles.wineBordoShirtLayer : ''}`}>
+        <div className={styles.shirtLayer}>
           {/* Layer 1: Base T-Shirt Image */}
           <div className={styles.baseLayer}>
             <Image
@@ -130,6 +129,10 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
                 alt={`Estampa ${print.code} ${print.title}`}
                 fill
                 sizes="(max-width: 430px) 100vw, 430px"
+                style={{
+                  '--artwork-scale': print.artworkScale ?? 1,
+                  '--artwork-offset-y': `${print.artworkOffsetYPercent ?? 0}%`,
+                } as React.CSSProperties}
                 className={`${styles.artworkOverlayImage} ${print.invertArtworkForDarkShirts && !isWhiteShirt ? styles.artworkInverted : ''}`}
                 priority={priority}
               />

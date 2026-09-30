@@ -47,9 +47,6 @@
   inset: 0;
   z-index: 1;
   transform-origin: center center;
-}
-
-.wineBordoShirtLayer {
   transform: scale(0.9);
 }
 
@@ -95,11 +92,11 @@
 }
 
 .maleFrontLogo {
-  top: 32%;
+  top: 30%;
 }
 
 .femaleFrontLogo {
-  top: 34.5%;
+  top: 36.5%;
 }
 
 .brandLogoWrapper {
@@ -138,7 +135,7 @@
 
 /* Female Print Area Calibration (Upper-Mid Back for Cropped / Baby Look fit) */
 .femalePrintArea {
-  top: 45%;
+  top: 47.5%;
   width: 56%;
   height: 52%;
 }
@@ -167,6 +164,8 @@
   height: 100%;
   object-fit: contain;
   object-position: center;
+  transform: translateY(var(--artwork-offset-y, 0%)) scale(var(--artwork-scale, 1));
+  transform-origin: center;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
   opacity: 0.95;
   animation: artworkFadeIn 180ms ease-out;
@@ -189,11 +188,9 @@
 @keyframes artworkFadeIn {
   from {
     opacity: 0;
-    transform: translateY(3px);
   }
   to {
     opacity: 0.95;
-    transform: translateY(0);
   }
 }
 
