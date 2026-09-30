@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { CartProvider } from '@/context/CartContext';
 import './globals.css';
 
-const socialPreviewImage = 'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1788733843/77b6fca2-f487-45b8-9c99-c12c247da523_ne1bv4.webp';
+const socialPreviewImage = 'https://res.cloudinary.com/dhbrxzt5a/image/upload/v1790792910/ca8818d5-9361-4fe5-a006-b06834e73d2e_oskihe.webp';
 
 export const metadata: Metadata = {
   title: 'ALTA7 — Camiseta Autoral & Configurador Visual | Altinha, Praia e Rua',
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: socialPreviewImage,
-        width: 1200,
-        height: 630,
+        width: 1672,
+        height: 941,
         alt: 'ALTA7 — Monte a sua Camiseta',
       },
     ],
