@@ -708,10 +708,6 @@
   padding: 6px;
 }
 
-.printThumbInverted {
-  filter: invert(1);
-}
-
 .printCodeLarge {
   font-family: var(--font-editorial);
   font-size: 18px;

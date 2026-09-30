@@ -429,7 +429,7 @@ export const ConfiguratorMain: React.FC = () => {
                                 alt={print.title}
                                 fill
                                 sizes="110px"
-                                className={`${styles.printThumbImage} ${print.invertArtworkForDarkShirts && config.colorId !== 'branco' ? styles.printThumbInverted : ''}`}
+                                className={styles.printThumbImage}
                               />
                             </div>
                             <div className={styles.printInfo}>
