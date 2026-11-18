@@ -16,6 +16,15 @@ interface ProductPreviewProps {
   priority?: boolean;
 }
 
+// Normalize measured shirt widths while preserving each original image's proportions.
+const baseScales: Record<string, Record<ProductModelCode, Record<TShirtViewSide, number>>> = {
+  preto: { male: { front: 1, back: 1 }, female: { front: 1, back: 1 } },
+  branco: { male: { front: 0.983, back: 0.919 }, female: { front: 0.994, back: 0.996 } },
+  verde: { male: { front: 1.025, back: 0.933 }, female: { front: 1.006, back: 1.014 } },
+  'azul-marinho': { male: { front: 1.009, back: 0.95 }, female: { front: 0.934, back: 1.04 } },
+  'vinho-bordo': { male: { front: 0.866, back: 0.843 }, female: { front: 0.858, back: 0.958 } },
+};
+
 export const ProductPreview: React.FC<ProductPreviewProps> = ({
   model,
   color,
@@ -92,6 +101,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
               sizes="(max-width: 430px) 100vw, 430px"
               priority={priority}
               className={styles.baseImage}
+              style={{ transform: `scale(${baseScales[color.id]?.[model]?.[viewSide] ?? 1})` }}
             />
           </div>
 

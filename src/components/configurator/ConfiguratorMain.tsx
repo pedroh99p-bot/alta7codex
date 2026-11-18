@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { FabricCode, ProductConfiguration, ProductModelCode, SizeCode, TShirtViewSide } from '@/types/product';
 import { ALTA7_PRODUCT } from '@/data/product';
 import { calculateItemPrice, formatPriceBRL, getAvailableFabricsForModel, normalizeFabricForModel } from '@/lib/pricing';
 import { useCart } from '@/context/CartContext';
+import { loadSavedConfiguration, saveConfiguration } from '@/lib/storage';
 import { ProductPreview } from './ProductPreview';
 import { SizeGuideModal } from './SizeGuideModal';
 import styles from './ConfiguratorMain.module.css';
@@ -32,6 +33,7 @@ export const ConfiguratorMain: React.FC = () => {
 
   // Active product configuration
   const [config, setConfig] = useState<ProductConfiguration>(ALTA7_PRODUCT.defaultConfiguration);
+  const [storageReady, setStorageReady] = useState(false);
   const [completedSteps, setCompletedSteps] = useState<Record<CompletionStep, boolean>>({
     model: false,
     color: false,
@@ -42,6 +44,27 @@ export const ConfiguratorMain: React.FC = () => {
 
   // Accordion active step (only ONE open at a time)
   const [openStep, setOpenStep] = useState<AccordionStep>('color');
+
+  useEffect(() => {
+    const saved = loadSavedConfiguration();
+    if ((saved.model === 'male' || saved.model === 'female') &&
+        ALTA7_PRODUCT.colors.some((color) => color.id === saved.colorId) &&
+        ALTA7_PRODUCT.prints.some((print) => print.id === saved.printId)) {
+      const fabricId = normalizeFabricForModel(saved.model, saved.fabricId);
+      const sizeId = ALTA7_PRODUCT.sizes.some((size) => size.id === saved.sizeId) ? saved.sizeId : null;
+      // Restore only catalog options that are still available.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setConfig({ ...saved, fabricId, sizeId, quantity: 1, viewSide: saved.viewSide === 'back' ? 'back' : 'front' });
+      setInitialModelPick(saved.model);
+      setHasChosenInitialModel(true);
+      setCompletedSteps({ model: true, color: false, print: false, fabric: false, size: !!sizeId });
+    }
+    setStorageReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (storageReady && config.model) saveConfiguration(config);
+  }, [config, storageReady]);
 
   // Modals and Warnings
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);

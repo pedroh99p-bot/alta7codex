@@ -1,7 +1,7 @@
 export interface CampaignAsset {
   id: string;
   src: string;
-  cloudinaryUrl: string;
+  cloudinaryUrl?: string;
   alt: string;
   title: string;
   location: string;
@@ -9,6 +9,10 @@ export interface CampaignAsset {
 }
 
 export const ALTA7_CAMPAIGN_ASSETS: CampaignAsset[] = [
+  { id: 'terraco-frente', src: '/assets/alta7/campaign/terraco-frente.jpg', alt: 'Modelo usando camiseta ALTA7 no terraco', title: 'ALTA7 NO RIO', location: 'RIO DE JANEIRO', objectPosition: '65% 48%' },
+  { id: 'terraco-grupo', src: '/assets/alta7/campaign/terraco-grupo.jpg', alt: 'Grupo usando camisetas ALTA7 no terraco', title: 'ALTA7 EM GRUPO', location: 'RIO DE JANEIRO', objectPosition: 'center 55%' },
+  { id: 'terraco-costas', src: '/assets/alta7/campaign/terraco-costas.jpg', alt: 'Modelo mostrando a estampa nas costas', title: 'ARTE NAS COSTAS', location: 'RIO DE JANEIRO', objectPosition: '60% 40%' },
+  { id: 'terraco-encontro', src: '/assets/alta7/campaign/terraco-encontro.jpg', alt: 'Modelo com camiseta ALTA7 no terraco', title: 'ESTILO ALTA7', location: 'RIO DE JANEIRO', objectPosition: '35% 50%' },
   {
     id: 'dupla-altinha-nova',
     src: '/assets/alta7/campaign/dupla-altinha.webp',

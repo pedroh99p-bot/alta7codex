@@ -48,14 +48,6 @@ export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
       tick();
     };
 
-    const resetTopLock = () => {
-      if (topLockFrame) {
-        window.cancelAnimationFrame(topLockFrame);
-        topLockFrame = undefined;
-      }
-      window.scrollTo(0, 0);
-    };
-
     const releaseScrollLock = () => {
       document.body.style.position = previousBodyPosition;
       document.body.style.top = previousBodyTop;
@@ -100,7 +92,6 @@ export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
         onDone?.();
         if (!window.location.hash) {
           releaseScrollLock();
-          restorePageTop(1200);
         } else {
           releaseScrollLock();
         }
@@ -110,7 +101,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
     return () => {
       clearTimeout(timer);
       if (unmountTimer) clearTimeout(unmountTimer);
-      resetTopLock();
+      if (topLockFrame) window.cancelAnimationFrame(topLockFrame);
       releaseScrollLock();
     };
   }, [onDone]);

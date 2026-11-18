@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'ALTA7 — Monte a sua Camiseta',
     description: 'Monte a sua camiseta ALTA7. Escolha modelo, cor, tecido, estampa e tamanho. Altinha, praia e rua.',
-    url: 'https://alta7.vercel.app',
+    url: 'https://alta7codex.vercel.app',
     siteName: 'ALTA7',
     images: [
       {
