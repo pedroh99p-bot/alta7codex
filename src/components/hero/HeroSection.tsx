@@ -12,6 +12,8 @@ interface HeroSectionProps {
   startSlideshow?: boolean;
 }
 
+const SLIDE_DURATION_MS = 4000;
+
 export const HeroSection: React.FC<HeroSectionProps> = ({
   onStartConfigurator,
   startSlideshow = true,
@@ -25,17 +27,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) return;
 
-    let interval: number | null = null;
-    const delayTimer = window.setTimeout(() => {
-      interval = window.setInterval(() => {
-        setActiveSlide((current) => (current + 1) % slides.length);
-      }, 2000);
-    }, 2000);
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % slides.length);
+    }, SLIDE_DURATION_MS);
 
-    return () => {
-      window.clearTimeout(delayTimer);
-      if (interval) window.clearInterval(interval);
-    };
+    return () => window.clearInterval(timer);
   }, [slides.length, startSlideshow]);
 
   return (
@@ -58,6 +54,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           ))}
 
           <div className={styles.mediaOverlay} />
+
+          {startSlideshow && slides.length > 1 && (
+            <div className={styles.slideProgress} aria-hidden="true">
+              <div key={activeSlide} className={styles.slideProgressFill} style={{ animationDuration: `${SLIDE_DURATION_MS}ms` }} />
+            </div>
+          )}
 
           {/* Top Overlay Location & Brand Tags */}
           <div className={styles.topOverlayLeft}>

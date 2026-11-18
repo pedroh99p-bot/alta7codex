@@ -33,6 +33,30 @@
   pointer-events: none;
 }
 
+.slideProgress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 4;
+  background: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+}
+
+.slideProgressFill {
+  width: 100%;
+  height: 100%;
+  background: var(--yellow-alta7);
+  transform-origin: left;
+  animation: slideProgress linear forwards;
+}
+
+@keyframes slideProgress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
 .topOverlayLeft {
   position: absolute;
   top: var(--space-12);
@@ -230,6 +254,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .slideProgress {
+    display: none;
+  }
   .lifestyleImage {
     transition: none;
     transform: none;

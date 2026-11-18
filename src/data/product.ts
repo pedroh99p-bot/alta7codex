@@ -118,7 +118,7 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBack: '/products/tshirt/prints/white/2_2_x6bsl8.png',
       overlayImageBackWhite: '/products/tshirt/prints/white/2_2_x6bsl8.png',
       overlayImageBackBlack: '/products/tshirt/prints/black/arte_praia_1_preta_transparente_sq70y1.png',
-      artworkScale: 0.8,
+      artworkScale: 0.92,
     },
     {
       id: 'art-02',
@@ -228,7 +228,7 @@ export const ALTA7_PRODUCT: ProductData = {
       overlayImageBackWhite: '/products/tshirt/prints/new/altinha-ao-por-do-sol.webp',
       overlayImageBackBlack: '/products/tshirt/prints/new/altinha-ao-por-do-sol.webp',
       invertArtworkForDarkShirts: true,
-      artworkScale: 0.615,
+      artworkScale: 0.70725,
       artworkOffsetYPercent: -0.3,
     },
   ],
