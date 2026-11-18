@@ -16,6 +16,7 @@ import { OrderReviewModal } from '@/components/order/OrderReviewModal';
 export default function HomePage() {
   const [isOrderReviewOpen, setIsOrderReviewOpen] = useState(false);
   const [isPreloaderDone, setIsPreloaderDone] = useState(false);
+  const [gallerySelection, setGallerySelection] = useState<{ id: string; sequence: number } | null>(null);
 
   const handlePreloaderDone = useCallback(() => {
     setIsPreloaderDone(true);
@@ -28,7 +29,8 @@ export default function HomePage() {
     }
   };
 
-  const handleSelectPrintFromGallery = () => {
+  const handleSelectPrintFromGallery = (id: string) => {
+    setGallerySelection((previous) => ({ id, sequence: (previous?.sequence ?? 0) + 1 }));
     handleScrollToConfigurator();
   };
 
@@ -47,7 +49,7 @@ export default function HomePage() {
       />
 
       {/* 04. Main Visual Configurator Engine */}
-      <ConfiguratorMain />
+      <ConfiguratorMain gallerySelection={gallerySelection} />
 
       {/* 05. Lifestyle Lookbook Rio de Janeiro Gallery */}
       <LookbookShowcase onGoToConfigurator={handleScrollToConfigurator} />

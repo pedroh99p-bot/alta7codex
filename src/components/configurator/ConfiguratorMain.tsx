@@ -24,8 +24,9 @@ const getModelFabricSummary = (model: ProductModelCode) => {
   return fabrics.map((fabric) => `${fabric.name} ${formatPriceBRL(fabric.price)}`).join(' • ');
 };
 
-export const ConfiguratorMain: React.FC = () => {
-  const { addToCart } = useCart();
+export const ConfiguratorMain: React.FC<{ gallerySelection?: { id: string; sequence: number } | null }> = ({ gallerySelection }) => {
+  const { addToCart, isOpen: isCartOpen } = useCart();
+  const [helpStep, setHelpStep] = useState<'model' | 'fabric' | 'print' | null>(null);
 
   // Initial Model Selection State (false until user confirms initial model screen)
   const [hasChosenInitialModel, setHasChosenInitialModel] = useState<boolean>(false);
@@ -57,7 +58,7 @@ export const ConfiguratorMain: React.FC = () => {
       setConfig({ ...saved, fabricId, sizeId, quantity: 1, viewSide: saved.viewSide === 'back' ? 'back' : 'front' });
       setInitialModelPick(saved.model);
       setHasChosenInitialModel(true);
-      setCompletedSteps({ model: true, color: false, print: false, fabric: false, size: !!sizeId });
+      setCompletedSteps({ model: true, color: true, print: true, fabric: !!fabricId, size: !!sizeId });
     }
     setStorageReady(true);
   }, []);
@@ -65,6 +66,14 @@ export const ConfiguratorMain: React.FC = () => {
   useEffect(() => {
     if (storageReady && config.model) saveConfiguration(config);
   }, [config, storageReady]);
+
+  useEffect(() => {
+    if (!storageReady || !gallerySelection || !ALTA7_PRODUCT.prints.some((print) => print.id === gallerySelection.id)) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setConfig((previous) => ({ ...previous, printId: gallerySelection.id, viewSide: 'back' }));
+    setCompletedSteps((previous) => ({ ...previous, print: true }));
+    setOpenStep('print');
+  }, [gallerySelection, storageReady]);
 
   // Modals and Warnings
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
@@ -115,7 +124,7 @@ export const ConfiguratorMain: React.FC = () => {
     }));
     markStepCompleted('model');
     setHasChosenInitialModel(true);
-    setOpenStep('color'); // Move naturally to color step
+    setOpenStep(gallerySelection ? 'print' : 'color');
   };
 
   // Model change handler (preserves compatible options)
@@ -136,7 +145,6 @@ export const ConfiguratorMain: React.FC = () => {
       };
     });
     markStepCompleted('model');
-    setOpenStep('color');
   };
 
   // Color change handler
@@ -156,7 +164,6 @@ export const ConfiguratorMain: React.FC = () => {
     if (!availableFabrics.some((fabric) => fabric.id === fabricId)) return;
     setConfig((prev) => ({ ...prev, fabricId }));
     markStepCompleted('fabric');
-    setOpenStep('size'); // Advance naturally to SIZE
   };
 
   // Size change handler
@@ -228,7 +235,6 @@ export const ConfiguratorMain: React.FC = () => {
                     fill
                     sizes="(max-width: 430px) 45vw, 240px"
                     className={styles.initialImage}
-                    priority
                   />
                   <div className={`${styles.initialFrontLogoArea} ${styles.initialFrontLogoAreaFemale}`}>
                     <Image
@@ -261,7 +267,6 @@ export const ConfiguratorMain: React.FC = () => {
                     fill
                     sizes="(max-width: 430px) 45vw, 240px"
                     className={styles.initialImage}
-                    priority
                   />
                   <div className={`${styles.initialFrontLogoArea} ${styles.initialFrontLogoAreaMale}`}>
                     <Image
@@ -322,6 +327,11 @@ export const ConfiguratorMain: React.FC = () => {
                 viewSide={config.viewSide}
                 onToggleSide={handleToggleSide}
               />
+              <div className={styles.stepTabs} aria-label="Etapas da personalização">
+                {([['model', 'Modelo'], ['color', 'Cor'], ['print', 'Arte'], ['fabric', 'Tecido'], ['size', 'Tamanho']] as const).map(([step, label]) => (
+                  <button key={step} type="button" className={openStep === step ? styles.stepTabActive : ''} aria-pressed={openStep === step} onClick={() => { setOpenStep(step); if (step === 'print') setConfig((previous) => ({ ...previous, viewSide: 'back' })); }}>{label}</button>
+                ))}
+              </div>
             </div>
 
             {/* Real-time Summary Line */}
@@ -555,6 +565,18 @@ export const ConfiguratorMain: React.FC = () => {
               </div>
 
             </div>
+
+            {!isCartOpen && !isSizeGuideOpen && (
+              <div className={styles.helpWidget}>
+                {helpStep && <div className={styles.helpPanel}>
+                  <button type="button" className={styles.helpClose} onClick={() => setHelpStep(null)} aria-label="Fechar ajuda">×</button>
+                  {helpStep === 'model' && <><strong>Qual modelagem você procura?</strong><div className={styles.helpOptions}><button type="button" onClick={() => { handleSelectModel('female'); setHelpStep('fabric'); }}>Feminino</button><button type="button" onClick={() => { handleSelectModel('male'); setHelpStep('fabric'); }}>Masculino</button></div></>}
+                  {helpStep === 'fabric' && <><strong>Qual tecido prefere?</strong><div className={styles.helpOptions}>{availableFabrics.map((fabric) => <button key={fabric.id} type="button" onClick={() => { handleSelectFabric(fabric.id); setHelpStep('print'); }}>{fabric.name} · {formatPriceBRL(fabric.price)}</button>)}</div></>}
+                  {helpStep === 'print' && <><strong>Escolha sua arte nas costas</strong><div className={styles.helpOptions}><button type="button" onClick={() => { setOpenStep('print'); setConfig((previous) => ({ ...previous, viewSide: 'back' })); setHelpStep(null); }}>Ver artes</button></div></>}
+                </div>}
+                {!helpStep && <button type="button" className={styles.helpButton} aria-label="Ajuda para montar sua camisa" onClick={() => setHelpStep('model')}>?</button>}
+              </div>
+            )}
 
             {/* Bottom Sticky Action & Purchase Bar */}
             <div className={styles.stickyBar}>

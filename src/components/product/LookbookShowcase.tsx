@@ -36,7 +36,7 @@ export const LookbookShowcase: React.FC<LookbookShowcaseProps> = ({ onGoToConfig
                     fill
                     sizes="(max-width: 430px) 80vw, 320px"
                     className={styles.image}
-                    style={{ objectPosition: item.objectPosition }}
+                    style={{ objectPosition: item.lookbookObjectPosition ?? item.objectPosition }}
                   />
                   <div className={styles.overlay} />
                   <div className={styles.cardBadge}>

@@ -294,7 +294,58 @@
 
 .previewWrapper {
   width: 100%;
+  position: sticky;
+  top: 56px;
+  z-index: 20;
+  background: var(--bg-main);
+  padding-bottom: 8px;
 }
+
+.previewWrapper > div:first-child {
+  max-width: min(100%, 250px, 34vh);
+  margin: 0 auto;
+  gap: 4px;
+}
+
+.stepTabs {
+  display: flex;
+  overflow-x: auto;
+  gap: 4px;
+  margin-top: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.stepTabs button {
+  flex: 1 0 auto;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 10px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.stepTabs button.stepTabActive {
+  color: var(--yellow-alta7);
+  border-bottom-color: var(--yellow-alta7);
+}
+
+.mainLayout .accordionHeader { display: none; }
+.mainLayout .accordionItem:not(.accordionItemOpen) { display: none; }
+.mainLayout .accordionContainer { min-height: 180px; }
+
+.helpWidget { position: sticky; bottom: 90px; z-index: 35; align-self: flex-end; }
+.helpButton, .helpClose {
+  width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--yellow-alta7);
+  background: var(--bg-surface-1); color: var(--yellow-alta7); font-size: 20px; cursor: pointer;
+}
+.helpPanel { position: relative; width: min(300px, 80vw); padding: 18px; background: var(--bg-surface-1); border: 1px solid var(--border-subtle); color: var(--text-primary); }
+.helpClose { position: absolute; right: 8px; top: 8px; width: 28px; height: 28px; }
+.helpPanel strong { display: block; padding-right: 24px; font-size: 14px; }
+.helpOptions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.helpOptions button { padding: 9px; border: 1px solid var(--yellow-alta7); background: transparent; color: var(--text-primary); cursor: pointer; }
 
 .summaryLine {
   display: flex;
@@ -901,7 +952,7 @@
 .stickyContainer {
   max-width: var(--max-content-width);
   margin: 0 auto;
-  padding: var(--space-12) var(--mobile-padding);
+  padding: var(--space-12) var(--mobile-padding) max(var(--space-12), env(safe-area-inset-bottom));
   display: flex;
   align-items: center;
   gap: var(--space-12);

@@ -6,6 +6,7 @@ export interface CampaignAsset {
   title: string;
   location: string;
   objectPosition?: string;
+  lookbookObjectPosition?: string;
 }
 
 export const ALTA7_CAMPAIGN_ASSETS: CampaignAsset[] = [
@@ -18,7 +19,7 @@ export const ALTA7_CAMPAIGN_ASSETS: CampaignAsset[] = [
     location: 'PRAIA • RIO',
     objectPosition: 'center 42%',
   },
-  { id: 'terraco-frente', src: '/assets/alta7/campaign/terraco-frente.jpg', alt: 'Modelo usando camiseta ALTA7 no terraco', title: 'ALTA7 NO RIO', location: 'RIO DE JANEIRO', objectPosition: '65% 48%' },
+  { id: 'terraco-frente', src: '/assets/alta7/campaign/terraco-frente.jpg', alt: 'Modelo usando camiseta ALTA7 no terraco', title: 'ALTA7 NO RIO', location: 'RIO DE JANEIRO', objectPosition: '65% 55%', lookbookObjectPosition: '65% 55%' },
   {
     id: 'capa-alta7',
     src: '/assets/alta7/campaign/capa-alta7.webp',
@@ -28,7 +29,7 @@ export const ALTA7_CAMPAIGN_ASSETS: CampaignAsset[] = [
     location: 'RECREIO • RIO',
     objectPosition: 'center 34%',
   },
-  { id: 'terraco-grupo', src: '/assets/alta7/campaign/terraco-grupo.jpg', alt: 'Grupo usando camisetas ALTA7 no terraco', title: 'ALTA7 EM GRUPO', location: 'RIO DE JANEIRO', objectPosition: 'center 55%' },
+  { id: 'terraco-grupo', src: '/assets/alta7/campaign/terraco-grupo.jpg', alt: 'Grupo usando camisetas ALTA7 no terraco', title: 'ALTA7 EM GRUPO', location: 'RIO DE JANEIRO', objectPosition: 'center 58%', lookbookObjectPosition: 'center 58%' },
   {
     id: 'casal-praia-01',
     src: '/assets/alta7/campaign/casal-praia-01.webp',
@@ -38,7 +39,7 @@ export const ALTA7_CAMPAIGN_ASSETS: CampaignAsset[] = [
     location: 'RECREIO • RIO',
     objectPosition: 'center 48%',
   },
-  { id: 'terraco-costas', src: '/assets/alta7/campaign/terraco-costas.jpg', alt: 'Modelo mostrando a estampa nas costas', title: 'ARTE NAS COSTAS', location: 'RIO DE JANEIRO', objectPosition: '60% 40%' },
+  { id: 'terraco-costas', src: '/assets/alta7/campaign/terraco-costas.jpg', alt: 'Modelo mostrando a estampa nas costas', title: 'ARTE NAS COSTAS', location: 'RIO DE JANEIRO', objectPosition: '60% 45%', lookbookObjectPosition: '60% 45%' },
   {
     id: 'rio-altinha-duo',
     src: '/assets/alta7/campaign/whatsapp-image-2026-08-27-17-04-50.webp',
@@ -48,7 +49,7 @@ export const ALTA7_CAMPAIGN_ASSETS: CampaignAsset[] = [
     location: 'PRAIA • RIO',
     objectPosition: 'center 38%',
   },
-  { id: 'terraco-encontro', src: '/assets/alta7/campaign/terraco-encontro.jpg', alt: 'Modelo com camiseta ALTA7 no terraco', title: 'ESTILO ALTA7', location: 'RIO DE JANEIRO', objectPosition: '35% 50%' },
+  { id: 'terraco-encontro', src: '/assets/alta7/campaign/terraco-encontro.jpg', alt: 'Modelo com camiseta ALTA7 no terraco', title: 'ESTILO ALTA7', location: 'RIO DE JANEIRO', objectPosition: '35% 48%', lookbookObjectPosition: '35% 48%' },
   {
     id: 'casal-praia-02',
     src: '/assets/alta7/campaign/casal-praia-02.webp',

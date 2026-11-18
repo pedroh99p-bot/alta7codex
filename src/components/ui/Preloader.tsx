@@ -2,15 +2,7 @@
 
 import React, { useLayoutEffect, useState } from 'react';
 import Image from 'next/image';
-import { ALTA7_PRODUCT } from '@/data/product';
 import styles from './Preloader.module.css';
-
-const PRELOAD_BASES = ALTA7_PRODUCT.colors.flatMap((color) => [
-  color.maleBaseImages.front,
-  color.maleBaseImages.back,
-  color.femaleBaseImages.front,
-  color.femaleBaseImages.back,
-]);
 
 interface PreloaderProps {
   onDone?: () => void;
@@ -72,12 +64,6 @@ export const Preloader: React.FC<PreloaderProps> = ({ onDone }) => {
       document.body.style.overflow = 'hidden';
       restorePageTop();
     }
-
-    // JS Preload of all 10 t-shirt base color images
-    PRELOAD_BASES.forEach((src) => {
-      const img = new window.Image();
-      img.src = src;
-    });
 
     let unmountTimer: ReturnType<typeof window.setTimeout> | undefined;
 

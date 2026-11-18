@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { ColorOption, PrintOption, ProductModelCode, TShirtViewSide } from '@/types/product';
 import styles from './ProductPreview.module.css';
@@ -33,11 +33,12 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
   onToggleSide,
   showTabs = true,
   showViewTag = true,
-  priority = true,
+  priority = false,
 }) => {
   const isFront = viewSide === 'front';
   const isMale = model === 'male';
   const isWhiteShirt = color.id === 'branco';
+  const [loadedBase, setLoadedBase] = useState<{ src: string; scale: number } | null>(null);
 
   const isDebugPrintArea = typeof window !== 'undefined'
     && new URLSearchParams(window.location.search).get('debugPrintArea') === 'true';
@@ -46,6 +47,7 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
   const baseImageSrc = isMale
     ? (isFront ? color.maleBaseImages.front : color.maleBaseImages.back)
     : (isFront ? color.femaleBaseImages.front : color.femaleBaseImages.back);
+  const baseScale = baseScales[color.id]?.[model]?.[viewSide] ?? 1;
 
   // Front logo artwork (White for dark shirts, Black for white shirt)
   const frontLogoSrc = isWhiteShirt
@@ -93,6 +95,9 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
         <div className={styles.shirtLayer}>
           {/* Layer 1: Base T-Shirt Image */}
           <div className={styles.baseLayer}>
+            {loadedBase && loadedBase.src !== baseImageSrc && (
+              <Image src={loadedBase.src} alt="" aria-hidden="true" fill sizes="(max-width: 430px) 100vw, 430px" className={styles.baseImage} style={{ transform: `scale(${loadedBase.scale})` }} />
+            )}
             <Image
               key={baseImageSrc}
               src={baseImageSrc}
@@ -101,7 +106,8 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
               sizes="(max-width: 430px) 100vw, 430px"
               priority={priority}
               className={styles.baseImage}
-              style={{ transform: `scale(${baseScales[color.id]?.[model]?.[viewSide] ?? 1})` }}
+              style={{ transform: `scale(${baseScale})` }}
+              onLoad={() => setLoadedBase({ src: baseImageSrc, scale: baseScale })}
             />
           </div>
 

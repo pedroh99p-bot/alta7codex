@@ -39,7 +39,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       {/* Lifestyle Cover Media Slot Container (4:5 Ratio) */}
       <ScrollReveal>
         <div className={styles.mediaContainer}>
-          {slides.map((slide, index) => (
+          {slides.map((slide, index) => (index === activeSlide || index === (activeSlide + 1) % slides.length || (activeSlide > 0 && index === activeSlide - 1) || (activeSlide === 0 && index === slides.length - 1 && startSlideshow)) && (
             <Image
               key={slide.id}
               src={slide.src}
