@@ -140,10 +140,10 @@ export const ProductPreview: React.FC<ProductPreviewProps> = ({
                 fill
                 sizes="(max-width: 430px) 100vw, 430px"
                 style={{
-                  '--artwork-scale': print.artworkScale ?? 1,
+                  '--artwork-scale': (print.artworkScale ?? 1) * (print.invertArtworkForDarkShirts ? 0.75 : 1),
                   '--artwork-offset-y': `${print.artworkOffsetYPercent ?? 0}%`,
                 } as React.CSSProperties}
-                className={`${styles.artworkOverlayImage} ${print.invertArtworkForDarkShirts && !isWhiteShirt ? styles.artworkInverted : ''}`}
+                className={styles.artworkOverlayImage}
                 priority={priority}
               />
             </div>
